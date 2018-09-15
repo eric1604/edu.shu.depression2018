@@ -90,10 +90,10 @@
 						window.localStorage["Mode"] = $("#MODE").val();
 						window.localStorage["Name"] = $("#NAME").val();
 						if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
-						if($("#MODE").val() == "諮商師")
+						if($("#MODE").val() == "2")
 						{
 							document.addEventListener("deviceready",function(){
-							    location.href="./consultant/main.html";
+							    location.href="./consultant/MAIN.html";
 							    SpinnerPlugin.activityStop();
 							    navigator.notification.alert(
                                     '註冊完成，歡迎使用 !',

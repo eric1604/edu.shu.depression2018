@@ -42,6 +42,7 @@
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
 		
 		var pet = 1;
+		var PET = ["cat","dog","rabbit","girafee"];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -81,7 +82,7 @@
                 success: function(check){
 					var message = (JSON.parse(check)).d;
 					if(message == "ok"){
-						window.localStorage["Pet"] = pet.toString();
+						window.localStorage["Pet"] = PET[parseInt(pet)-1];
 						window.localStorage["Petname"] = $("#petname").val();
 						document.addEventListener("deviceready",function(){
 							location.href="main.html";
