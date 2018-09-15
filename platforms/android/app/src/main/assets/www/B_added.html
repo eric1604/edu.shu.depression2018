@@ -8,7 +8,12 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	
     <style type="text/css">
+		textarea{
+			height: 200px !important;
+			overflow-y: scroll;
+		}
     </style>
     
     <script type="text/javascript">
@@ -80,7 +85,7 @@
                     <td><input type="date" name="date" id="diarydate" value="date" /></td>
                   </tr>
                   <tr>
-			        <td colspan="2"><textarea style="height: 300px;resize: none;" rows="5" placeholder="請輸入日記內容" id="diarycontent" class="form-control" cols="50"></textarea></td>
+			        <td colspan="2"><textarea placeholder="請輸入日記內容" id="diarycontent" class="form-control"></textarea></td>
 			      </tr>
                   <tr> 
                     <td colspan="2"><button type="button" id="btnsave">儲存</button></td>   

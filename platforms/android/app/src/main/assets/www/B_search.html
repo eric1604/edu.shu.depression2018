@@ -11,8 +11,15 @@
   <style type="text/css">
 	  #diary{border-style: solid;height: 200px;}
 	  #content{vertical-align: middle;}
-	  textarea{height: 300px;}
+	  textarea{
+		  height: 150px !important;
+		  overflow-y: scroll;
+	  }
 	  #navdiary{visibility: hidden;}
+	  #info{
+		  font-size: 15px;
+		  line-height: 0;
+	  }
   </style>
     
     <script type="text/javascript">
@@ -78,9 +85,11 @@
 			    			index = 0;
 			    			count = message.length;
 			    			$("#diarycontent").val(message[index]);
-			    			if(count > 1)
+			    			if(count != 0)
 			    			{
-			    				$("#nextdiary").removeAttr("disabled").button("refresh");
+								$("#info").html("找到" + count + "則日記。");
+								if(count > 1){$("#nextdiary").removeAttr("disabled").button("refresh");}
+								else{$("#nextdiary").attr("disabled",true).button("refresh");}
 			    				document.getElementById("navdiary").style.visibility = "visible";
 			    			}
 			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
@@ -189,22 +198,24 @@
               <table align="center" width="90%" border="0">
               	<tbody align="center" valign="middle" style="height: auto">
               		<tr>
-              			<td width="20%">日期</td>
+              			<td align="left" width="15%">日期</td>
               			<td><input type="date" name="date" id="diarydate" value="date" /></td>
 						<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
               		</tr>
+					<tr><td align="left" colspan="3"><p id="info"></p></td></tr>
               		<tr>
-           		        <td colspan="3"><textarea readonly rows="5" placeholder="(日記內容)" id="diarycontent" cols="50"></textarea></td>  
+           		        <td colspan="3"><textarea readonly placeholder="(日記內容)" id="diarycontent"></textarea></td>  
 					</tr></tbody></table>
 			  <table align="center" width="90%" border="0">
 				<tbody align="center" valign="middle" style="height: auto">
 					<tr id="navdiary">
-						<td><input width="50%" disabled type="button" value="上一篇" id="prevdiary"></td>
-						<td><input disabled type="button" value="下一篇" id="nextdiary"></td>
+						<td><input width="50%" disabled type="button" value="上一則" id="prevdiary"></td>
+						<td><input disabled type="button" value="下一則" id="nextdiary"></td>
 						<td><input type="button" value="刪除" id="btndelete"></td>
 					</tr>
               	</tbody>
               </table>
+				
             </div>
             </div>
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
