@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>使用說明</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+    <style type="text/css">
+	  #pageone{position: fixed;}
+		
+		* {box-sizing: border-box}
+
+		#slideshow{
+		  position: relative;
+		  margin: auto;
+		}
+		
+        #prev, #next {
+		  cursor: pointer;
+          position: absolute;
+          top: 50%;
+          width: 50%;
+          padding: 16px;
+          margin-top: -52px;
+          color: #bbbbbb;
+          font-weight: bold;
+          font-size: 50px;
+          transition: 0.6s ease;
+        }
+        
+        #next {right: -22%;}
+		#prev{left: -22%;}
+		
+    </style>
+    
+    <script type="text/javascript">
+		var slideIndex = 1;
+		
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		$(document).ready(function(){showSlides(slideIndex)});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="D_member.html";
+				},false);
+			},false);
+		}
+		
+		function plusSlides(n) {
+          showSlides(slideIndex += n);
+        }
+        
+        function showSlides(n) {
+          var i;
+          var slides = document.getElementsByClassName("slides");
+          if (n > slides.length) {slideIndex = 1}    
+          if (n < 1) {slideIndex = slides.length}
+          for (i = 0; i < slides.length; i++) {
+             slides[i].style.display = "none";  
+          }
+          slides[slideIndex-1].style.display = "block";
+        }
+	</script>
+
+</head>
+<body onLoad="backbtn()">
+    <div data-role="page" id="pageone">
+        <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b">
+            <h1><img style="padding-top: 6px" src="img/descripitiontitle.png" width="100%"></h1>
+			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
+            <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
+			
+        </div>
+        <br/>
+        <div align="center" data-role="content" >
+            <div id="slideshow">
+                 <div class="slides">
+                   <img src="img/des01.gif" style="width:80%">
+				 </div>
+                
+                 <div class="slides">
+                   <img src="img/des02.png" style="width: 80%">
+                 </div>
+                 
+                 <div class="slides">
+                   <img src="img/des03.png" style="width: 80%">
+                 </div>
+                 <div class="slides">
+                   <img src="img/des04.png" style="width: 80%">
+                 </div>
+                 <div class="slides">
+                   <img src="img/des05.png" style="width: 80%">
+                 </div>
+                 <div class="slides">
+                   <img src="img/des06.png" style="width: 80%">
+				</div>
+                
+                 
+                 <a id="prev" onclick="plusSlides(-1)">&#10094;</a>
+                 <a id="next" onclick="plusSlides(1)">&#10095;</a>
+			</div>
+	    </div>
+        
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+			<div data-role="navbar">
+            <ul>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.png"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.png"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.png"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.png"><br>睡眠</a></li>
+            </ul>
+            </div>
+        </div>
+
+        </div>
+       
+</body>
+</html>
+

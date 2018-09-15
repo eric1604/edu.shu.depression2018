@@ -1,0 +1,4 @@
+#Sat Sep 15 19:10:26 CST 2018
+base.0=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

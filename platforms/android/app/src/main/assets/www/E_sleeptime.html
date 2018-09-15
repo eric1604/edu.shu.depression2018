@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>鬧鈴提醒</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/CSS.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="E_sleep.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		
+		var set=0;
+		var message;
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="E_sleep.html";
+				},false);
+			},false);
+		}
+		
+		ver=parseInt(navigator.appVersion);
+		ie4=(ver>3 && navigator.appName!="Netscape")?1:0;
+	
+		function setv()
+		{
+			salm(1);
+			$("#sb").removeAttr("disabled");
+			$("#sb").button("refresh");
+			var dat2= new Date();
+			var year = dat2.getFullYear();
+			var month = dat2.getMonth();
+			var date = dat2.getDate();
+			var hr2= document.getElementById('hour2').value;
+			var min2= document.getElementById('min2').value;
+			var sec2= document.getElementById('sec2').value;
+			if(hr2<10)
+				hr2='0'+hr2;
+			if(min2<10)
+				min2='0'+min2;
+			if(sec2<10)
+				sec2='0'+sec2;
+			document.getElementById('d2').value=hr2+'*'+min2+'*'+sec2;
+			set=1;
+			document.getElementById('msg').innerHTML='鬧鈴啟動';
+			document.getElementById('alm').style.visibility="hidden";
+			document.addEventListener("deviceready",function(){
+		    	cordova.plugins.notification.local.schedule({
+                    title: '鬧鈴響起',
+                    text: $("#message").val(),
+		    		sound: false,
+		    		vibrate: true,
+		    		actions: [{id: 'stop',title: '停止'}],
+					at: new Date(year, month, date, hr2, min2, sec2)
+                });
+		    	cordova.plugins.notification.local.on('stop',function(){
+		    		salm();
+		    	});
+		    },false);
+		}
+		function dis()
+		{
+			backbtn();
+			var dat= new Date();
+			var hr=dat.getHours();
+			var min=dat.getMinutes();
+			var sec=dat.getSeconds();
+			if(hr<10)
+				hr='0'+hr;
+			if(min<10)
+				min='0'+min;
+			if(sec<10)
+				sec='0'+sec;
+			document.getElementById('hour').value=hr;
+			document.getElementById('min').value=min;
+			document.getElementById('sec').value=sec;
+			var dat2v=document.getElementById('d2').value;
+			var dats =hr+'*'+min+'*'+sec;
+		    if(dat2v==dats && set)
+		    {
+		    	document.getElementById('alm').play();
+		    	set=0;
+		    	document.getElementById('sb').style.visibility="visible";
+		    	document.getElementById('msg').innerHTML='鬧鈴響起';
+		    }
+			setTimeout("dis()",500);
+		}
+		function prtsel(x)
+		{
+			for(var i=0;i<x;i++)document.write("<option value="+i+">"+i+"</option>");
+		}
+		function salm(c)
+		{
+			if(c != 1){$("#message").val("");}
+			$("#sb").attr("disabled",true);
+			$("#sb").button("refresh");
+			document.getElementById('alm').pause();
+			document.getElementById('msg').innerHTML='鬧鈴關閉';
+			document.addEventListener("deviceready",function(){
+				cordova.plugins.notification.local.clear();
+			},false);
+		}
+    </script>
+	</head>
+
+		<body onLoad="dis()">
+    		<div id="pageone" data-role="page" data-theme="a">
+            <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 6px" src="img/clocktitle.png" width="100%"></h1>
+			    <a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
+            </div>
+				
+				<div class="main" data-position="fixed">
+					<div class="headding">
+					<div class="lefth">
+						<h2 align="right">時</h2>
+					</div>
+					<div class="centerh">
+						<h2 align="right">分</h2>
+					</div>
+					<div class="righth">
+						<h2 align="right">秒</h2>
+					</div>
+				</div>
+				<input type="hidden" id="d2" name="d2">
+				<div class="clock">
+					<div class="rightc" >
+						<input type="text" readonly id="hour" name="hour" size="1" class="time"> 
+					</div>
+					<div class="centerc">
+						
+						<input type="text" readonly id="min" name="min" size="1" class="time"> 
+					</div>
+					<div class="leftc">
+						<input type="text" readonly id="sec" name="sec" size="1" class="time">
+					</div>
+				</div>
+				<audio id="alm" src="./css/Loud-alarm-clock-sound.mp3" loop controls preload="auto">
+				</audio>
+				<div id="msg">鬧鈴關閉</div>
+				<hr>
+				<div class="clock">
+					<div class="rightc" >
+						<select id="hour2" name="hour2">
+							<option value="" selected disabled hidden>時</option>
+							<script type="text/javascript">prtsel(24);</script>
+						</select>
+					</div>
+					<div class="centerc">
+						<select id="min2" name="min2">
+							<option value="" selected disabled hidden>分</option>
+							<script type="text/javascript">prtsel(60);</script>
+						</select>
+					</div>
+					<div class="leftc">
+						<select id="sec2" name="sec2">
+							<option value="" selected disabled hidden>秒</option>
+							<script type="text/javascript">prtsel(60);</script>
+						</select>
+					</div>
+				</div>
+				<hr style="visibility: hidden;">
+				<table width="100%">
+					<tbody>
+						<tr>
+							<td colspan="2"><input type="text" placeholder="輸入提醒內容" id="message"></td>
+						</tr>
+						<tr>
+							<td><input type="button" id="set" value="設定鬧鈴" onclick="setv()"></td>
+							<td><input disabled type="button" id="sb" value="停止" onclick="salm()"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+        
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+			<div data-role="navbar">
+            <ul>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.png"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.png"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.png"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.png"><br>睡眠</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+</body>
+</html>

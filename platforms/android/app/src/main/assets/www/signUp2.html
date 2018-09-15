@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>選擇您的夥伴</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	
+    <style type="text/css">
+	    #pageone{position: fixed;}
+		* {box-sizing: border-box}
+
+		#slideshow{
+		  position: relative;
+		  margin: auto;
+		}
+		
+        #prev, #next {
+		  cursor: pointer;
+          position: absolute;
+          top: 50%;
+          width: 50%;
+          padding: 16px;
+          margin-top: -52px;
+          color: #bbbbbb;
+          font-weight: bold;
+          font-size: 50px;
+          transition: 0.6s ease;
+        }
+        
+        #next {right: -20%;}
+		#prev{left: -20%;}
+        
+	</style>
+
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnnext").click(choosepet)});
+		$(document).ready(function(){showSlides(pet)});
+		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
+		
+		var pet = 1;
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(e){
+					e.preventDefault();
+				},false);
+			},false);
+		}
+        
+        function plusSlides(n) {
+          showSlides(pet += n);
+        }
+        
+        function showSlides(n) {
+          var i;
+          var slides = document.getElementsByClassName("slides");
+          if (n > slides.length) {pet = 1}    
+          if (n < 1) {pet = slides.length}
+          for (i = 0; i < slides.length; i++) {
+             slides[i].style.display = "none";
+          }
+          slides[pet-1].style.display = "block";
+        }
+		
+		function choosepet(){
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("等待小夥伴準備好...");},false);
+			var userData = {ID: window.localStorage["ID"],PET: pet.toString(),PETNAME: $("#petname").val()};
+			var data = JSON.stringify(userData);
+			 
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/ChoosePet",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var message = (JSON.parse(check)).d;
+					if(message == "ok"){
+						window.localStorage["Pet"] = pet.toString();
+						window.localStorage["Petname"] = $("#petname").val();
+						document.addEventListener("deviceready",function(){
+							location.href="main.html";
+							SpinnerPlugin.activityStop();
+							navigator.notification.alert(
+                                '註冊完成，歡迎使用 !',
+                                null,
+                                '與你相鬱好幸運',
+                                '確定'
+                            );
+			            },false);
+					}else{
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+						alert(message);
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                }
+            });
+		}
+</script>
+   
+</head>
+<body onLoad="backbtn()">
+    
+    <div data-role="page">
+        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+           <div data-role="header" data-theme="a" font style="font-size: 22px">
+             <h1><img style="padding-top: 6px" src="img/selectpettitle.png" width="100%"></h1>
+           </div>
+        </div>
+
+        <div align="center" data-role="content" >
+			<div><br>
+              <div id="slideshow">
+                 <div class="slides">
+                   <img src="img/selectpet0001.gif" style="width:90%">
+				 </div>
+                
+                 <div class="slides">
+                   <img src="img/selectpet0002.gif" style="width: 90%">
+                 </div>
+                 
+                 <div class="slides">
+                   <img src="img/selectpet0003.gif" style="width: 90%">
+                 </div>
+                 
+                 <div class="slides">
+                   <img src="img/selectpet0004.gif" style="width: 90%">
+                 </div>
+                 
+                 
+                 
+                 <a id="prev" onclick="plusSlides(-1)">&#10094;</a>
+                 <a id="next" onclick="plusSlides(1)">&#10095;</a>
+			  </div>
+              <table align="center" width="90%" border="0">
+               <tbody align="center" valign="middle" style="height: auto">
+                 <tr>
+                   <td class="label" width="35%">夥伴小名&nbsp;</td>
+                   <td><input type="text" id="petname"/></td>
+                 </tr>
+                 <tr>
+                   <td colspan="2"><button type="button" id="btnnext">開始使用</button></td>
+                 </tr>
+               </tbody>
+              </table>
+		   </div>
+           
+        </div>
+           <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a"><h1>【與你相鬱，好幸運】</h1></div>
+        </div>
+</body>
+</html>

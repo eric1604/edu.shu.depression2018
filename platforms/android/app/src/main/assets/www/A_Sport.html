@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width， initial-scale=1; charset=utf-8">
+    <title>憂鬱資訊</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <style type="text/css">
+     
+    </style>
+	
+	<script type="text/javascript">
+	    $(document).ready(function(){$("#btnprev").click(function(){location.href="A_Melancholic.html";})});
+	    $(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="A_Melancholic.html";
+				},false);
+			},false);
+		}
+    </script>
+    
+</head>
+<body onLoad="backbtn()">
+<div id="pageone" data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a" font style="font-size:22px">
+            <h1>規律運動</h1>
+			<a id="btnprev" style="top:7px" data-role="button" ><img src="img/up.png" border="0"></a>
+            <a id="btnhome" style="top:5px" data-role="button" ><img src="img/home.png" border="0"></a>
+        </div>
+
+        <div>
+           <table width="90%" align="center">
+  <tr>
+    <td>
+        <h2>帶動身心一起動!</h2>
+        <p>行政院體委會2012年所整理之333規律運動,定義為 :</p>
+        <p>(1) 每週至少運動3次。</p>
+        <p>(2) 每次30分鐘以上。</p>
+        <p>(3) 心跳次數達到130次或是運動強度到會流汗或喘氣的現象。</p><br/>
+        <p>台灣教育部於2011年提出良好的健康體適能運動對學生的重要性包括 :</p>
+        <p>(1) 有充足的體力來適應生活和讀書。</p>
+        <p>(2) 促進健康發育,體適能較好的人,健康狀況也較佳,比較不會生病。</p>
+        <p>(3) 有助身體,心理,情緒和社交等各方面均衡發展。</p>
+        <p>(4) 有助於養成良好的健康生活方式和習慣。</p>
+   </td>
+  </tr>
+</table>
+           	
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><input type="button" onclick="javascript: location.href = 'A_Rolling.html'" value="上一則" /></h1>
+        </div>
+        </div>
+       
+</body>
+</html>
+

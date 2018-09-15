@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>刪除帳號</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+    <style type="text/css">
+		td a{width: 90%;}
+		table{width: 100%;}
+		#dialogdelete{color: white;}
+	   #pageone{position: fixed;}
+    </style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){
+		    if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
+		       else{location.href="main.html";}
+	    })});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="D_member.html";
+				},false);
+			},false);
+		}
+		
+		function resetacc(){
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			var userData = {ID: window.localStorage["ID"]};
+			var data = JSON.stringify(userData);
+			
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/ResetAccount",
+				contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var message = (JSON.parse(check)).d;
+					if(message == "已重設帳號。"){
+						document.addEventListener("deviceready",function(){
+							if(window.localStorage["Mode"] == "諮商師"){location.href="main.html";}
+							else{location.href="signUp2.html";}
+							SpinnerPlugin.activityStop();
+							navigator.notification.alert(
+                                message,
+                                null,
+                                '已經為您準備好囉 ! \n帳號之ID、密碼、暱稱及圖片皆保留 \n稍後可至會員專區變更。',
+                                '確定'
+                            );
+			            },false);
+					}else{
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+						alert(message);
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                }
+            });
+		}
+		
+		function deleteacc(){
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			var userData = {ID: window.localStorage["ID"]};
+			var data = JSON.stringify(userData);
+			
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteAccount",
+				contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var message = (JSON.parse(check)).d;
+					if(message == "已刪除帳號。"){
+						window.localStorage.clear();
+						document.addEventListener("deviceready",function(){
+							location.href="main.html";
+							SpinnerPlugin.activityStop();
+							navigator.notification.alert(
+                                message,
+                                null,
+                                '期待再次相見',
+                                '確定'
+                            );
+			            },false);
+					}else if(message == "測試用帳號無法被刪除。"){
+						location.reload();
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+						alert(message);
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                }
+            });
+		}
+		
+		function showdialog(e){
+			if(e == 0){
+				document.addEventListener("deviceready",function(){
+					navigator.notification.confirm(
+                        '你正在重設這個帳號 ! \n所有資料將被清除。 \n \n(注意 : 此動作無法復原)',
+                        function(btnIndex){
+							if(btnIndex == 1){
+								resetacc();
+							}else if(btnIndex == 2){
+								location.href="D_updatedata.html";
+							}},
+                        '再來一次 ?',
+                        ['重設帳號','更改帳號設定','取消']
+                    );
+			    },false);
+			}else if(e == 1){
+				var deldialog = "小夥伴將無法再與你見面QQ \n帳號也將失效 ! \n \n(但是可以透過重新註冊來復原帳號)";
+				if(window.localStorage["Mode"] == "諮商師"){deldialog = "注意 ! 此動作將使帳號失效 ! \n(但是可以透過重新註冊來復原帳號)";}
+				document.addEventListener("deviceready",function(){
+					navigator.notification.confirm(
+                        deldialog,
+                        function(btnIndex){
+							if(btnIndex == 1){
+								deleteacc();
+							}},
+                        '你正在刪除這個帳號 !',
+                        ['真的要刪除','等一下']
+                    );
+			    },false);
+			}
+		}
+		
+	</script>
+
+</head>
+<body onLoad="backbtn()">
+    <div data-role="page" id="pageone">
+        <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 6px" src="img/deleteIDtitle.png" width="100%"></h1>
+			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
+            <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
+        </div>
+        <div data-role="content" data-type="vertical">
+			<p></p>
+			<input type="button" onclick="showdialog(0)" value="重設帳號" />
+            <input type="button" onclick="showdialog(1)" value="刪除帳號" />
+		</div>
+        
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+			<div data-role="navbar">
+            <ul>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.png"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.png"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.png"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.png"><br>睡眠</a></li>
+            </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
+

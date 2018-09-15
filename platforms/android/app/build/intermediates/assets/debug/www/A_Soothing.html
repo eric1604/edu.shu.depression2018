@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width， initial-scale=1; charset=utf-8">
+    <title>憂鬱資訊</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <style type="text/css">
+     
+    </style>
+	
+	<script type="text/javascript">
+	    $(document).ready(function(){$("#btnprev").click(function(){location.href="A_Melancholic.html";})});
+	    $(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="A_Melancholic.html";
+				},false);
+			},false);
+		}
+    </script>
+    
+</head>
+<body onLoad="backbtn()">
+<div id="pageone" data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a" font style="font-size:22px">
+            <h2>如何預防?</h2>
+			<a id="btnprev" style="top:7px" data-role="button" ><img src="img/up.png" border="0"></a>
+            <a id="btnhome" style="top:5px" data-role="button" ><img src="img/home.png" border="0"></a>
+        </div>
+
+        <div>
+           <table width="90%" align="center">
+  <tr>
+    <td>
+        <h2>幫助指南和建議</h2>
+        <p>(1) 不要定太難的目標或呈現很多責任。</p>
+        <p>(2) 把大的任務分成數個小的，確定一些優先權，並且做你能做的。</p>
+        <p>(3) 不要太多來自你自己的期望，因為這只將增加失敗的感覺。</p>
+        <p>(4) 與其他人一起努力，比獨自一人好。</p>
+        <p>(5) 參加可以使你感覺好一點的活動。</p>
+        <p>(6) 你可能試著適度鍛鍊身體，去看電影、參加球賽、參加宗教或社會活動。</p>
+        <p>(7) 不要急著或過想改變自己。如果你的風格沒被立刻大大改進，也不要不安。</p>
+        <p>(8) 不要作生命中大的決定，例如改變工作、結婚、離婚而沒有諮詢非常了解你的其他人之意見。這些人經常能給你更客觀的意見。延遲重要的決定是明智的，直到你的沮喪已經受到鼓舞。</p>
+        <p>(9) 盡你所能的幫助自己，並且不責備自己沒有達到標準。</p>
+        <p>(10) 不要接受負面的思想。因它是憂鬱的一部分。</p>
+        <p style="font-style: oblique;font-size: 15px">--大里仁愛醫院身心科主任 - 官達人</p>
+   </td>
+  </tr>
+</table>
+           	
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><input type="button" onclick="javascript: location.href = 'A_What.html'" value="上一則" />
+			<input type="button" onclick="javascript: location.href = 'A_Food.html'" value="下一則" /></h1>
+        </div>
+        </div>
+       
+</body>
+</html>
+

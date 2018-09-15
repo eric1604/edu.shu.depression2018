@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>心情檢測表</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+    <style type="text/css">
+	  #pageone{position: fixed;}
+  	</style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnexit").click(function(){
+			document.addEventListener("deviceready",function(){
+				navigator.notification.confirm(
+					'您要中止這次檢測嗎 ?',
+					function(btnIndex){
+						if(btnIndex == 1){location.href="C_measurement.html";}
+					},
+					'就差一點點了',
+					['是的','不']
+				);
+			},false);
+		})});
+		$(document).ready(function(){$("#btnnext").click(bsrs5count)});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					navigator.notification.confirm(
+						'您要中止這次檢測嗎 ?',
+						function(btnIndex){
+							if(btnIndex == 1){location.href="C_measurement.html";}
+						},
+						'就差一點點了',
+						['是的','不']
+					);
+				},false);
+			},false);
+		}
+		
+		function bsrs5count()
+		{
+			var ans = $('input[class="answer"]:checked').val();
+			
+			if(ans == null)
+			{
+				document.addEventListener("deviceready",function(){
+					  navigator.notification.alert(
+                          "你還沒有回答問題哦~",
+                          null,
+                          '好像少了些什麼',
+                          '好'
+                      );
+			    },false);
+			}else
+			{
+				$("input[type='radio']:checked").attr("checked", false).checkboxradio("refresh");
+				
+			    var q = parseInt(window.localStorage["bsrs5Q"]) + 1;
+			    window.localStorage["bsrs5Q"] = q;
+			    
+			    if(q == 6)
+				{
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在計算結果...");},false);
+					location.href="C_bsrs5result.html";
+				}
+			    else{document.getElementById("bsrs5img").src = "file:///android_asset/www/img/bsrs5question0" + q.toString() + ".gif";}
+			                
+			    var score = parseInt(window.localStorage["bsrs5score"]);
+		        score += parseInt(ans);
+			    window.localStorage["bsrs5score"] = score;
+			}
+        }
+		
+    </script>
+</head>
+
+			<body onLoad="backbtn()">
+
+			<div data-role="page" id="pageone">
+            <div style="font-size:10px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 4px" src="img/moodtitle.png" width="100%"></h1>
+                <a id="btnexit" style="top:3px" data-role="button" ><img src="img/up.png" border="0"></a>
+            </div>
+		<img src="img/bsrs5question01.gif" id="bsrs5img" style="display:block; margin:auto; padding-top: 10px;" width="75%" alt=""/>
+
+		<table style="padding: 0px" align="center" width="80%" border="0">
+		<tbody align="center" valign="middle" style="height: auto">
+
+		<tr>
+		<td><input type="radio" class="answer" name="a" id="w1" value="0"><label for="w1"><img src="img/no001.png" style="display:block; margin:auto;" width="90%"></label></td>
+		</tr>
+		<tr>
+		<td><input type="radio" class="answer" name="a" id="w2" value="1"><label for="w2"><img src="img/no002.png" style="display:block; margin:auto;" width="90%"></label></td>
+		</tr>
+		<tr>
+		<td><input type="radio" class="answer" name="a" id="w3" value="2"><label for="w3"><img src="img/no003.png" style="display:block; margin:auto;" width="90%"></label></td>
+		</tr>
+		<tr>
+		<td><input type="radio" class="answer" name="a" id="w4" value="3"><label for="w4"><img src="img/no004.png" style="display:block; margin:auto;" width="90%"></label></td>
+		</tr>
+		<tr>
+		<td><input type="radio" class="answer" name="a" id="w5" value="4"><label for="w5"><img src="img/no005.png" style="display:block; margin:auto;" width="90%"></label></td>
+		</tr>
+		<tr>
+		<td width="60%"><input type="button" value="下一步" id="btnnext"></td>
+		</tr>
+		</tbody>
+		</table>
+    
+</div>
+</body>
+</html>

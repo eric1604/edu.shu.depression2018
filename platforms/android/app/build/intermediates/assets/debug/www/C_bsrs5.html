@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>心情檢測</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <style type="text/css">
+     
+	#submit_Btn
+	{
+       height: auto;
+       max-width: 100%;
+    }
+		
+	#pageone{position: fixed;}
+	
+    </style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="C_measurement.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		$(document).ready(function(){$("#submit_Btn").click(bsrs5begin)});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="C_measurement.html";
+				},false);
+			},false);
+		}
+		
+		function bsrs5begin()
+		{
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			window.localStorage["bsrs5score"] = 0;
+			window.localStorage["bsrs5Q"] = 1;
+			location.href="C_bsrs5-01.html";
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+        }
+    </script>
+</head>
+
+	<body>
+	<div data-role="page" id="pageone">
+           <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 4px" src="img/moodtitle.png" width="100%"></h1>
+                <a id="btnprev" style="top:10px" data-role="button" ><img src="img/up.png" border="0"></a>
+                <a id="btnhome" style="top:8px" data-role="button" ><img src="img/home.png" border="0"></a>
+            </div>
+		  <br/><br/>
+          <table width="100%" border="0">
+                <tr>
+				    <td width="10%"></td>
+                    <td width="67%" ><img src="img/depress.gif" width="130%"></td>
+                    <td width="23%" ></td>
+                </tr>
+         
+          </table>
+          <table width="100%" border="0">
+                <tr>
+                    <td> <input type="image" name="submit_Btn"  id="submit_Btn" style="display:block; margin:auto;" img src="img/start.png"width="65%" /></td>
+                </tr>
+	      </table>
+    </div>
+</div>
+</body>
+</html>

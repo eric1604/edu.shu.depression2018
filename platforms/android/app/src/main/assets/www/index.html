@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" name="viewport" content="width=device-width, charset=utf-8">
+<title>與你相鬱，好幸運</title>
+
+<style type="text/css">
+	#pageone{position: fixed;}
+	#appl{
+		position: absolute;  
+        top: 0;  
+        bottom: 0;  
+        left: 0;  
+        right: 0;  
+        margin: auto;
+	}
+</style>
+
+<script type="text/javascript">
+    var speed = 1500;
+    function reload(){
+		if(window.localStorage["Mode"] == "諮商師"){location.href = "./consultant/MAIN.html";}
+		else{location.href = "main.html";}
+    }
+    setTimeout("reload()", speed);
+</script>
+
+</head>
+
+<body>
+
+<div data-role="page">
+    <img src="img/NEWlogo.png" id="appl" width="60%" alt=""/>
+    <div role="main" class="ui-content"></div>
+    <div data-role="footer" data-position="fixed" data-theme="a"></div>
+</div>
+
+</body>
+</html>
