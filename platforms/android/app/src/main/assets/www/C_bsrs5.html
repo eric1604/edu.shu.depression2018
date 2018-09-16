@@ -35,12 +35,30 @@
 		
 		function bsrs5begin()
 		{
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			window.localStorage["bsrs5score"] = 0;
-			window.localStorage["bsrs5Q"] = 1;
-			location.href="C_bsrs5-01.html";
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			if(window.localStorage["Name"] == null)
+			{
+				document.addEventListener("deviceready",function(){
+				    navigator.notification.confirm(
+				    	'您尚未登入，測驗之結果將無法保存 ! \n確定要開始測驗嗎 ?',
+				    	function(btnIndex){
+				    		if(btnIndex == 1){location.href="login.html";}
+							else if(btnIndex == 2){begin();}
+				    	},
+				    	'與你相鬱好幸運',
+				    	['我要登入/註冊','先讓我試試','取消']
+				    );
+			    },false);
+			}else{begin();}
         }
+		
+		function begin()
+		{
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+		    window.localStorage["bsrs5score"] = 0;
+		    window.localStorage["bsrs5Q"] = 1;
+		    location.href="C_bsrs5-01.html";
+		    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+		}
     </script>
 </head>
 

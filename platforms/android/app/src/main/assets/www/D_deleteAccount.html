@@ -12,6 +12,7 @@
     <style type="text/css">
 		td a{width: 90%;}
 		table{width: 100%;}
+		ul li a{text-align: center !important;}
 		#dialogdelete{color: white;}
 	   #pageone{position: fixed;}
     </style>
@@ -150,10 +151,11 @@
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
             <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
         </div>
-        <div data-role="content" data-type="vertical">
-			<p></p>
-			<input type="button" onclick="showdialog(0)" value="重設帳號" />
-            <input type="button" onclick="showdialog(1)" value="刪除帳號" />
+        <div data-role="content">
+			<ul id="option" data-role="listview" data-inset="true">
+				<li data-icon="false"><a onClick="showdialog(0)">重設帳號</a></li>
+				<li data-icon="false"><a onClick="showdialog(1)">刪除帳號</a></li>
+			</ul>
 		</div>
         
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">

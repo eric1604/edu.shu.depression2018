@@ -11,11 +11,13 @@
 </head>
 
 <style type="text/css">
-	  #pageone{position: fixed;}
-  </style>
+	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+	$(document).ready(userdetect);
 	
 	function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -23,6 +25,25 @@
 					location.href="main.html";
 				},false);
 			},false);
+	}
+	
+	function userdetect()
+	{
+		if(window.localStorage["Name"] == null)
+		{
+			document.querySelectorAll("li")[0].style.opacity = "0.4";
+			document.querySelectorAll("li")[0].style.pointerEvents = "none";
+			document.querySelectorAll("li")[1].style.opacity = "0.4";
+			document.querySelectorAll("li")[1].style.pointerEvents = "none";
+			document.addEventListener("deviceready",function(){
+			    navigator.notification.confirm(
+			    	'您需要先登入才能存取日記本 !',
+			    	function(btnIndex){if(btnIndex == 1){location.href="login.html";}},
+			    	'與你相鬱好幸運',
+			    	['登入/註冊','取消']
+			    );
+			},false);
+		}
 	}
 </script>
 
@@ -33,10 +54,11 @@
                     <a style="display: none"></a>
                     <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
                 </div>
-                <div data-role="content" data-type="vertical" style="background-image: url(C:\Users\user\Desktop\畢業專題\寒假作業\完整版\20180125\Sample\Sample)">
-                    <p></p>
-                    <input type="button" onclick="javascript: location.href = 'B_added.html'" value="書寫日記" />
-                    <input type="button" onclick="javascript: location.href = 'B_search.html'" value="翻閱日記" />  
+                <div data-role="content">
+					<ul id="option" data-role="listview" data-inset="true">
+				        <li data-icon="false"><a onClick="javascript: location.href='B_added.html'">書寫日記</a></li>
+				        <li data-icon="false"><a onClick="javascript: location.href='B_search.html'">翻閱日記</a></li>
+			        </ul>
                 </div>
                 <table>
                 <tr>

@@ -12,6 +12,7 @@
 
 <style type="text/css">
 	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
 	label{padding-left: 3%;}
 	span{
 		font-size: 12px;
@@ -47,12 +48,12 @@
 				$("#btnlogin").hide();
 			    document.getElementById("username").innerHTML = window.localStorage["Name"];
 			    document.getElementById("usermode").innerHTML = " " + window.localStorage["Mode"];
-				document.getElementById("manual").hidden = "true";
+				document.getElementById("manual").style.display = "none";
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
 				document.querySelectorAll("span")[1].style.display = "none";
-				document.querySelectorAll("li")[1].style.display = "none";
-				document.querySelectorAll("li")[0].style.width = document.querySelectorAll("li")[3].style.width = "33%";
-				document.querySelectorAll("li")[2].style.width = "34%";
+				document.querySelectorAll("li")[5].style.display = "none";
+				document.querySelectorAll("li")[4].style.width = document.querySelectorAll("li")[7].style.width = "33%";
+				document.querySelectorAll("li")[6].style.width = "34%";
 			}else
 			{
 				$("#btnlogin").hide();
@@ -80,7 +81,7 @@
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
             </div>
             
-            <div data-role="content" data-type="vertical">
+            <div data-role="content">
                 <p></p>
 					<table align="center" width="90%">
 						<tr>
@@ -92,11 +93,14 @@
 							</td>
 						</tr>
 					</table>
-	            <p></p>
-				<div id="option"><input type="button" onclick="javascript: location.href = 'D_updatedata.html'" value="更改資料" />
-                <input type="button" onclick="javascript: location.href = 'D_deleteAccount.html'" value="刪除帳號" /></div><p></p>
-                <div id="manual"><input type="button" onclick="javascript: location.href = 'D_manual.html'" value="使用說明" /></div>
-                <input type="button" onclick="javascript: location.href = 'D_contact.html'" value="聯絡我們" />
+				<ul id="option" data-role="listview" data-inset="true">
+					<li data-icon="false"><a onClick="javascript: location.href = 'D_updatedata.html'">更改資料</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href = 'D_deleteAccount.html'">刪除帳號</a></li>
+				</ul>
+				<ul data-role="listview" data-inset="true">
+					<li id="manual" data-icon="false"><a onClick="javascript: location.href = 'D_manual.html'">使用說明</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href = 'D_contact.html'">聯絡我們</a></li>
+				</ul>
             </div>
             
        <div id="divnav" data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">

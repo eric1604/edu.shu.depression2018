@@ -33,12 +33,30 @@
 		
 		function UTBbegin()
 		{
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			window.localStorage["UTBscore"] = 0;
-			window.localStorage["UTB18Q"] = 1;
-			location.href="C_utb-01.html";
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			if(window.localStorage["Name"] == null)
+			{
+				document.addEventListener("deviceready",function(){
+				    navigator.notification.confirm(
+				    	'您尚未登入，測驗之結果將無法保存 ! \n確定要開始測驗嗎 ?',
+				    	function(btnIndex){
+				    		if(btnIndex == 1){location.href="login.html";}
+							else if(btnIndex == 2){begin();}
+				    	},
+				    	'與你相鬱好幸運',
+				    	['我要登入/註冊','先讓我試試','取消']
+				    );
+			    },false);
+			}else{begin();}
         }
+		
+		function begin()
+		{
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+		    window.localStorage["UTBscore"] = 0;
+		    window.localStorage["UTB18Q"] = 1;
+		    location.href="C_utb-01.html";
+		    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+		}
     </script>
 </head>
 
@@ -50,7 +68,7 @@
            <a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
            <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
         </div>
-			<br/><br/>
+			<br/>
               <table width="100%" border="0">
                   <tr>
 			          <td width="10%"></td>
@@ -60,7 +78,7 @@
               </table>
               <table width="100%" border="0">
                   <tr>
-                      <td> <input type="image" name="submit_Btn"  id="submit_Btn" style="display:block; margin:auto;" img src="img/start003.png" width="70%" /></td>
+                      <td> <input type="image" name="submit_Btn"  id="submit_Btn" style="display:block; margin:auto;" img src="img/start003.png" width="65%" /></td>
                   </tr>
 			  </table>
     </div>

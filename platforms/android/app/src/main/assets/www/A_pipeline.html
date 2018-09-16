@@ -11,8 +11,9 @@
 </head>
 
 <style type="text/css">
-	  #pageone{position: fixed;}
-  </style>
+	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
@@ -35,10 +36,11 @@
             </div>
 
             <div data-role="content" data-type="vertical">
-                <p></p>
-                <input type="button" onclick="javascript: location.href = 'A_ANTIsuicide.html'" value="相關專線"/>
-                <input type="button" onclick="javascript: location.href = 'A_Lectures.html'" value="好站推薦"/>
-                <input type="button" onclick="javascript: location.href = 'A_Melancholic.html'" value="資訊報報"/>
+				<ul id="option" data-role="listview" data-inset="true">
+				    <li data-icon="false"><a onClick="javascript: location.href='A_ANTIsuicide.html'">相關專線</a></li>
+				    <li data-icon="false"><a onClick="javascript: location.href='A_Lectures.html'">好站推薦</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href='A_Melancholic.html'">資訊報報</a></li>
+			    </ul>
             </div>
 		<table>
             <tr>

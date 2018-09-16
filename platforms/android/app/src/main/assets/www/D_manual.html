@@ -17,6 +17,7 @@
 		#slideshow{
 		  position: relative;
 		  margin: auto;
+		  width: 90%;
 		}
 		
         #prev, #next {
@@ -75,11 +76,9 @@
             <h1><img style="padding-top: 6px" src="img/descripitiontitle.png" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
             <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
-			
         </div>
         <br/>
-        <div align="center" data-role="content" >
-            <div id="slideshow">
+            <div align="center" id="slideshow">
                  <div class="slides">
                    <img src="img/des01.gif" style="width:80%">
 				 </div>
@@ -105,7 +104,6 @@
                  <a id="prev" onclick="plusSlides(-1)">&#10094;</a>
                  <a id="next" onclick="plusSlides(1)">&#10095;</a>
 			</div>
-	    </div>
         
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">

@@ -11,7 +11,8 @@
 </head>
 
 <style type="text/css">
-	  #pageone{position: fixed;}
+	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
   </style>
 
 <script type="text/javascript">
@@ -35,14 +36,15 @@
                     <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
                 </div>
 
-            <div data-role="content"  data-type="vertical">
-                <p></p>
-                <input type="button" onclick="javascript: location.href = 'A_What.html'" value="何謂憂鬱"/>
-                <input type="button" onclick="javascript: location.href = 'A_Soothing.html'" value="如何預防"/>
-                <input type="button" onclick="javascript: location.href = 'A_Food.html'" value="食的好自在"/>
-                <input type="button" onclick="javascript: location.href = 'A_Breathe.html'" value="三分鐘呼吸空間"/>
-                <input type="button" onclick="javascript: location.href = 'A_Rolling.html'" value="正念減壓"/>
-                <input type="button" onclick="javascript: location.href = 'A_Sport.html'" value="規律運動"/>
+            <div data-role="content">
+				<ul id="option" data-role="listview" data-inset="true">
+				    <li data-icon="false"><a onClick="javascript: location.href='A_What.html'">何謂憂鬱</a></li>
+				    <li data-icon="false"><a onClick="javascript: location.href='A_Soothing.html'">如何預防</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href='A_Food.html'">食得好自在</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href='A_Breathe.html'">三分鐘呼吸空間</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href='A_Rolling.html'">正念減壓</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href='A_Sport.html'">規律運動</a></li>
+			    </ul>
             </div>
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">

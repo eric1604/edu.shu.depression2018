@@ -78,7 +78,7 @@
 					if(message == "ok"){
 						window.localStorage.clear();
 			            document.addEventListener("deviceready",function(){
-							location.reload();
+							location.href = "../main.html";
 							SpinnerPlugin.activityStop();
                             navigator.notification.alert(
                                  '您已登出 !',

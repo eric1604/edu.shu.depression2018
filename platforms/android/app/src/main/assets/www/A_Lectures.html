@@ -10,6 +10,7 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <style type="text/css">
 	  #pageone{position: fixed;}
+		ul li a{text-align: center !important;}
     </style>
     
     <script type="text/javascript">
@@ -34,10 +35,11 @@
             <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>	
         </div>
         
-        <div data-role="content" data-type="vertical">
-		 <p></p>
-         <input type="button" value="台灣憂鬱症防治協會" onclick="location.href='http://www.depression.org.tw/'">
-         <input type="button" value="董氏基金會 心理衛生組" onclick="location.href='http://www.jtf.org.tw/psyche/'">
+        <div data-role="content">
+			<ul id="option" data-role="listview" data-inset="true">
+				<li data-icon="false"><a onClick="javascript: location.href='http://www.depression.org.tw/'">台灣憂鬱症防治協會</a></li>
+				<li data-icon="false"><a onClick="javascript: location.href='http://www.jtf.org.tw/psyche/'">董氏基金會心理衛生組</a></li>
+			</ul>
         </div>
         
         <div role="main" class="ui-content" id="newsdata">

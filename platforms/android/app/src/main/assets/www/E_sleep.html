@@ -11,11 +11,13 @@
 </head>
 
 <style type="text/css">
-	  #pageone{position: fixed;}
-  </style>
+	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+	$(document).ready(userdetect);
 	
 	function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -23,6 +25,15 @@
 					location.href="main.html";
 				},false);
 			},false);
+	}
+	
+	function userdetect()
+	{
+		if(window.localStorage["Name"] == null)
+		{
+			document.querySelectorAll("li")[1].style.opacity = "0.4";
+			document.querySelectorAll("li")[1].style.pointerEvents = "none";
+		}
 	}
 </script>
 
@@ -33,11 +44,13 @@
                     <a style="display: none"></a>
                     <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
                 </div>
-                <div data-role="content" data-type="vertical">
-                    <p></p>
-                    <input type="button" onclick="javascript: location.href = 'E_sleeptime.html'" value="鬧鈴提醒" />
-                     <input type="button" onclick="javascript: location.href = 'E_sleepcheck.html'" value="睡眠品質" />
-                    <table width="100%" border="0">
+                <div data-role="content">
+					<ul id="option" data-role="listview" data-inset="true">
+				        <li data-icon="false"><a onClick="javascript: location.href='E_sleeptime.html'">鬧鐘提醒</a></li>
+				        <li data-icon="false"><a onClick="javascript: location.href='E_sleepcheck.html'">睡眠品質</a></li>
+			        </ul>
+                </div>
+		<table width="100%" border="0">
          　<tr>
 　         <td width="15%"></td>
          　<td width="62%" ><img src="img/sleepzzz.gif" width="150%"></td>
@@ -45,8 +58,6 @@
          　</tr>
          
           </table>
-                  
-                </div>
 
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">

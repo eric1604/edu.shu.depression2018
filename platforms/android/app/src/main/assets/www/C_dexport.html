@@ -51,11 +51,14 @@
                 }
             };
 			
-			$(document).ready(function () {$.plot($("#data"), dataset, options);});
-			/*var userData = {ID: window.localStorage["ID"],TIME: $("#date").val(),MODE: $("input[type='radio']:checked").val()};
+			$(document).ready(function(){$.plot($("#data"), dataset, options);});
+			
+			var type = $("input[type='checkbox']:checked").val();
+			if($("#m1").is(':checked') && $("#m2").is(':checked')){type = "all";}
+			var userData = {ID: window.localStorage["ID"],TIME: $("#time").val(),TYPE: type};
 			var data = JSON.stringify(userData);
 			  
-			$.ajax(
+			/*$.ajax(
 				{
                 url: "http://192.192.155.108/serv/ServicePool.asmx/Searchresult",
                 contentType: "application/json; charset=utf-8",
@@ -103,8 +106,8 @@
               <table align="center" width="90%" border="0">
 				<tr>
 					<td width="15%">類型</td>
-					<td width="43%"><input id="m1" name="mode" type="radio" value="BSRS5" /><label for="m1"><snap>心情檢測</snap></label></td>
-					<td><input id="m2" name="mode" type="radio" value="UTB" /><label for="m2"><snap>憂鬱測量</snap></label></td>
+					<td width="43%"><input id="m1" name="mode" type="checkbox" value="BSRS5" /><label for="m1"><snap>心情檢測</snap></label></td>
+					<td><input id="m2" name="mode" type="checkbox" value="UTB" /><label for="m2"><snap>憂鬱測量</snap></label></td>
 				</tr>
 			  </table>
 			  <table align="center" width="90%" border="0">
