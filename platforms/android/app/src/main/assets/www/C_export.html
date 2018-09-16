@@ -60,7 +60,7 @@
 			  
 			/*$.ajax(
 				{
-                url: "http://192.192.155.108/serv/ServicePool.asmx/Searchresult",
+                url: "http://192.192.155.108/serv/ServicePool.asmx/Export",
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
 				data: data,
@@ -103,23 +103,23 @@
 
             <div align="center" data-role="content" >
             <div data-role="fieldcontain">
-              <table align="center" width="90%" border="0">
-				<tr>
-					<td width="15%">類型</td>
-					<td width="43%"><input id="m1" name="mode" type="checkbox" value="BSRS5" /><label for="m1"><snap>心情檢測</snap></label></td>
-					<td><input id="m2" name="mode" type="checkbox" value="UTB" /><label for="m2"><snap>憂鬱測量</snap></label></td>
-				</tr>
-			  </table>
 			  <table align="center" width="90%" border="0">
               	<tr>
               		<td width="15%">區間</td>
               		<td><input type="month" id="time" /></td>
 					<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
               	</tr>
-              	<tr> 
+              </table>
+			  <table align="center" width="90%" border="0">
+				<tr>
+					<td width="15%">類型</td>
+					<td width="43%"><input id="m1" name="mode" type="checkbox" value="BSRS5" /><label for="m1"><snap>心情檢測</snap></label></td>
+					<td><input id="m2" name="mode" type="checkbox" value="UTB" /><label for="m2"><snap>憂鬱測量</snap></label></td>
+				</tr>
+				<tr> 
            		    <td colspan="3"><div id="data"></div></td>  
            		</tr>
-              </table>
+			  </table>
             </div>
 		</div>
 
