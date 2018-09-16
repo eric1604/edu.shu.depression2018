@@ -48,12 +48,13 @@
 				$("#btnlogin").hide();
 			    document.getElementById("username").innerHTML = window.localStorage["Name"];
 			    document.getElementById("usermode").innerHTML = " " + window.localStorage["Mode"];
-				document.getElementById("manual").style.display = "none";
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
 				document.querySelectorAll("span")[1].style.display = "none";
-				document.querySelectorAll("li")[5].style.display = "none";
-				document.querySelectorAll("li")[4].style.width = document.querySelectorAll("li")[7].style.width = "33%";
-				document.querySelectorAll("li")[6].style.width = "34%";
+				document.querySelectorAll("li")[1].style.display = "none";
+				document.querySelectorAll("li")[3].style.display = "none";
+				document.querySelectorAll("li")[6].style.display = "none";
+				document.querySelectorAll("li")[5].style.width = document.querySelectorAll("li")[8].style.width = "33%";
+				document.querySelectorAll("li")[7].style.width = "34%";
 			}else
 			{
 				$("#btnlogin").hide();
@@ -95,10 +96,11 @@
 					</table>
 				<ul id="option" data-role="listview" data-inset="true">
 					<li data-icon="false"><a onClick="javascript: location.href = 'D_updatedata.html'">更改資料</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href = 'D_privacy.html'">隱私設定</a></li>
 					<li data-icon="false"><a onClick="javascript: location.href = 'D_deleteAccount.html'">刪除帳號</a></li>
 				</ul>
 				<ul data-role="listview" data-inset="true">
-					<li id="manual" data-icon="false"><a onClick="javascript: location.href = 'D_manual.html'">使用說明</a></li>
+					<li data-icon="false"><a onClick="javascript: location.href = 'D_manual.html'">使用說明</a></li>
 					<li data-icon="false"><a onClick="javascript: location.href = 'D_contact.html'">聯絡我們</a></li>
 				</ul>
             </div>
