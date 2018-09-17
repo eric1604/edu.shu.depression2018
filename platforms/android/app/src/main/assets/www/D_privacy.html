@@ -15,6 +15,7 @@
             float: right;
             margin-right: 10px;
         }
+		strong{font-size: 14px;}
     </style>
     
     <script type="text/javascript">
@@ -27,13 +28,14 @@
 					location.href="D_member.html";
 				},false);
 			},false);
-			$("#inputimg").hide();
 		}
 		
-		function update()
+		function update(sel)
         {
+			console.log(sel);
+			
 			//document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			var setting = {ID: window.localStorage["ID"]};
+			/*var setting = {ID: window.localStorage["ID"]};
 			var data = JSON.stringify(setting);
 			 
 			$.ajax({
@@ -59,7 +61,7 @@
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
                 }
-            });
+            });*/
         }
 	</script>
 
@@ -73,22 +75,40 @@
         </div>
         
         <div class="optContainer" data-role="content">
+			<strong>您可開放相關資料給我們的諮商師做關懷及追蹤。<br/>透過資料的分析，在您需要幫助時提出協助。<br/>設定可以隨時更改。</strong>
 			<ul data-role=listview data-inset="true">
-				<li data-role="list-divider">個資開放設定</li>
+				<li data-role="list-divider">心靈觀測</li>
 				<li>
-					<snap>心情檢測</snap>
-					<select type="checkbox" id="flip" data-role="flipswitch" >
+					<snap>心情檢測相關數據</snap>
+					<select id="BSRS5" data-role="flipswitch" onChange="update(this.id)" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
 				<li>
-					<snap>憂鬱測量</snap>
-					<select type="checkbox" id="flip" data-role="flipswitch" >
+					<snap>憂鬱測量相關數據</snap>
+					<select id="UTB" data-role="flipswitch" onChange="update(this.id)" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
 			</ul>
-			
+			<ul data-role=listview data-inset="true">
+				<li data-role="list-divider">日記小築</li>
+				<li>
+					<snap>您的日記</snap>
+					<select id="Diary" data-role="flipswitch" onChange="update(this.id)" >
+						<option value="0">關</option><option value="1">開</option>
+					</select>
+				</li>
+			</ul>
+			<ul data-role=listview data-inset="true">
+				<li data-role="list-divider">睡眠救星</li>
+				<li>
+					<snap>睡眠品質與生理數據</snap>
+					<select id="Sleep" data-role="flipswitch" onChange="update(this.id)" >
+						<option value="0">關</option><option value="1">開</option>
+					</select>
+				</li>
+			</ul>
         </div>
        
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
