@@ -21,6 +21,12 @@
 		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
 		$(document).ready(function(){$("#btnsave").click(adddiary)});
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
+		$(document).ready(function(){$("#diarydate").html(showdate + "  星期" + DATE[date.getDay()]);})
+		
+		var date = new Date();
+		var DATE = ["日","一","二","三","四","五","六"];
+		var m = "/";
+		var showdate = date.getFullYear() + m + (date.getMonth()+1) + m + date.getDate();
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -32,7 +38,8 @@
 		
 		function adddiary()
         {
-			var userData = {ID: window.localStorage["ID"],Diary: $("#diarycontent").val(),DiaryDate: $("#diarydate").val() };
+			m = "-";
+			var userData = {ID: window.localStorage["ID"],Diary: $("#diarycontent").val(),DiaryDate: showdate};
 			var data = JSON.stringify(userData);
 			
 			$.ajax({
@@ -75,24 +82,13 @@
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
             </div>
           
-        
-            <div data-role="content" align="center">
-              <div data-role="fieldcontain">
-                <table align="center" width="90%" border="0">
-                 <tbody align="center" valign="middle">
-                  <tr>
-                    <td width="20%" class="label">日期&nbsp;</td>
-                    <td><input type="date" name="date" id="diarydate" value="date" /></td>
-                  </tr>
-                  <tr>
-			        <td colspan="2"><textarea placeholder="請輸入日記內容" id="diarycontent" class="form-control"></textarea></td>
-			      </tr>
-                  <tr> 
-                    <td colspan="2"><button type="button" id="btnsave">儲存</button></td>   
-                  </tr>
-                </tbody></table>
-              </div>
-           </div>
+            <div id="content" data-role="content" align="center">
+				<ul data-role=listview data-inset="true">
+				    <li data-role="list-divider"><font id="diarydate"></font></li>
+			        <li><textarea placeholder="請輸入日記內容" id="diarycontent" class="form-control"></textarea></li>
+			        <li><button type="button" id="btnsave">儲存</button></li>
+				</ul>
+            </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>

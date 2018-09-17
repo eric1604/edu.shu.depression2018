@@ -10,6 +10,7 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
   <style type="text/css">
 	  #diary{border-style: solid;height: 200px;}
+	  #content{vertical-align: middle;}
 	  textarea{
 		  height: 150px !important;
 		  overflow-y: scroll;
@@ -191,8 +192,9 @@
 				<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.png" border="0"></a>
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.png" border="0"></a>
             </div>
-		
-			<div data-role="content" align="center">
+            
+            <div align="center" data-role="content" >
+            <div data-role="fieldcontain">
               <table align="center" width="90%" border="0">
               	<tbody align="center" valign="middle" style="height: auto">
               		<tr>
@@ -213,6 +215,8 @@
 					</tr>
               	</tbody>
               </table>
+				
+            </div>
             </div>
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 		  <div data-role="navbar">

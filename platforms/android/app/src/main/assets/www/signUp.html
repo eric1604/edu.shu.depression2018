@@ -21,6 +21,7 @@
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
 		$(document).ready(function(){$("#btnchoose").click(function(){document.getElementById("inputimg").click();})});
 		
+		var image = "";
 		var imagebase64 = "";
 		
 		function backbtn(){
@@ -46,7 +47,6 @@
 			var preview = document.getElementById("preview");
             var file    = document.querySelector('input[type=file]').files[0];
             var reader  = new FileReader();
-			var image;
 
             reader.addEventListener("load", function(){
 			  document.getElementById("preview").style.display = "block";
@@ -55,23 +55,18 @@
 				  aspectRatio: 1/1,
 				  zoomable: false,
 				  rotatable: false,
-				  crop: function(){
-					  document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					  image = imagebase64 = "";
-					  image = $("#preview").cropper("getCroppedCanvas");
-					  imagebase64 = image.toDataURL('image/png');
-				  }
+				  crop: function(){document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);}
 			  })
             }, false);
 			
-            if (file) {
-              reader.readAsDataURL(file);
-            }
+            if (file){reader.readAsDataURL(file);}
 			
         }
 		
 		function register()
         {
+			image = $("#preview").cropper("getCroppedCanvas");
+			imagebase64 = image.toDataURL('image/webp');
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			var userData = {MODE: $("#MODE").val(),ID: $("#ID").val(),PWD: $("#PWD").val(),NAME: $("#NAME").val(),IMAGE: imagebase64};
 			var data = JSON.stringify(userData);
