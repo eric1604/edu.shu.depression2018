@@ -32,8 +32,9 @@
 			if(window.localStorage["Mode"] == "諮商師"){$("#petlbl").css("display","none");}
 		});
 		
-		var image = "";
+		var image;
 		var imagebase64 = "";
+		var noimg = 0;
 		var delimg = document.querySelector("input[id=delimg]");
 
 		function backbtn(){
@@ -47,6 +48,7 @@
 		
 		function getimage()
 		{
+			noimg = 2;
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("圖片載入中...");},false);
 			$(".imglbl").css("display","none");
 			document.querySelector("label").style.display = "none";
@@ -71,9 +73,12 @@
 		
 		function update()
         {
-			var noimg = 0;
-			image = $("#preview").cropper("getCroppedCanvas");
-			imagebase64 = image.toDataURL('image/webp');
+			if(noimg == 2)
+			{
+				noimg = 0;
+				image = $("#preview").cropper("getCroppedCanvas");
+			    imagebase64 = image.toDataURL('image/webp');
+			}
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			if($("#delimg").prop("checked") && imagebase64 == ""){imagebase64 = "";noimg = 1;}
 			var newName = {ID: window.localStorage["ID"],NAME: $("#NEWNAME").val(),PWD: $("#PWD").val(),PETNAME: $("#petname").val(),IMAGE: imagebase64,noimg: noimg};

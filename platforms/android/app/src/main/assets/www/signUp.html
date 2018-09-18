@@ -23,6 +23,7 @@
 		
 		var image = "";
 		var imagebase64 = "";
+		var noimg = 1;
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -42,6 +43,7 @@
 		
 		function getimage()
 		{
+			noimg = 0;
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("圖片載入中...");},false);
 			$("#imglbl").css("display","none");
 			var preview = document.getElementById("preview");
@@ -65,8 +67,11 @@
 		
 		function register()
         {
-			image = $("#preview").cropper("getCroppedCanvas");
-			imagebase64 = image.toDataURL('image/webp');
+			if(noimg == 0)
+			{
+				image = $("#preview").cropper("getCroppedCanvas");
+			    imagebase64 = image.toDataURL('image/webp');
+			}
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			var userData = {MODE: $("#MODE").val(),ID: $("#ID").val(),PWD: $("#PWD").val(),NAME: $("#NAME").val(),IMAGE: imagebase64};
 			var data = JSON.stringify(userData);
