@@ -21,6 +21,9 @@
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
 		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		$(document).ready(get);
+		
+		var ok = 0;
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -30,38 +33,50 @@
 			},false);
 		}
 		
-		function update(sel)
+		function get()
+		{
+			$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
+			$("#UTB").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
+			$("#Diary").val(window.localStorage["Privacy"].charAt(2)).flipswitch("refresh");
+			$("#Sleep").val(window.localStorage["Privacy"].charAt(3)).flipswitch("refresh");
+			ok = 1;
+		}
+		
+		function update()
         {
-			console.log(sel);
-			
-			//document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			/*var setting = {ID: window.localStorage["ID"]};
-			var data = JSON.stringify(setting);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/PrivacySet",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var name = (JSON.parse(check)).d;
-					document.addEventListener("deviceready",function(){
-						 //SpinnerPlugin.activityStop();
-			             navigator.notification.alert(
-                             name,
-                             function(){location.reload();},
-                             '更改完成',
-                             '確定'
-                         );
-			        },false);
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
-                }
-            });*/
+			if(ok == 1)
+			{
+				var set = $("#BSRS5").val() + $("#UTB").val() + $("#Diary").val() + $("#Sleep").val();
+			    var setting = {ID: window.localStorage["ID"],PRIVACY: set};
+			    var data = JSON.stringify(setting);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/Privacy",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+			    		var name = (JSON.parse(check)).d;
+			    		if(name == set){window.localStorage["Privacy"] = set;}
+			    		else
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線錯誤 !',
+                                    function(){location.reload();},
+                                    '錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                    }
+                });
+			}
         }
 	</script>
 
@@ -80,13 +95,13 @@
 				<li data-role="list-divider">心靈觀測</li>
 				<li>
 					<snap>心情檢測相關數據</snap>
-					<select id="BSRS5" data-role="flipswitch" onChange="update(this.id)" >
+					<select id="BSRS5" data-role="flipswitch" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
 				<li>
 					<snap>憂鬱測量相關數據</snap>
-					<select id="UTB" data-role="flipswitch" onChange="update(this.id)" >
+					<select id="UTB" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
@@ -95,7 +110,7 @@
 				<li data-role="list-divider">日記小築</li>
 				<li>
 					<snap>您的日記</snap>
-					<select id="Diary" data-role="flipswitch" onChange="update(this.id)" >
+					<select id="Diary" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
@@ -104,7 +119,7 @@
 				<li data-role="list-divider">睡眠救星</li>
 				<li>
 					<snap>睡眠品質與生理數據</snap>
-					<select id="Sleep" data-role="flipswitch" onChange="update(this.id)" >
+					<select id="Sleep" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
