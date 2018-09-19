@@ -12,6 +12,51 @@
     <style type="text/css">
 	  #pageone{position: fixed;}
 	  table{width: 90%}
+	  *{
+        margin: 0;
+        padding: 0;
+      }
+      .bg{
+        background:url(img/pinkpink.png) no-repeat center center fixed;
+        width:100%;
+        height:100%;
+      }
+      .blur_box{
+        z-index: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .blur_box:before{
+        content: "";
+        position: absolute;
+        width:300%;
+        height:300%;
+        left: -100%;
+        top: -100%;
+        background:url(img/pinkpink.png) no-repeat center center fixed; 
+        filter: blur(20px);
+        z-index: -2;
+      }
+      .rgba{
+        background-color:#FBDEDE;
+        position: absolute;
+        width:100%;
+        height:100%;
+        z-index: -1;
+      }
+      .content_text{
+        text-align: center;
+        color:#000000;
+       
+        padding: 50px 30px;
+        line-height: 28px;
+      }
+      article{
+        width:80%;
+        height:640px;
+        margin:0px auto;
+      }
+	  
     </style>
 
     <script type="text/javascript">
@@ -98,12 +143,18 @@
     </script> 
 </head>
 <body onLoad="backbtn()" >
-    
-    <div data-role="page" id="pageone">
-        <div style="font-size: 22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-           <h1 onClick="login(1)"><img style="padding-top: 4px" src="img/logintitle.png" width="100%"></h1>
-		   <a id="btnprev" style="top:10px" data-role="button" ><img src="img/up.png" border="0"></a>
+	<div data-role="page" id="pageone" class="bg">
+    <article class="blur_box">
+      <div class="rgba"></div>
+      <div class="content_text">
+        <div  data-position="fixed" data-tap-toggle="false">
+            <table align="center">
+                <tr>
+                  <td><h1 onClick="login(1)"><img style="padding-top: 4px" src="img/logintitle01.png" width="100%"></h1></td>
+                </tr>
+            </table>
         </div>
+
 
         <div align="center" data-role="content" >
           <br/>

@@ -9,6 +9,7 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<script type="text/javascript" src="js/jquery.flot.js"></script>
+	<script type="text/javascript" src="js/jquery.flot.time.js"></script>
     
     <style type="text/css">
 		#data{height: 200px;width: 100%;}
@@ -32,6 +33,8 @@
 																	
 		function search()
         {
+			//var type = $("input[type='checkbox']:checked").val();
+			//if($("#m1").is(':checked') && $("#m2").is(':checked')){type = "all";}
 			var data = [
                 [1, 130], [2, 40], [3, 80], [4, 160], [5, 159], [6, 370], [7, 330], [8, 350], [9, 370], [10, 400], [11, 330], [12, 350] 
             ];
@@ -53,9 +56,12 @@
 			
 			$(document).ready(function(){$.plot($("#data"), dataset, options);});
 			
-			var type = $("input[type='checkbox']:checked").val();
-			if($("#m1").is(':checked') && $("#m2").is(':checked')){type = "all";}
-			var userData = {ID: window.localStorage["ID"],TIME: $("#time").val(),TYPE: type};
+			var year = "";
+			var month = "";
+			for(var i=0;i<4;i++){year += $("#time").val().charAt(i);}
+			for(var j=5;j<7;j++){month += $("#time").val().charAt(j);}
+			
+			var userData = {ID: window.localStorage["ID"], YEAR: year, MONTH: month};
 			var data = JSON.stringify(userData);
 			  
 			/*$.ajax(

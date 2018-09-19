@@ -16,11 +16,17 @@
 	  	#score{font-size: 72px;}
 	  	#info{font-size: 18px;}
 	  	#sco{font-size: 20px;}
-		#i{font-size: 12px;}
+		span{font-size: 12px;}
   	</style>
     
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnexit").click(function(){location.href="C_measurement.html";})});
+		$(document).ready(function(){
+			if(window.localStorage["Privacy"].charAt(1) == "1"){document.getElementById("i").innerHTML = I[0];}
+			else{document.getElementById("i").innerHTML = I[1];}
+		});
+		
+		var I = ["會開放予專業諮商師追蹤及提供協助。","不開放予諮商師追蹤。"];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -29,7 +35,6 @@
 				},false);
 				UTBresult();
 			},false);
-			
 		}
     	
 		function UTBresult()
@@ -83,7 +88,7 @@
 					<td><font id="info"></font></td>
 				</tr>
 				<tr>
-					<td><snap id="i">您的檢測相關資料將會開放予專業諮商師追蹤及提供協助。<br/>如欲調整相關設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">隱私設定</a>。</snap></td>
+					<td><span>您的檢測相關資料將<span id="i"></span><br/>如欲調整相關設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">隱私設定</a>。</span></td>
 				</tr>
 				<tr>
 					<td><input type="button" id="btnexit" value="完成"></td>
