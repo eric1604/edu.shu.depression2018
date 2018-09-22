@@ -14,12 +14,6 @@
 		#btnlogout{right: 10px; top: 10px;}
 		#showname{vertical-align: super;}
 		#pageone{position: fixed;}
-		#image{
-		   position: fixed;
-           bottom: 90px;
-           left: 20px;
-		   width: 220px;
-		}
 		table{padding-top: 3%;}
 		#lbl{
 		   font-size: 15px;
@@ -114,7 +108,7 @@
 	        <h1><img style="padding-top: 2px" src="../img/title01.webp" width="100%"></h1>
             <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
-			<span id="notify">您有<span id="noticount"></span>則使用者訊息&nbsp;&nbsp;<a href="">查看</a></span>
+			<span id="notify">您有<span id="noticount"></span>則使用者訊息&nbsp;&nbsp;<a onClick="javascript: location.href =''">查看</a></span>
 		 </div>
 
         <div data-role="content" >
@@ -122,7 +116,7 @@
 				<tr>
 					<td width="20%"><img width="100%" id="userimage" src="../img/member.webp"></td>
 					<td width="40%" style="padding-left: 10px">
-						<span id="lbl">目前使用者資料</span><br/>
+						<span id="lbl">諮商對象</span><br/>
 						<select id="USERNOW">
 							<option>Eric</option>
 						</select>

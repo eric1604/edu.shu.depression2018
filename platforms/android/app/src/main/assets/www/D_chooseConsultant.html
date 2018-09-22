@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>選擇諮商師</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/all.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+    <style type="text/css">
+		#lbl{
+		   font-size: 15px;
+		   background-color:#C3E056;
+		   padding: 2px;
+	    }
+    </style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_privacy.html";})});
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="D_privacy.html";
+				},false);
+			},false);
+		}
+		
+		/*function getconsultants()
+        {
+			var setting = {ID: window.localStorage["ID"],PRIVACY: set};
+			var data = JSON.stringify(setting);
+			     
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/Privacy",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var name = (JSON.parse(check)).d;
+					if(name == set){window.localStorage["Privacy"] = set;}
+					else
+					{
+						document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線錯誤 !',
+                                function(){location.reload();},
+                                '錯誤',
+                                '確定'
+                            );
+			            },false);
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                }
+            });
+        }*/
+	</script>
+
+</head>
+<body onLoad="backbtn()">
+    <div data-role="page" id="pageone">
+        <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 4px" src="img/memberchangtitlle.webp" width="100%"></h1>
+			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+        </div>
+        
+        <div data-role="content">
+			<div data-role="collapsible-set">
+			    <div data-role="collapsible">
+					<h4>黃信飛</h4>
+			    	<table align="center" width="90%">
+				        <tr>
+				        	<td width="17%"><img width="100%" id="cstimage" src="img/member.webp"></td>
+				        	<td width="40%" style="padding-left: 10px">
+				        		<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">鄭恩地</strong><br/>
+				        	</td>
+				        </tr>
+		            </table>
+			    </div>
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+
