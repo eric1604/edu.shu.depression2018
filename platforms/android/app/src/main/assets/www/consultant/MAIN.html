@@ -14,19 +14,19 @@
 		#btnlogout{right: 10px; top: 10px;}
 		#showname{vertical-align: super;}
 		#pageone{position: fixed;}
-		#partner{
-		   position: fixed;
-           bottom: -35px;
-           right: -25px;
-           width: 210px;
-	    }
 		#image{
 		   position: fixed;
            bottom: 90px;
            left: 20px;
 		   width: 220px;
 		}
-		table{padding-top: 15%;}
+		table{padding-top: 3%;}
+		#lbl{
+		   font-size: 15px;
+		   background-color:#C3E056;
+		   padding: 2px;
+	    }
+		#notify{font-size: 15px;}
 	</style>
 
     <script>
@@ -103,27 +103,38 @@
         function next()
 		{
 	       id = (id + 1) % 6;
-	       document.getElementById("image").src = "../img/" + id + ".png";
+	       document.getElementById("image").src = "../img/" + id + ".webp";
         }
     </script>
 </head>
 
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
-         <div data-role="header" data-theme="a" data-position="fixed" data-tap-toggle="false" style=" font-size: 20px; width:100%; margin: auto; font-weight: bolder">
-	        <h1><img style="padding-top: 2px" src="../img/title01.png" width="100%"></h1>
-            <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.png"><font id="showname"></font>&nbsp;</a>
+         <div data-role="header" data-theme="a" data-position="fixed" data-tap-toggle="false" style=" font-size: 20px; width:100%; margin: auto; font-weight: bolder; text-align: center">
+	        <h1><img style="padding-top: 2px" src="../img/title01.webp" width="100%"></h1>
+            <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
+			<span id="notify">您有<span id="noticount"></span>則使用者訊息&nbsp;&nbsp;<a href="">查看</a></span>
 		 </div>
 
         <div data-role="content" >
+		   <table align="center" width="90%">
+				<tr>
+					<td width="20%"><img width="100%" id="userimage" src="../img/member.webp"></td>
+					<td width="40%" style="padding-left: 10px">
+						<span id="lbl">目前使用者資料</span><br/>
+						<select id="USERNOW">
+							<option>Eric</option>
+						</select>
+					</td>
+				</tr>
+		   </table>
            <table align="center" width="90%" border="0">
-           	<tbody align="center" valign="middle" style="height: auto">
-           		<tr><td width="48%"><button onClick="javascript: location.href ='C_MEASUREMENT.html'"><img src="../img/hert.png"><br/>心靈觀測</button></td></tr>
-           		<tr><td><button onClick="javascript: location.href = 'B_DIARY.html'"><img src="../img/diary.png"><br/>日記小築</button></td></tr>
-           		<tr><td><button onClick="javascript: location.href = 'E_SLEEP.html'"><img src="../img/sleep.png"><br/>睡眠救星</button></td></tr>
-			</tbody></table>
-          
-      </div></div>
+           	   <tr><td><button onClick="javascript: location.href ='C_MEASUREMENT.html'"><img src="../img/hert.webp">檢測數據</button></td></tr>
+           	   <tr><td><button onClick="javascript: location.href = 'B_DIARY.html'"><img src="../img/diary.webp">&nbsp;&nbsp;&nbsp;&nbsp;日記查閱</button></td></tr>
+           	   <tr><td><button onClick="javascript: location.href = 'E_SLEEP.html'"><img src="../img/sleep.webp">&nbsp;睡眠紀錄</button></td></tr>
+		   </table>
+      </div>
+	</div>
 	</body>
 </html>

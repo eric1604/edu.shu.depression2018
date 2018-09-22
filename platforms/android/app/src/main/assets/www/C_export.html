@@ -39,13 +39,10 @@
 		{
 			var dataBSRS5 = DATA[0];
 			var dataUTB = DATA[1];
-			console.log(DATA[0]);
-			console.log(DATA[1]);
 			
 			var labelarr = ["心情檢測","憂鬱測量"];
 			var dataarr = [dataBSRS5,dataUTB];
 			var colorarr = ["#FF0000","#0062E3"];
-			var yaxisarr = [1,2];
 			
 			var dataset = [];
 			   
@@ -64,7 +61,7 @@
                    tickSize: [3, "day"],
                    tickLength: 5
                 },
-				yaxes: [{},{position: "right"}]
+				yaxis: {tickDecimals: 0}
             };
 			
 			$(document).find("input[type='checkbox']").each(function(){
@@ -76,8 +73,7 @@
                         {
                             label: labelarr[position],
                             data: dataarr[position],
-							color: colorarr[position],
-							yaxis: yaxisarr[position]
+							color: colorarr[position]
                         }
                     );   
                 }
@@ -123,6 +119,7 @@
 						if(DATA.length == 0){
 							document.addEventListener("deviceready",function(){
 								SpinnerPlugin.activityStop();
+								draw();
 					            navigator.notification.alert(
                                      '所選區間沒有發現任何檢測數據。',
                                      null,
@@ -149,9 +146,9 @@
 <body>
     <div id="pageone" data-role="page" data-theme="a">
             <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <h1><img style="padding-top: 4px" src="./img/findtitle.png" width="100%"></h1>
-				<a id="btnprev" style="top:12px" data-role="button" ><img src="./img/up.png" border="0"></a>
-                <a id="btnhome" style="top:10px" data-role="button" ><img src="./img/home.png" border="0"></a>
+                <h1><img style="padding-top: 4px" src="./img/findtitle.webp" width="100%"></h1>
+				<a id="btnprev" style="top:12px" data-role="button" ><img src="./img/up.webp" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="./img/home.webp" border="0"></a>
             </div>
 
             <div align="center" data-role="content" >
@@ -179,10 +176,10 @@
             <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="./img/hert.png"><br>測量</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="./img/consult.png"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="./img/diary.png"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="./img/sleep.png"><br>睡眠</a></li>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="./img/hert.webp"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="./img/consult.webp"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="./img/diary.webp"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="./img/sleep.webp"><br>睡眠</a></li>
             </ul>
             </div>
         </div>

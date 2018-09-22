@@ -104,7 +104,7 @@
         function next()
 		{
 	       id = (id + 1) % 6;
-	       document.getElementById("image").src = "./img/" + id + ".png";
+	       document.getElementById("image").src = "./img/" + id + ".webp";
         }
     </script>
 </head>
@@ -112,8 +112,8 @@
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
          <div data-role="header" data-theme="a" data-position="fixed" data-tap-toggle="false" style=" font-size: 20px; width:100%; margin: auto; font-weight: bolder">
-	        <h1><img style="padding-top: 2px" src="img/title01.png" width="100%"></h1>
-            <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="img/member.png"><font id="showname"></font>&nbsp;</a>
+	        <h1><img style="padding-top: 2px" src="img/title01.webp" width="100%"></h1>
+            <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
 		 </div>
 
@@ -121,19 +121,19 @@
            <table align="center" width="90%" border="0">
            	<tbody align="center" valign="middle" style="height: auto">
            		<tr>
-           			<td width="48%"><button onClick="javascript: location.href ='C_measurement.html'"><img src="img/hert.png"><br>心靈觀測</button></td>
+           			<td width="48%"><button onClick="javascript: location.href ='C_measurement.html'"><img src="img/hert.webp"><br>心靈觀測</button></td>
            			<td width="4%"></td>
-           			<td><button onClick="javascript: location.href = 'A_pipeline.html'"><img src="img/consult.png"><br>諮詢幫手</button></td>
+           			<td><button onClick="javascript: location.href = 'A_pipeline.html'"><img src="img/consult.webp"><br>諮詢幫手</button></td>
            		</tr>
            		<tr>
-           			<td><button onClick="javascript: location.href = 'B_diary.html'"><img src="img/diary.png"><br>日記小築</button></td>
+           			<td><button onClick="javascript: location.href = 'B_diary.html'"><img src="img/diary.webp"><br>日記小築</button></td>
            			<td></td>
-           			<td><button onClick="javascript: location.href = 'E_sleep.html'"><img src="img/sleep.png"><br>睡眠救星</button></td>
+           			<td><button onClick="javascript: location.href = 'E_sleep.html'"><img src="img/sleep.webp"><br>睡眠救星</button></td>
            		</tr></tbody></table>
                 
           <table>
               <tr>
-                <td><img src="img/1.png" id="image"/></td>
+                <td><img src="img/1.webp" id="image"/></td>
                 <td><img onClick="next()" src="" id="partner"></td>
               </tr>
           </table>
