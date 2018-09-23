@@ -44,6 +44,17 @@
 		}
 		
 		function loadinfo(){
+			if(window.localStorage["cName"] == null)
+			{
+				document.addEventListener("deviceready",function(){
+                     navigator.notification.alert(
+                          '為了使您的諮商對象更了解您 \n請先填寫一些資料 !',
+                          function(){location.href = "./D_PRIVACY.html";},
+                          '歡迎使用，諮商師 !',
+                          '確定'
+                     );
+			    },false);
+			}
 			if(window.localStorage["Name"] != null)
 			{
 				document.getElementById("showname").innerHTML = " " + window.localStorage["Name"];
@@ -108,7 +119,7 @@
 	        <h1><img style="padding-top: 2px" src="../img/title01.webp" width="100%"></h1>
             <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
-			<span id="notify">您有<span id="noticount"></span>則使用者訊息&nbsp;&nbsp;<a onClick="javascript: location.href =''">查看</a></span>
+			<span id="notify">您有<span id="noticount"></span>則諮商訊息&nbsp;&nbsp;<a onClick="javascript: location.href =''">查看</a></span>
 		 </div>
 
         <div data-role="content" >

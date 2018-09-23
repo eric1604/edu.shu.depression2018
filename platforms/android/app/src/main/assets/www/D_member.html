@@ -50,7 +50,7 @@
 			    document.getElementById("usermode").innerHTML = " " + window.localStorage["Mode"];
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
 				document.querySelectorAll("span")[1].style.display = "none";
-				document.querySelectorAll("li")[1].style.display = "none";
+				document.querySelectorAll("a")[3].setAttribute("onClick","javascript: location.href = './consultant/D_PRIVACY.html'");
 				document.querySelectorAll("li")[3].style.display = "none";
 				document.querySelectorAll("li")[6].style.display = "none";
 				document.querySelectorAll("li")[5].style.width = document.querySelectorAll("li")[8].style.width = "33%";

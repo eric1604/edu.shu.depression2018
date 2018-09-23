@@ -4,13 +4,13 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
     <title>更改資料</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
-    <link href="./css/all.css" rel="stylesheet" type="text/css">
+    <link href="../css/two.css" rel="stylesheet" type="text/css">
+    <link href="../css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <link href="./node_modules/cropper/dist/cropper.css" rel="stylesheet">
-    <script src="./node_modules/cropper/dist/cropper.js"></script>
-	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <link href="../node_modules/cropper/dist/cropper.css" rel="stylesheet">
+    <script src="../node_modules/cropper/dist/cropper.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
 
     <style type="text/css">
 	  #info{
@@ -23,66 +23,32 @@
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){
-		    if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
-		       else{location.href="main.html";}
-	    })});
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="../D_member.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
 		$(document).ready(function(){$("#btnchange").click(update)});
-		$(document).ready(function(){$("#btnchoose").click(function(){document.getElementById("inputimg").click();})});
 		$(document).ready(function(){
-			if(window.localStorage["Mode"] == "諮商師"){$("#petlbl").css("display","none");}
+			if(window.localStorage["cName"] == null)
+			{
+				$("#info").css("display","none");
+				document.querySelectorAll("div")[1].style.fontSize = "22px";
+				document.querySelectorAll("img")[0].style.paddingTop = "4px";
+				$("#btnchange").attr("value","送出").button("refresh");
+			}
 		});
-		
-		var image;
-		var imagebase64 = "";
-		var noimg = 0;
-		var delimg = document.querySelector("input[id=delimg]");
 
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
-					location.href="D_member.html";
+					location.href="../D_member.html";
 				},false);
 			},false);
-			$("#inputimg").hide();
 		}
-		
-		function getimage()
-		{
-			noimg = 2;
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("圖片載入中...");},false);
-			$(".imglbl").css("display","none");
-			document.querySelector("label").style.display = "none";
-            var preview = document.getElementById("preview");
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-
-            reader.addEventListener("load", function(){
-			  document.getElementById("preview").style.display = "block";
-              preview.src = reader.result;
-			  $("#preview").cropper({
-				  viewMode: 1,
-				  aspectRatio: 1/1,
-				  zoomable: false,
-				  rotatable: false,
-				  crop: function(){document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);}
-			  })
-            }, false);
-			
-            if (file){reader.readAsDataURL(file);}
-        }
 		
 		function update()
         {
-			if(noimg == 2)
-			{
-				noimg = 0;
-				image = $("#preview").cropper("getCroppedCanvas");
-			    imagebase64 = image.toDataURL('image/webp');
-			}
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			window.localStorage["cName"] = "";
+			/*document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			if($("#delimg").prop("checked") && imagebase64 == ""){imagebase64 = "";noimg = 1;}
 			var newName = {ID: window.localStorage["ID"],NAME: $("#NEWNAME").val(),PWD: $("#PWD").val(),PETNAME: $("#petname").val(),IMAGE: imagebase64,noimg: noimg};
 			var data = JSON.stringify(newName);
@@ -125,7 +91,7 @@
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
                 }
-            });
+            });*/
         }
 	</script>
 
@@ -133,36 +99,59 @@
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
         <div style="font-size:10px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-            <h1><img style="padding-top: 12px" src="img/memberchangtitlle.webp" width="100%"></h1>
-			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
-            <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
+            <h1><img style="padding-top: 12px" src="../img/memberchangtitlle.webp" width="100%"></h1>
+			<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
+            <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
 			<span id="info">&nbsp;不需更改的項目請留白&nbsp;</span>
         </div>
         
         <div align="center" data-role="content">
         <table width="90%" align="center" border="0">
         	<tbody align="center" valign="middle" style="height: auto">
-        		<tr>
-        			<td width="20%" class="label">暱稱&nbsp;</td>
-        			<td colspan="2"><input type="text" id="NEWNAME"/></td>
-        		</tr>
-        		<tr>
-                   <td class="label">密碼&nbsp;</td>
-                   <td colspan="2"><input type="password" id="PWD"/></td>
-                </tr>
 				<tr id="petlbl">
-                   <td class="label">夥伴&nbsp;<br/>名字&nbsp;</td>
-                   <td colspan="2"><input type="text" id="petname"/></td>
+                   <td class="label">居住地區&nbsp;</td>
+				   <td colspan="2">
+					   <select id="CCITY"/>
+					       <option>雙北地區</option>
+					       <option>基隆</option>
+					       <option>桃園</option>
+					       <option>新竹</option>
+					       <option>苗栗</option>
+					       <option>台中</option>
+					       <option>彰化</option>
+					       <option>南投</option>
+					       <option>雲林</option>
+					       <option>嘉義</option>
+					       <option>台南</option>
+					       <option>高雄</option>
+					       <option>屏東</option>
+					       <option>宜蘭</option>
+					       <option>花蓮</option>
+					       <option>台東</option>
+					       <option>澎湖</option>
+					       <option>金門</option>
+					       <option>馬祖</option>
+					       <option>綠島</option>
+					       <option>蘭嶼</option>
+			            </select>
+			       </td>
                 </tr>
-                <tr>
-                   <td class="label">照片&nbsp;</td>
-                   <td class="imglbl" align="left" width="60%"><input type="button" id="btnchoose" value="選擇照片"></td>
-				   <td class="imglbl" width="20%"><input type="checkbox" id="delimg"><label style="width: 16px" for="delimg">刪</label></td>
-				   <td colspan="2"><img id="preview" src="" width="100%" alt="(圖片預覽)"></td>
+        		<tr>
+        			<td width="25%" class="label">真實姓名&nbsp;</td>
+        			<td colspan="2"><input type="text" id="CNAME"/></td>
+        		</tr>
+				<tr id="petlbl">
+                   <td class="label">專長取向&nbsp;</td>
+                   <td colspan="2"><input type="text" id="CEXPERTISE"/></td>
+                </tr>
+        		<tr>
+                   <td class="label">相關經歷&nbsp;</td>
+                   <td colspan="2"><textarea id="CHISTORY"></textarea></td>
                 </tr>
 				<tr>
-        			<td colspan="3"><input type="file" id="inputimg" onchange="getimage()" accept="image/*"/></td>
-        		</tr>
+                   <td class="label">個性小語&nbsp;</td>
+                   <td colspan="2"><textarea id="CMESSAGE"></textarea></td>
+                </tr>
         		<tr>
         			<td colspan="3"><input id="btnchange" type="button" value="更改" /></td>
         		</tr>
@@ -174,10 +163,10 @@
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>測量</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="../img/consult.webp"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
             </ul>
             </div>
         </div>

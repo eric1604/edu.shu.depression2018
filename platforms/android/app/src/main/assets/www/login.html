@@ -11,7 +11,7 @@
     
     <style type="text/css">
 	  #pageone{position: fixed;}
-	  table{width: 90%}
+	  table{width: 100%}
 	  *{
         margin: 0;
         padding: 0;
@@ -52,7 +52,7 @@
         line-height: 28px;
       }
       article{
-        width:80%;
+        width:90%;
         height:640px;
         margin:0px auto;
       }
@@ -156,22 +156,20 @@
         </div>
 
 
-        <div align="center" data-role="content" >
+        <div align="center" >
           <br/>
             <table align="center">
-                  <tbody align="center" valign="middle" style="height: auto">
-                   <tr>
-                      <td class="label">帳號&nbsp;&nbsp;</td>
-                      <td><input id="ID" onkeyup="value=value.replace(/[\W]/g,'')" type="text"/></td>
-                   </tr>
-                   <tr>
-                      <td class="label">密碼&nbsp;&nbsp;</td>
-                      <td><input id="PWD" type="password"/></td>
-                   </tr>
-                   <tr>
-                	    <td colspan="2"><button type="button" id="btnlogin">登入</button></td>
-                   </tr>
-                  </tbody>
+                <tr>
+                   <td width="20%" class="label">帳號&nbsp;&nbsp;</td>
+                   <td><input id="ID" onkeyup="value=value.replace(/[\W]/g,'')" type="text"/></td>
+                </tr>
+                <tr>
+                   <td class="label">密碼&nbsp;&nbsp;</td>
+                   <td><input id="PWD" type="password"/></td>
+                </tr>
+                <tr>
+                   <td colspan="2"><button type="button" id="btnlogin">登入</button></td>
+                </tr>
             </table>
 			
 			<br/>
@@ -179,8 +177,8 @@
 			<table align="center" width="60%">
                   <tbody align="center" valign="middle" style="height: auto">
                    <tr>
-                    <td width="40%" class="label">沒有帳號嗎 ?</td>
-                    <td><button type="button" id="btnsignup">註冊新帳號</button></td>
+                    <td width="50%" class="label">沒有帳號 ?</td>
+                    <td><button type="button" id="btnsignup">註冊</button></td>
                    </tr>
                   </tbody>
             </table>
@@ -195,5 +193,6 @@
         </tbody>
         </table>
         </div>
+	</article>
 </body>
 </html>

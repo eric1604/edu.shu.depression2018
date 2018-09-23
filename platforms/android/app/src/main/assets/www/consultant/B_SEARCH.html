@@ -8,6 +8,7 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+	
   <style type="text/css">
 	  #diary{border-style: solid;height: 200px;}
 	  #content{vertical-align: middle;}
@@ -23,8 +24,8 @@
   </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="B_diary.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="B_DIARY.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
 		$(document).ready(function(){$("#btnsearch").click(searchdiary)});
 		$(document).ready(function(){$("#btndelete").click(deletediary)});
 		$(document).ready(function(){$("#prevdiary").click(prevdiary)});
@@ -37,7 +38,7 @@
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
-					location.href="B_diary.html";
+					location.href="B_DIARY.html";
 				},false);
 			},false);
 		}
