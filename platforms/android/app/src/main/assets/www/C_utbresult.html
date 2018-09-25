@@ -39,6 +39,8 @@
     	
 		function UTBresult()
 		{
+			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
+			
 			document.getElementById("score").innerHTML = window.localStorage["UTBscore"];
 			var date = new Date();
 			var month = date.getMonth()+1;
@@ -87,7 +89,7 @@
 				<tr height="40%">
 					<td><font id="info"></font></td>
 				</tr>
-				<tr>
+				<tr style="visibility: hidden">
 					<td><span>您的檢測相關資料將<span id="i"></span><br/>如欲調整相關設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">隱私設定</a>。</span></td>
 				</tr>
 				<tr>

@@ -67,92 +67,101 @@
 		
 		function register()
         {
-			if(noimg == 0)
+			if($("#MODE").val() == "" || $("#ID").val() == "" || $("#PWD").val() == "" || $("#NAME").val() == "")
 			{
-				image = $("#preview").cropper("getCroppedCanvas");
-			    imagebase64 = image.toDataURL('image/webp');
-			}
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			var userData = {MODE: $("#MODE").val(),ID: $("#ID").val(),PWD: $("#PWD").val(),NAME: $("#NAME").val(),IMAGE: imagebase64};
-			var data = JSON.stringify(userData);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/Register",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "ok"){
-						window.localStorage["ID"] = $("#ID").val();
-						window.localStorage["Mode"] = $("#MODE").val();
-						window.localStorage["Name"] = $("#NAME").val();
-						if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
-						if($("#MODE").val() == "2")
-						{
-							document.addEventListener("deviceready",function(){
-							    location.href="./consultant/MAIN.html";
-							    SpinnerPlugin.activityStop();
-							    navigator.notification.alert(
-                                    '註冊完成，歡迎使用 !',
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '部分的資料尚未填寫 !',
+                        null,
+                        '似乎少了些什麼',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				if(noimg == 0)
+			    {
+			    	image = $("#preview").cropper("getCroppedCanvas");
+			        imagebase64 = image.toDataURL('image/webp');
+			    }
+			    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			    var userData = {MODE: $("#MODE").val(),ID: $("#ID").val(),PWD: $("#PWD").val(),NAME: $("#NAME").val(),IMAGE: imagebase64};
+			    var data = JSON.stringify(userData);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/Register",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+						var MODE = ["一般使用者","諮商師"];
+			    		var message = (JSON.parse(check)).d;
+			    		if(message == "ok"){
+			    			window.localStorage["ID"] = $("#ID").val();
+			    			window.localStorage["Mode"] = MODE[parseInt($("#MODE").val())-1];
+			    			window.localStorage["Name"] = $("#NAME").val();
+							window.localStorage["first"] = "true";
+			    			if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
+			    			if($("#MODE").val() == "2")
+			    			{
+			    				document.addEventListener("deviceready",function(){
+			    				    location.href="./consultant/MAIN.html";
+			    				    SpinnerPlugin.activityStop();
+			                    },false);
+			    			}else
+			    			{
+			    				location.href = "signUp2.html";
+			    			    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    			}
+			    		}else if(message == "帳號已存在或者該ID已被使用。 \n已註冊者請直接登入。"){
+			    			document.addEventListener("deviceready",function(){
+			    				location.href="login.html";
+			    				SpinnerPlugin.activityStop();
+			    				navigator.notification.alert(
+                                    message,
                                     null,
-                                    '與你相鬱好幸運',
+                                    '我們見過面了',
                                     '確定'
                                 );
 			                },false);
-						}else
-						{
-							location.href = "signUp2.html";
-						    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						}
-					}else if(message == "帳號已存在或者該ID已被使用。 \n已註冊者請直接登入。"){
-						document.addEventListener("deviceready",function(){
-							location.href="login.html";
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                message,
-                                null,
-                                '我們見過面了',
-                                '確定'
-                            );
-			            },false);
-					}else if(message == "deleted"){
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-							navigator.notification.confirm(
-                                '發現已刪除之舊帳號，是否回復 ?',
-                                function(btnIndex){
-									if(btnIndex == 1){
-										recovery();
-									}else if(btnIndex == 2){
-										location.href="signUp.html";
-									}},
-                                '隨時能回心轉意',
-                                ['回復帳號','取消']
-                            );
-			            },false);
-					}else if(message == "資料不完整，請檢查。"){
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                message,
-                                null,
-                                '好像少了些什麼',
-                                '好'
-                            );
-			            },false);
-					}else{
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
-                }
-            });
+			    		}else if(message == "deleted"){
+			    			document.addEventListener("deviceready",function(){
+			    				SpinnerPlugin.activityStop();
+			    				navigator.notification.confirm(
+                                    '發現已刪除之舊帳號，是否回復 ?',
+                                    function(btnIndex){
+			    						if(btnIndex == 1){
+			    							recovery();
+			    						}else if(btnIndex == 2){
+			    							location.href="signUp.html";
+			    						}},
+                                    '隨時能回心轉意',
+                                    ['回復帳號','取消']
+                                );
+			                },false);
+			    		}else if(message == "資料不完整，請檢查。"){
+			    			document.addEventListener("deviceready",function(){
+			    				SpinnerPlugin.activityStop();
+			    				navigator.notification.alert(
+                                    message,
+                                    null,
+                                    '好像少了些什麼',
+                                    '好'
+                                );
+			                },false);
+			    		}else{
+			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    			alert(message);
+			    		}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                    }
+                });
+			    }
         }
 		
 		function recovery()

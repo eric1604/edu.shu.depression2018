@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width; initial-scale=1; charset=utf-8">
     <title>首頁</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="./css/two.css" rel="stylesheet" type="text/css">
@@ -56,6 +56,7 @@
 			}else
 			{
 				$("#btnlogout").hide();
+				window.localStorage["ID"] = "";
 				document.getElementById("showname").innerHTML = " (未登入)";
 				document.getElementById("image").src = "";
 			}
@@ -78,6 +79,7 @@
 					var message = (JSON.parse(check)).d;
 					if(message == "ok"){
 						window.localStorage.clear();
+						window.localStorage["ID"] = "";
 			            document.addEventListener("deviceready",function(){
 							location.reload();
 							SpinnerPlugin.activityStop();

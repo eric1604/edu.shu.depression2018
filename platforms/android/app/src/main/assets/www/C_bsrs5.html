@@ -39,7 +39,7 @@
 			{
 				document.addEventListener("deviceready",function(){
 				    navigator.notification.confirm(
-				    	'您尚未登入，測驗之結果將無法保存 ! \n確定要開始測驗嗎 ?',
+				    	'您尚未登入，測驗結果將無法保存 ! \n確定要開始測驗嗎 ?',
 				    	function(btnIndex){
 				    		if(btnIndex == 1){location.href="login.html";}
 							else if(btnIndex == 2){begin();}

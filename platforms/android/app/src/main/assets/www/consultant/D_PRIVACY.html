@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
-    <title>更改資料</title>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width; initial-scale=1; charset=utf-8">
+    <title>諮商設定</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="../css/two.css" rel="stylesheet" type="text/css">
     <link href="../css/all.css" rel="stylesheet" type="text/css">
@@ -28,13 +28,14 @@
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
 		$(document).ready(function(){$("#btnchange").click(update)});
 		$(document).ready(function(){
-			if(window.localStorage["cName"] == null)
+			if(window.localStorage["first"] == "true")
 			{
 				$("#info").css("display","none");
 				document.querySelectorAll("div")[1].style.fontSize = "22px";
 				document.querySelectorAll("img")[0].style.paddingTop = "4px";
 				$("#btnchange").attr("value","送出").button("refresh");
 			}
+			getlocation();
 		});
 
 		function backbtn(){
@@ -45,53 +46,72 @@
 			},false);
 		}
 		
+		function getlocation(){
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetLocation",
+				dataType: "xml",
+				type: "GET",
+				async: false,
+				success: function(check){
+					var locations = check.firstChild.getElementsByTagName("ArrayOfString");
+					for(i=0;i<locations.length;i++){
+						$("<option/>",{
+							"value": locations[i].getElementsByTagName("string")[0].innerHTML,
+							"text": locations[i].getElementsByTagName("string")[1].innerHTML
+						}).appendTo("#CCITY");
+					}
+				},
+				error: function(){
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+				}
+			});
+		}
+		
 		function update()
         {
-			window.localStorage["cName"] = "";
-			/*document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			if($("#delimg").prop("checked") && imagebase64 == ""){imagebase64 = "";noimg = 1;}
-			var newName = {ID: window.localStorage["ID"],NAME: $("#NEWNAME").val(),PWD: $("#PWD").val(),PETNAME: $("#petname").val(),IMAGE: imagebase64,noimg: noimg};
-			var data = JSON.stringify(newName);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateData",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					if($("#NEWNAME").val() != ""){window.localStorage["Name"] = $("#NEWNAME").val();}
-					if($("#petname").val() != ""){window.localStorage["Petname"] = $("#petname").val();}
-					if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
-					else if(noimg == 1){window.localStorage["Image"] = "img/member.webp";}
-					var name = (JSON.parse(check)).d;
-					document.addEventListener("deviceready",function(){
-						    SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                name,
-                                function(){location.reload();},
+			if($("#CCITY").val() == "" || $("#CNAME").val() == "" || $("#CEXPERTISE").val() == "" || $("#CEXP").val() == "" || $("#CMESSAGE").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '部分的資料尚未填寫 !',
+                        null,
+                        '似乎少了些什麼',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("儲存中...");},false);
+			    var dt = {ID: window.localStorage["ID"], LOCATION: $("#CCITY").val(), REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};
+			    var data = JSON.stringify(dt);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateConsultant",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+			    		var cname = (JSON.parse(check)).d;
+						window.localStorage["first"] = "";
+			    		location.reload();
+			    		document.addEventListener("deviceready",function(){
+			    			SpinnerPlugin.activityStop();
+			                navigator.notification.alert(
+                                '資料已儲存 !',
+                                null,
                                 '更改完成',
                                 '確定'
                             );
 			            },false);
-					if(name == "沒有資料需要更改。"){
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                name,
-                                null,
-                                '一切安好',
-                                '確定'
-                            );
-			            },false);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
-                }
-            });*/
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                    }
+                });
+			}
         }
 	</script>
 
@@ -99,46 +119,26 @@
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
         <div style="font-size:10px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-            <h1><img style="padding-top: 12px" src="../img/memberchangtitlle.webp" width="100%"></h1>
+            <h1><img style="padding-top: 12px" src="../img/consset.webp" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
             <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
 			<span id="info">&nbsp;不需更改的項目請留白&nbsp;</span>
         </div>
         
-        <div align="center" data-role="content">
+        <div class="cot" align="center" data-role="content">
         <table width="90%" align="center" border="0">
         	<tbody align="center" valign="middle" style="height: auto">
 				<tr id="petlbl">
                    <td class="label">居住地區&nbsp;</td>
 				   <td colspan="2">
 					   <select id="CCITY"/>
-					       <option>雙北地區</option>
-					       <option>基隆</option>
-					       <option>桃園</option>
-					       <option>新竹</option>
-					       <option>苗栗</option>
-					       <option>台中</option>
-					       <option>彰化</option>
-					       <option>南投</option>
-					       <option>雲林</option>
-					       <option>嘉義</option>
-					       <option>台南</option>
-					       <option>高雄</option>
-					       <option>屏東</option>
-					       <option>宜蘭</option>
-					       <option>花蓮</option>
-					       <option>台東</option>
-					       <option>澎湖</option>
-					       <option>金門</option>
-					       <option>馬祖</option>
-					       <option>綠島</option>
-					       <option>蘭嶼</option>
-			            </select>
+					       <option selected hidden disabled>請選擇地區</option>
+			           </select>
 			       </td>
                 </tr>
         		<tr>
         			<td width="25%" class="label">真實姓名&nbsp;</td>
-        			<td colspan="2"><input type="text" id="CNAME"/></td>
+        			<td colspan="2"><input class="CNAME" type="text" id="CNAME"/></td>
         		</tr>
 				<tr id="petlbl">
                    <td class="label">專長取向&nbsp;</td>
@@ -146,7 +146,7 @@
                 </tr>
         		<tr>
                    <td class="label">相關經歷&nbsp;</td>
-                   <td colspan="2"><textarea id="CHISTORY"></textarea></td>
+                   <td colspan="2"><textarea id="CEXP"></textarea></td>
                 </tr>
 				<tr>
                    <td class="label">個性小語&nbsp;</td>
@@ -170,9 +170,7 @@
             </ul>
             </div>
         </div>
-
-        </div>
-       
+    </div>
 </body>
 </html>
 

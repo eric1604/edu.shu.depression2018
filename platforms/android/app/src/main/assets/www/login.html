@@ -108,7 +108,8 @@
 						window.localStorage["Pet"] = message[2];
 						window.localStorage["Petname"] = message[3];
 						window.localStorage["Mode"] = message[4];
-						window.localStorage["Privacy"] = message[5];
+						if(message[5] != ""){window.localStorage["CST"] = message[5];}
+						window.localStorage["Privacy"] = message[6];
 						if(test == 1)
 						{
 							location.href="main.html";

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1, charset=utf-8">
     <title>選擇諮商師</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="./css/two.css" rel="stylesheet" type="text/css">
@@ -11,7 +11,7 @@
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
     <style type="text/css">
-		#lbl{
+		.lbl{
 		   font-size: 15px;
 		   background-color:#C3E056;
 		   padding: 2px;
@@ -20,6 +20,7 @@
     
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_privacy.html";})});
+		$(document).ready(getconsultant);
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -29,62 +30,82 @@
 			},false);
 		}
 		
-		/*function getconsultants()
+		function getconsultant()
         {
-			var setting = {ID: window.localStorage["ID"],PRIVACY: set};
-			var data = JSON.stringify(setting);
-			     
 			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/Privacy",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
+                url: "http://192.192.155.108/serv/ServicePool.asmx/GetConsultant",
+                dataType: "xml",
+                type: "GET",
                 async: false,
                 success: function(check){
-					var name = (JSON.parse(check)).d;
-					if(name == set){window.localStorage["Privacy"] = set;}
-					else
+					var consultants = check.firstChild.getElementsByTagName("ArrayOfString");
+					var imgsrc = "img/member.webp";
+					for(i=0;i<consultants.length;i++)
 					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線錯誤 !',
-                                function(){location.reload();},
-                                '錯誤',
-                                '確定'
-                            );
-			            },false);
+						if(consultants[i].getElementsByTagName("string")[1].innerHTML != "")
+						{
+							imgsrc = consultants[i].getElementsByTagName("string")[1].innerHTML;
+						}
+						var newcst = 
+							"<div id='div" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' data-role='collapsible'><h4>" + consultants[i].getElementsByTagName("string")[2].innerHTML + "</h4><table align='center' width='96%'><tr><td style='padding-right: 10px' rowspan='4' width='30%'><img width='100%' class='cstimage' src='" + imgsrc + "'></td><td width='15%'><span class='lbl'>地區</span></td><td><strong class='cstlcn'>" + consultants[i].getElementsByTagName("string")[3].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>專長</span></td><td><strong class='cstept'>" + consultants[i].getElementsByTagName("string")[4].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>經歷</span></td><td><strong class='cstexp'>" + consultants[i].getElementsByTagName("string")[5].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>小語</span></td><td><strong class='cstmsg'>" + consultants[i].getElementsByTagName("string")[6].innerHTML + "</strong></td></tr><tr><td colspan='3'><input id='" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' type='button' onClick='javascript: updatecst(this.id)' value='選擇此諮商師'></td></tr></table></div>";
+						
+						$("#listcst").append(newcst).collapsibleset("refresh");
+						$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).button().button("refresh");
 					}
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
                 }
             });
-        }*/
+        }
+		
+		function updatecst(cstid)
+		{
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
+			var CST = {"ID": window.localStorage["ID"], "CST": cstid};
+			var data = JSON.stringify(CST);
+			
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateCST",
+				contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					if((JSON.parse(check)).d == "ok")
+					{
+						document.addEventListener("deviceready",function(){
+							SpinnerPlugin.activityStop();
+			                navigator.notification.alert(
+                                '您已成功與諮商師連結 !',
+                                function(){location.href="D_privacy.html";},
+                                '搭起橋樑',
+                                '確定'
+                            );
+			            },false);
+						//window.localStorage["CST"] = ;
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+                }
+			});
+		}
 	</script>
 
 </head>
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
         <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-            <h1><img style="padding-top: 4px" src="img/memberchangtitlle.webp" width="100%"></h1>
+            <h1><img style="padding-top: 4px" src="img/selectconstitle.webp" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
         </div>
         
         <div data-role="content">
-			<div data-role="collapsible-set">
-			    <div data-role="collapsible">
-					<h4>黃信飛</h4>
-			    	<table align="center" width="90%">
-				        <tr>
-				        	<td width="17%"><img width="100%" id="cstimage" src="img/member.webp"></td>
-				        	<td width="40%" style="padding-left: 10px">
-				        		<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">鄭恩地</strong><br/>
-				        	</td>
-				        </tr>
-		            </table>
-			    </div>
-            </div>
+			<div id="listcst" data-role="collapsible-set"></div>
 		</div>
     </div>
 </body>

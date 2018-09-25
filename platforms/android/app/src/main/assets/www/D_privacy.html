@@ -31,7 +31,10 @@
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
 		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
-		$(document).ready(function(){$("#choosecst").click(function(){location.href="D_chooseConsultant.html";})});
+		$(document).ready(function(){$("#choosecst").click(function(){
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			location.href="D_chooseConsultant.html";
+		})});
 		$(document).ready(get);
 		
 		var ok = 0;
@@ -46,11 +49,32 @@
 		
 		function get()
 		{
-			$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
-			$("#UTB").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
-			$("#Diary").val(window.localStorage["Privacy"].charAt(2)).flipswitch("refresh");
-			$("#Sleep").val(window.localStorage["Privacy"].charAt(3)).flipswitch("refresh");
-			ok = 1;
+			if(window.localStorage["CST"] == null)
+			{
+				document.addEventListener("deviceready",function(){
+				    navigator.notification.confirm(
+				    	'在這裡有許多經過資料確認、來自台灣各地的熱心諮商師，您可以選擇其中一位，並選擇分享你的相關資料。 \n\n在您的授權下，諮商師們能夠藉由瀏覽您的個人資料紀錄，搭配諮商端的整合數據來更有效率地協助您 ! \n\n如原先即有合作的心理諮商師，也可以邀請他們來使用這個平台哦 ! \n\n讓我們開始吧😃',
+				    	function(btnIndex){
+				    		if(btnIndex == 1)
+							{
+								SpinnerPlugin.activityStart("載入中...");
+								location.href="D_chooseConsultant.html";
+							}
+							else{location.href="D_member.html";}
+				    	},
+				    	'歡迎使用諮商功能 !',
+				    	['選擇一位諮商師','等一下']
+				    );
+			    },false);
+			}else
+			{
+				document.getElementsByClassName("optContainer")[0].style.visibility = "visible";
+				$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
+			    $("#UTB").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
+			    $("#Diary").val(window.localStorage["Privacy"].charAt(2)).flipswitch("refresh");
+			    $("#Sleep").val(window.localStorage["Privacy"].charAt(3)).flipswitch("refresh");
+			    ok = 1;
+			}
 		}
 		
 		function update()
@@ -95,17 +119,17 @@
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
         <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-            <h1><img style="padding-top: 4px" src="img/memberchangtitlle.webp" width="100%"></h1>
+            <h1><img style="padding-top: 4px" src="img/consset.webp" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
             <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
         </div>
         
-        <div class="optContainer" data-role="content">
+        <div style="visibility: hidden" class="optContainer" data-role="content">
 			<table align="center" width="90%">
 				<tr>
 					<td width="18%"><img width="100%" id="cstimage" src="img/member.webp"></td>
 					<td width="40%" style="padding-left: 10px">
-						<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">鄭恩地</strong><br/>
+						<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">無</strong><br/>
 						<input id="choosecst" value="更換諮商師" type="button">
 					</td>
 				</tr>
