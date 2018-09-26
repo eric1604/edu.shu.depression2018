@@ -28,7 +28,7 @@
 		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
 		$(document).ready(function(){$("#btnchange").click(update)});
 		$(document).ready(function(){
-			if(window.localStorage["first"] == "true")
+			if(window.localStorage["First"] == "true")
 			{
 				$("#info").css("display","none");
 				document.querySelectorAll("div")[1].style.fontSize = "22px";
@@ -69,7 +69,7 @@
 		
 		function update()
         {
-			if($("#CCITY").val() == "" || $("#CNAME").val() == "" || $("#CEXPERTISE").val() == "" || $("#CEXP").val() == "" || $("#CMESSAGE").val() == "")
+			if(($("#CCITY").val() == "" || $("#CNAME").val() == "" || $("#CEXPERTISE").val() == "" || $("#CEXP").val() == "" || $("#CMESSAGE").val() == "") && window.localStorage["First"] == "true")
 			{
 				document.addEventListener("deviceready",function(){
 			        navigator.notification.alert(
@@ -82,7 +82,7 @@
 			}else
 			{
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("儲存中...");},false);
-			    var dt = {ID: window.localStorage["ID"], LOCATION: $("#CCITY").val(), REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};
+			    var dt = {FIRST: window.localStorage["First"], ID: window.localStorage["ID"], LOCATION: $("#CCITY").val(), REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};
 			    var data = JSON.stringify(dt);
 			     
 			    $.ajax({
@@ -94,12 +94,19 @@
                     async: false,
                     success: function(check){
 			    		var cname = (JSON.parse(check)).d;
-						window.localStorage["first"] = "";
+						var msg;
+						if(cname == $("#CNAME").val())
+						{
+							msg = "相關資料已建立 !";
+							window.localStorage["First"] = "";
+						}else if(cname == "沒有資料需要更改。"){msg = cname;}
+						else{msg = "已成功更改" + cname;}
+						
 			    		location.reload();
 			    		document.addEventListener("deviceready",function(){
 			    			SpinnerPlugin.activityStop();
 			                navigator.notification.alert(
-                                '資料已儲存 !',
+                                msg,
                                 null,
                                 '更改完成',
                                 '確定'

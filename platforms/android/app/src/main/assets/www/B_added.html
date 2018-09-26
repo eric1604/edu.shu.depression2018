@@ -38,6 +38,7 @@
 		
 		function adddiary()
         {
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在儲存日記...");},false);
 			m = "-";
 			var userData = {ID: window.localStorage["ID"],Diary: $("#diarycontent").val(),DiaryDate: showdate};
 			var data = JSON.stringify(userData);
@@ -53,6 +54,7 @@
 					var message = (JSON.parse(check)).d;
 					if(message == "日記已儲存。"){
 						document.addEventListener("deviceready",function(){
+							SpinnerPlugin.activityStop();
 							navigator.notification.alert(
                                 message,
                                 function(){},
@@ -62,10 +64,12 @@
 			            },false);
 						location.reload();
 					}else{
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 						alert(message);
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError);
                 }
             });

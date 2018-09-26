@@ -98,7 +98,11 @@
 					if($("#NEWNAME").val() != ""){window.localStorage["Name"] = $("#NEWNAME").val();}
 					if($("#petname").val() != ""){window.localStorage["Petname"] = $("#petname").val();}
 					if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
-					else if(noimg == 1){window.localStorage["Image"] = "img/member.webp";}
+					else if(noimg == 1)
+					{
+						if(window.localStorage["Mode"] == "諮商師"){window.localStorage["Image"] = "../img/member.webp";}
+						else{window.localStorage["Image"] = "img/member.webp";}
+					}
 					var name = (JSON.parse(check)).d;
 					document.addEventListener("deviceready",function(){
 						    SpinnerPlugin.activityStop();
