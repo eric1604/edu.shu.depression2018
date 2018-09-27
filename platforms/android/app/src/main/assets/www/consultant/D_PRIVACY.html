@@ -62,7 +62,21 @@
 					}
 				},
 				error: function(){
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
 				}
 			});
 		}
@@ -115,7 +129,20 @@
 			    	},
                     error: function(xhr, ajaxOptions, thrownError) {
 			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-			    		alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
                     }
                 });
 			}
@@ -165,18 +192,6 @@
         	</tbody>
         </table>
 		</div>
-        
-       
-        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
-			<div data-role="navbar">
-            <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="../img/consult.webp"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
-            </ul>
-            </div>
-        </div>
     </div>
 </body>
 </html>

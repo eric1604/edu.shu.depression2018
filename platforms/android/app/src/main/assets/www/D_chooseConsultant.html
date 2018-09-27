@@ -42,10 +42,8 @@
 					var imgsrc = "img/member.webp";
 					for(i=0;i<consultants.length;i++)
 					{
-						if(consultants[i].getElementsByTagName("string")[1].innerHTML != "")
-						{
-							imgsrc = consultants[i].getElementsByTagName("string")[1].innerHTML;
-						}
+						if(consultants[i].getElementsByTagName("string")[1].innerHTML != ""){imgsrc = consultants[i].getElementsByTagName("string")[1].innerHTML;}
+						else{imgsrc = "./img/member.webp";}
 						var newcst = 
 							"<div id='div" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' data-role='collapsible'><h4>" + consultants[i].getElementsByTagName("string")[2].innerHTML + "</h4><table align='center' width='96%'><tr><td style='padding-right: 10px' rowspan='4' width='30%'><img width='100%' class='cstimage' src='" + imgsrc + "'></td><td width='15%'><span class='lbl'>地區</span></td><td><strong class='cstlcn'>" + consultants[i].getElementsByTagName("string")[3].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>專長</span></td><td><strong class='cstept'>" + consultants[i].getElementsByTagName("string")[4].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>經歷</span></td><td><strong class='cstexp'>" + consultants[i].getElementsByTagName("string")[5].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>小語</span></td><td><strong class='cstmsg'>" + consultants[i].getElementsByTagName("string")[6].innerHTML + "</strong></td></tr><tr><td colspan='3'><input id='" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' type='button' onClick='javascript: updatecst(this.id)' value='選擇此諮商師'></td></tr></table></div>";
 						
@@ -55,7 +53,22 @@
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
                 }
             });
         }
@@ -76,6 +89,7 @@
                 success: function(check){
 					if((JSON.parse(check)).d == "ok")
 					{
+						window.localStorage["CST"] = cstid;
 						document.addEventListener("deviceready",function(){
 							SpinnerPlugin.activityStop();
 			                navigator.notification.alert(
@@ -85,12 +99,24 @@
                                 '確定'
                             );
 			            },false);
-						window.localStorage["CST"] = cstid;
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
                 }
 			});
 		}

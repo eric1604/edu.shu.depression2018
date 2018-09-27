@@ -36,7 +36,7 @@
 			location.href="D_chooseConsultant.html";
 		})});
 		$(document).ready(get);
-		if(window.localStorage["CST"] != null){$(document).ready(loadcst);}
+		$(document).ready(function(){if(window.localStorage["CST"] != null){loadcst();}});
 		
 		var ok = 0;
 		
@@ -64,11 +64,26 @@
 					if(cst[0] == window.localStorage["CST"])
 					{
 						document.getElementById("cstname").innerHTML = cst[1];
+						if(cst[2] == ""){cst[2] = "./img/member.webp";}
 						document.getElementById("cstimage").src = cst[2];
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
                 }
             });
 		}
@@ -121,20 +136,22 @@
                     success: function(check){
 			    		var name = (JSON.parse(check)).d;
 			    		if(name == set){window.localStorage["Privacy"] = set;}
-			    		else
-			    		{
-			    			document.addEventListener("deviceready",function(){
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
 			                    navigator.notification.alert(
-                                    '伺服器連線錯誤 !',
-                                    function(){location.reload();},
-                                    '錯誤',
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
                                     '確定'
                                 );
 			                },false);
-			    		}
-			    	},
-                    error: function(xhr, ajaxOptions, thrownError) {
-			    		alert(xhr.readyState + " " + ajaxOptions + " " + thrownError + "\\r" + xhr.responseText);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
                     }
                 });
 			}

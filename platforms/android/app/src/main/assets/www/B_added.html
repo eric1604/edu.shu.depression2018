@@ -70,7 +70,20 @@
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					alert(xhr.readyState + " " + ajaxOptions + " " + thrownError);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
                 }
             });
         }
