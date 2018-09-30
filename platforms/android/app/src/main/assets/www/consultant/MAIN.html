@@ -28,6 +28,8 @@
 		$(document).ready(function(){$("#btnmember").click(function(){location.href="../D_member.html";})});
 		$(document).ready(loadinfo);
 		
+		var users;
+		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
@@ -59,12 +61,61 @@
 			{
 				document.getElementById("showname").innerHTML = " " + window.localStorage["Name"];
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
+				getusers();
 			}else
 			{
 				$("#btnlogout").hide();
 				document.getElementById("showname").innerHTML = " (未登入)";
 			}
         }
+		
+		function getusers(){
+			var userData = {ConsultantID: window.localStorage["ID"]};
+			var data = JSON.stringify(userData);
+			
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetUsers",
+				contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					users = (JSON.parse(check)).d;
+					for(i=0;i<users.length;i++)
+					{
+						$("<option/>",{
+							"value": users[i][2],
+							"text": users[i][1]
+						}).appendTo("#ALLUSERS");
+						
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+			});
+		}
+		
+		function changeuser(user){
+			window.localStorage["cUserID"] = users[user.selectedIndex-1][0];
+			window.localStorage["cUserName"] = user.options[user.selectedIndex].text;
+			if(user.value != ""){document.getElementById("userimg").src = user.value;}
+			else{document.getElementById("userimg").src = "../img/member.webp";}
+		}
 		
 		function logout(){
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("登出中...");},false);
@@ -138,11 +189,11 @@
         <div data-role="content" >
 		   <table align="center" width="90%">
 				<tr>
-					<td width="20%"><img width="100%" id="userimage" src="../img/member.webp"></td>
+					<td width="20%"><img width="100%" id="userimg" src="../img/member.webp"></td>
 					<td width="40%" style="padding-left: 10px">
 						<span id="lbl">諮商對象</span><br/>
-						<select id="USERNOW">
-							<option>Eric</option>
+						<select id="ALLUSERS" onChange="changeuser(this)">
+							<option selected hidden disabled>請選擇</option>
 						</select>
 					</td>
 				</tr>

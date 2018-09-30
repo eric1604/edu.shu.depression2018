@@ -8,8 +8,6 @@
     <link href="../css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <link href="../node_modules/cropper/dist/cropper.css" rel="stylesheet">
-    <script src="../node_modules/cropper/dist/cropper.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
 
     <style type="text/css">
@@ -97,6 +95,7 @@
 			{
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("儲存中...");},false);
 			    var dt = {FIRST: window.localStorage["First"], ID: window.localStorage["ID"], LOCATION: $("#CCITY").val(), REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};
+				if($("#CCITY").val() == null){dt = {FIRST: window.localStorage["First"], ID: window.localStorage["ID"], LOCATION: "", REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};}
 			    var data = JSON.stringify(dt);
 			     
 			    $.ajax({
