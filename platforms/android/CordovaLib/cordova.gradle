@@ -149,8 +149,8 @@ def doPromptForPassword(msg) {
                     label(text: msg)
                     def input = passwordField()
                     button(defaultButton: true, text: 'OK', actionPerformed: {
-                        ret = input.password;
-                        dispose();
+                        ret = input.password
+                        dispose()
                     })
                 }
             }

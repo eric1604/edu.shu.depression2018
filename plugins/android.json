@@ -18,6 +18,9 @@
     },
     "cordova-plugin-spinner": {
       "PACKAGE_NAME": "edu.shu.depression2018"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "edu.shu.depression2018"
     }
   },
   "dependent_plugins": {

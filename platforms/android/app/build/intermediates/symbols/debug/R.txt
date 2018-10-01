@@ -48,7 +48,6 @@ int drawable notification_template_icon_bg 0x7f050008
 int drawable notification_template_icon_low_bg 0x7f050009
 int drawable notification_tile_bg 0x7f05000a
 int drawable notify_panel_notification_icon_bg 0x7f05000b
-int drawable screen 0x7f05000c
 int id action0 0x7f060000
 int id action_container 0x7f060001
 int id action_divider 0x7f060002

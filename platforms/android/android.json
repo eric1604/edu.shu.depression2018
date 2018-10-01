@@ -31,6 +31,10 @@
             {
               "xml": "<feature name=\"SpinnerPlugin\"><param name=\"android-package\" value=\"net.justin_credible.cordova.SpinnerPlugin\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -60,6 +64,12 @@
               "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
               "count": 1
             }
+          ],
+          "/*": [
+            {
+              "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+              "count": 1
+            }
           ]
         }
       }
@@ -82,6 +92,9 @@
       "PACKAGE_NAME": "edu.shu.depression2018"
     },
     "cordova-plugin-spinner": {
+      "PACKAGE_NAME": "edu.shu.depression2018"
+    },
+    "cordova-plugin-network-information": {
       "PACKAGE_NAME": "edu.shu.depression2018"
     }
   },
@@ -152,6 +165,23 @@
       "clobbers": [
         "SpinnerPlugin"
       ]
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection",
+        "navigator.network.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -160,6 +190,7 @@
     "cordova-plugin-badge": "0.8.7",
     "cordova-plugin-local-notification": "0.9.0-beta.2",
     "cordova-plugin-dialogs": "2.0.1",
-    "cordova-plugin-spinner": "1.1.0"
+    "cordova-plugin-spinner": "1.1.0",
+    "cordova-plugin-network-information": "2.0.1"
   }
 }

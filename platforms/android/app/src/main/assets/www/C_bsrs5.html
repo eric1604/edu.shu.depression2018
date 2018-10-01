@@ -23,7 +23,20 @@
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnprev").click(function(){location.href="C_measurement.html";})});
 		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
-		$(document).ready(function(){$("#submit_Btn").click(bsrs5begin)});
+		document.addEventListener("online", function(){$(document).ready(function(){$("#submit_Btn").click(bsrs5begin)});}, false);
+		
+		document.addEventListener("offline", function(){
+			document.addEventListener("deviceready",function(){
+				history.back();
+			    navigator.notification.alert(
+                    '伺服器連線失敗，請檢查網路。',
+                    null,
+                    '⚠️ 錯誤',
+                    '確定'
+                );
+			},false);
+		}, false);
+		
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){

@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.google.gms:google-services:3.2.1'
     }
 }
@@ -38,7 +38,7 @@ buildscript {
 // Allow plugins to declare Maven dependencies via build-extras.gradle.
 allprojects {
     repositories {
-        mavenCentral();
+        mavenCentral()
         jcenter()
     }
 }
@@ -165,6 +165,10 @@ android {
     defaultConfig {
         versionCode cdvVersionCode ?: new BigInteger("" + privateHelpers.extractIntFromManifest("versionCode"))
         applicationId privateHelpers.extractStringFromManifest("package")
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionName "1.0"
+        versionCode 1
 
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
@@ -172,7 +176,7 @@ android {
     }
 
     lintOptions {
-      abortOnError false;
+      abortOnError false
     }
 
     compileSdkVersion cdvCompileSdkVersion
@@ -262,14 +266,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // SUB-PROJECT DEPENDENCIES START
-    implementation(project(path: ":CordovaLib"))
+    implementation (project(path: ":CordovaLib"))
     implementation "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
 def promptForReleaseKeyPassword() {
     if (!cdvReleaseSigningPropertiesFile) {
-        return;
+        return
     }
     if ('__unset'.equals(android.signingConfigs.release.storePassword)) {
         android.signingConfigs.release.storePassword = privateHelpers.promptForPassword('Enter key store password: ')

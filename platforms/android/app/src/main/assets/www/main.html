@@ -33,6 +33,8 @@
 		$(document).ready(function(){$("#btnmember").click(function(){location.href="D_member.html";})});
 		$(document).ready(loadinfo);
 		
+		var pets = ["dog","cat","rabbit","giraffe"];
+		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
@@ -53,14 +55,15 @@
 			{
 				document.getElementById("showname").innerHTML = " " + window.localStorage["Name"];
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
+				document.getElementById("partner").src = "img/main_" + window.localStorage["Pet"] + ".gif";
 			}else
 			{
 				$("#btnlogout").hide();
 				window.localStorage["ID"] = "";
 				document.getElementById("showname").innerHTML = " (未登入)";
 				document.getElementById("image").src = "";
+				document.getElementById("partner").src = "img/main_" + pets[Math.floor(Math.random()*4)] + ".gif";
 			}
-			document.getElementById("partner").src = "img/main_" + window.localStorage["Pet"].toString() + ".gif";
         }
 		
 		function logout(){

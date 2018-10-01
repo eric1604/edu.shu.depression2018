@@ -113,17 +113,6 @@
                                 '確定'
                             );
 			            },false);
-					if(name == "沒有資料需要更改。"){
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                name,
-                                null,
-                                '一切安好',
-                                '確定'
-                            );
-			            },false);
-					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
