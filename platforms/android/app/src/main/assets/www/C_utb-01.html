@@ -11,6 +11,10 @@
     
     <style type="text/css">
 	  #pageone{position: fixed;}
+	  label{
+		  width: 120px;
+		  height: 128px;
+		}
   	</style>
     
     <script type="text/javascript">
@@ -26,7 +30,6 @@
 				);
 			},false);
 		})});
-		$(document).ready(function(){$("#btnnext").click(UTBcount)});
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -43,38 +46,24 @@
 			},false);
 		}
 		
-		function UTBcount()
+		function UTBcount(ans)
 		{
-			var ans = $('input[class="answer"]:checked').val();
-			
-			if(ans == null)
-			{
-				document.addEventListener("deviceready",function(){
-					  navigator.notification.alert(
-                          "你還沒有回答問題哦~",
-                          null,
-                          '好像少了些什麼',
-                          '好'
-                      );
-			    },false);
-			}else
-			{
-				$("input[type='radio']:checked").attr("checked", false).checkboxradio("refresh");
-				
-			    var q = parseInt(window.localStorage["UTB18Q"]) + 1;
-			    window.localStorage["UTB18Q"] = q;
+			setTimeout(function(){
+			    $("input[type='radio']:checked").attr("checked", false).checkboxradio("refresh");
+				var q = parseInt(window.localStorage["UTB9Q"]) + 1;
+			    window.localStorage["UTB9Q"] = q;
 			    
-			    if(q == 19)
-				{
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在計算結果...");},false);
-					location.href="C_utbresult.html";
-				}
-			    else{document.getElementById("UTBimg").src = "file:///android_asset/www/img/utb0" + q.toString() + ".gif";}
+			    if(q == 10)
+                {
+                	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在計算結果...");},false);
+                	location.href="C_utbresult.html";
+                }
+			    else{document.getElementById("UTBimg").src = "file:///android_asset/www/img/900" + q.toString() + ".gif";}
 			                
 			    var score = parseInt(window.localStorage["UTBscore"]);
 		        score += parseInt(ans);
 			    window.localStorage["UTBscore"] = score;
-			}
+			},200);
         }
     </script>
 </head>
@@ -87,23 +76,19 @@
     </div>
 	
     <br/><br/>
-    <table style="padding: 0px" align="center" width="80%" border="0">
+    <table style="padding: 0px" align="center" width="90%">
        <tbody align="center" valign="middle" style="height: auto">
 		   <tr>
-			   <td><img src="img/utb01.gif" id="UTBimg" width="100%" alt=""/></td>
+			   <td><img src="img/9001.gif" id="UTBimg" width="100%" alt=""/></td>
 		   </tr>
+		   <tr height="10px"></tr>
 		   <tr>
-			   <td><fieldset data-role="controlgroup">
-				   <input type="radio" class="answer" name="a" id="w1" value="0"><label for="w1"><img src="img/utbscore01.webp" style="display:block; margin:auto;" width="90%"></label>
-				   <input type="radio" class="answer" name="a" id="w2" value="1"><label for="w2"><img src="img/utbscore02.webp" style="display:block; margin:auto;" width="90%"></label>
-				   <input type="radio" class="answer" name="a" id="w3" value="2"><label for="w3"><img src="img/utbscore03.webp" style="display:block; margin:auto;" width="90%"></label>
-				   <input type="radio" class="answer" name="a" id="w4" value="3"><label for="w4"><img src="img/utbscore04.webp" style="display:block; margin:auto;" width="90%"></label>
+			   <td><fieldset data-role="controlgroup" data-type="horizontal">
+				   <input onClick="UTBcount(1)" type="radio" class="answer" name="a" id="btnyes" value="1"><label for="btnyes"><img width="100%" src="img/yesbutton.webp"></label>
+				   <input onClick="UTBcount(0)" type="radio" class="answer" name="a" id="btnno" value="0"><label for="btnno"><img width="100%" src="img/nobutton.webp"></label>
 			   </fieldset></td>
 		   </tr>
-          <tr>
-			  <td><input type="button" value="下一步" id="btnnext"></td>
-		  </tr>
-    </tbody>
+       </tbody>
     </table>          
 </div>
 </body>

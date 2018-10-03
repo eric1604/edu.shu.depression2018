@@ -42,6 +42,13 @@
 		{
 			if(window.localStorage["Mode"] == "諮商師")
 			{
+				document.querySelectorAll("span")[1].style.display = "none";
+				document.querySelectorAll("a")[3].setAttribute("onClick","javascript: location.href = './consultant/D_PRIVACY.html'");
+				document.querySelectorAll("li")[3].style.display = "none";
+				document.querySelectorAll("li")[6].style.display = "none";
+				document.querySelectorAll("li")[5].style.width = document.querySelectorAll("li")[8].style.width = "33%";
+				document.querySelectorAll("li")[7].style.width = "34%";
+				
 				$("#btnlogin").hide();
 				$("#btnhome").click(function(){location.href="./consultant/MAIN.html";});
 			    document.getElementById("username").innerHTML = window.localStorage["Name"];
@@ -49,13 +56,6 @@
 				
 				if(window.localStorage["Image"] == "../img/member.webp"){document.getElementById("userimage").src = "./img/member.webp";}
 				else if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
-				
-				if(window.localStorage["cUserID"] != null)
-			    {
-			    	document.getElementById("toC").onclick = function(){location.href='./consultant/C_MEASUREMENT.html';};
-			        document.getElementById("toB").onclick = function(){location.href='./consultant/B_DIARY.html';};
-			        document.getElementById("toE").onclick = function(){location.href='./consultant/E_SLEEP.html';};
-			    }else{document.getElementById("divnav").style.display = "none";}
 				
 				if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
 				{
@@ -72,13 +72,12 @@
 					document.getElementById("toE").style.opacity = "0.4";
 					document.getElementById("toE").style.pointerEvents = "none";
 				}
-				
-				document.querySelectorAll("span")[1].style.display = "none";
-				document.querySelectorAll("a")[3].setAttribute("onClick","javascript: location.href = './consultant/D_PRIVACY.html'");
-				document.querySelectorAll("li")[3].style.display = "none";
-				document.querySelectorAll("li")[6].style.display = "none";
-				document.querySelectorAll("li")[5].style.width = document.querySelectorAll("li")[8].style.width = "33%";
-				document.querySelectorAll("li")[7].style.width = "34%";
+				if(window.localStorage["cUserID"] != null)
+			    {
+			    	document.getElementById("toC").onclick = function(){location.href='./consultant/C_MEASUREMENT.html';};
+			        document.getElementById("toB").onclick = function(){location.href='./consultant/B_DIARY.html';};
+			        document.getElementById("toE").onclick = function(){location.href='./consultant/E_SLEEP.html';};
+			    }else{document.getElementById("divnav").style.display = "none";}
 			}else
 			{
 				$("#btnlogin").hide();

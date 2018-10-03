@@ -89,22 +89,30 @@
 				    $("#ALLUSERS").val(window.localStorage["cUserID"]).selectmenu("refresh");
 				    document.getElementById("userimg").src = window.localStorage["cPicture"];
 				    setuser(document.getElementById("ALLUSERS"));
-				}else
+				}else if(count == document.getElementById("ALLUSERS").length)
 				{
 					document.getElementById("lock").style.display = "none";
-					document.addEventListener("deviceready",function(){
-			            navigator.notification.alert(
-                            '目前的諮商對象已更換諮商師。 \n請重新選擇。',
-                            function(){
-								localStorage.removeItem("cUserID");
-								localStorage.removeItem("cUserName");
-								localStorage.removeItem("cPicture");
-								localStorage.removeItem("cPrivacy");
-							},
-                            '⚠️ 錯誤',
-                            '確定'
-                        );
-			        },false);
+					document.addEventListener("online",function(){
+					    document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '目前的諮商對象已更換諮商師。 \n請重新選擇。',
+                                function(){
+					    			localStorage.removeItem("cUserID");
+					    			localStorage.removeItem("cUserName");
+					    			localStorage.removeItem("cPicture");
+					    			localStorage.removeItem("cPrivacy");
+					    		},
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					},false);
+					document.addEventListener("offline",function(){
+						localStorage.removeItem("cUserID");
+					    localStorage.removeItem("cUserName");
+					    localStorage.removeItem("cPicture");
+					    localStorage.removeItem("cPrivacy");
+					},false);
 				}
 			}else{document.getElementById("lock").style.display = "none";}
         }
