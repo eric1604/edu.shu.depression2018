@@ -43,49 +43,63 @@
 			var userData = {ID: window.localStorage["ID"],Diary: $("#diarycontent").val(),DiaryDate: showdate};
 			var data = JSON.stringify(userData);
 			
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/AddDiary",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "日記已儲存。"){
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                message,
-                                function(){},
-                                '與你相鬱好幸運',
-                                '確定'
-                            );
-			            },false);
-						location.reload();
-					}else{
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
+			if($("#diarycontent").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+					SpinnerPlugin.activityStop();
+					navigator.notification.alert(
+                        '您還沒輸入日記內容 !',
+                        null,
+                        '空空如也',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				$.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/AddDiary",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+				    data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+				    	var message = (JSON.parse(check)).d;
+				    	if(message == "日記已儲存。"){
+				    		document.addEventListener("deviceready",function(){
+				    			SpinnerPlugin.activityStop();
+				    			navigator.notification.alert(
+                                    message,
+                                    null,
+                                    '與你相鬱好幸運',
+                                    '確定'
+                                );
+			                },false);
+				    		location.reload();
+				    	}else{
+				    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				    		alert(message);
+				    	}
+				    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+				    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				    	if(thrownError.toString().slice(0,12) == "NetworkError")
+				    	{
+				    		document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+				    	}else
+				    	{
+				    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    	}
+                    }
+                });
+			}
         }
    </script>
 

@@ -73,6 +73,7 @@
 			    		if(message[0] == "這一天沒有寫日記哦 !"){
 			    			document.addEventListener("deviceready",function(){
 			    				SpinnerPlugin.activityStop();
+								location.reload();
 			    				navigator.notification.alert(
                                     message[0],
                                     null,

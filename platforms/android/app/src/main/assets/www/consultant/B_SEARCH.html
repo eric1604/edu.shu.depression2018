@@ -30,6 +30,23 @@
 		$(document).ready(function(){$("#btndelete").click(deletediary)});
 		$(document).ready(function(){$("#prevdiary").click(prevdiary)});
 		$(document).ready(function(){$("#nextdiary").click(nextdiary)});
+		$(document).ready(function(){
+		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+	    	{
+	    		document.getElementById("toC").style.opacity = "0.4";
+	    		document.getElementById("toC").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(2) == "0")
+	    	{
+	    		document.getElementById("toB").style.opacity = "0.4";
+	    		document.getElementById("toB").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(3) == "0")
+	    	{
+	    		document.getElementById("toE").style.opacity = "0.4";
+	    		document.getElementById("toE").style.pointerEvents = "none";
+	    	}
+	    });
 		
 		var index;
 		var count;
@@ -60,7 +77,7 @@
 			}else
 			{
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在翻查日記...");},false);
-			    var userData = {ID: window.localStorage["ID"],DiaryDate: $("#diarydate").val()};
+			    var userData = {ID: window.localStorage["cUserID"],DiaryDate: $("#diarydate").val()};
 			    var data = JSON.stringify(userData);
 			      
 			    $.ajax({
@@ -75,6 +92,7 @@
 			    		if(message[0] == "這一天沒有寫日記哦 !"){
 			    			document.addEventListener("deviceready",function(){
 			    				SpinnerPlugin.activityStop();
+								location.reload();
 			    				navigator.notification.alert(
                                     message[0],
                                     null,
@@ -248,9 +266,9 @@
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 		  <div data-role="navbar">
             <ul>
-              <li><a onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
-              <li><a onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
-              <li><a onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
+              <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+              <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+              <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
             </ul>
           </div>
         </div>

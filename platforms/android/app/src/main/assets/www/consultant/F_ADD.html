@@ -1,0 +1,163 @@
+﻿ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>新增紀錄</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="../css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+	
+    <style type="text/css">
+		textarea{
+			height: 180px !important;
+			overflow-y: scroll;
+		}
+    </style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="F_RECORD.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
+		$(document).ready(function(){$("#btnsave").click(addrecord)});
+		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
+		$(document).ready(showNOW);
+		$(document).ready(function(){
+		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+	    	{
+	    		document.getElementById("toC").style.opacity = "0.4";
+	    		document.getElementById("toC").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(2) == "0")
+	    	{
+	    		document.getElementById("toB").style.opacity = "0.4";
+	    		document.getElementById("toB").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(3) == "0")
+	    	{
+	    		document.getElementById("toE").style.opacity = "0.4";
+	    		document.getElementById("toE").style.pointerEvents = "none";
+	    	}
+	    });
+		
+		var date = new Date();
+		var DATE = ["日","一","二","三","四","五","六"];
+		var m = "/";
+		var datenow = date.getFullYear() + m + (date.getMonth()+1) + m + date.getDate();
+		var hr = date.getHours();
+		var min = date.getMinutes();
+		var timenow = hr + ":" + min;
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="F_RECORD.html";
+				},false);
+			},false);
+		}
+		
+		function showNOW(){
+			if(hr.toString().charAt(1) == ""){hr = "0" + date.getHours();}
+			if(min.toString().charAt(1) == ""){min = "0" + date.getMinutes();}
+			$("#recorddate").html(datenow + "(" + DATE[date.getDay()] + ") " + hr + ":" + min);
+			$("#usernow").html("諮商對象 [" + window.localStorage["cUserName"] + "]");
+		}
+		
+		function addrecord()
+        {
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在儲存紀錄...");},false);
+			m = "-";
+			var userData = {ID: window.localStorage["ID"],CurrentUser: window.localStorage["cUserID"],Record: $("#recordcontent").val(),RecordDate: datenow + " " + timenow};
+			var data = JSON.stringify(userData);
+			
+			if($("#recordcontent").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+					SpinnerPlugin.activityStop();
+					navigator.notification.alert(
+                        '您還沒輸入訪談紀錄 !',
+                        null,
+                        '空空如也',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				$.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/AddRecord",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+				    data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+				    	var message = (JSON.parse(check)).d;
+				    	if(message == "紀錄已儲存。"){
+				    		document.addEventListener("deviceready",function(){
+				    			SpinnerPlugin.activityStop();
+				    			navigator.notification.alert(
+                                    message,
+                                    null,
+                                    '與你相鬱好幸運',
+                                    '確定'
+                                );
+			                },false);
+				    		location.reload();
+				    	}else{
+				    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				    		alert(message);
+				    	}
+				    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+				    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				    	if(thrownError.toString().slice(0,12) == "NetworkError")
+				    	{
+				    		document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+				    	}else
+				    	{
+				    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    	}
+                    }
+                });
+			}
+        }
+   </script>
+
+</head>
+
+<body onLoad="backbtn()">
+    <div data-role="page" id="pageone">
+            <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 4px" src="../img/addrecordtitle.webp" width="100%"></h1>
+				<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+            </div>
+          
+            <div id="content" data-role="content" align="center">
+				<ul data-role=listview data-inset="true">
+				    <li data-role="list-divider"><font id="recorddate"></font></li>
+					<li data-role="list-divider"><font id="usernow"></font></li>
+			        <li><textarea placeholder="請輸入訪談紀錄" id="recordcontent" class="form-control"></textarea></li>
+			        <li><button type="button" id="btnsave">儲存</button></li>
+				</ul>
+            </div>
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+			<div data-role="navbar">
+            <ul>
+				<li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+                <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+                <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+         
+</body>
+</html>

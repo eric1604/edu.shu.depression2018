@@ -24,10 +24,7 @@
   </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){$("#btnhome").click(function(){
-		if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
-		else{location.href="main.html";}
-	})});
+	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
 	$(document).ready(function(){$("#btnlogin").click(function(){location.href="login.html";})})
 	$("#btnlogin").css({height: "100px"});
 	$(document).ready(loadinfo);
@@ -46,10 +43,36 @@
 			if(window.localStorage["Mode"] == "諮商師")
 			{
 				$("#btnlogin").hide();
+				$("#btnhome").click(function(){location.href="./consultant/MAIN.html";});
 			    document.getElementById("username").innerHTML = window.localStorage["Name"];
 			    document.getElementById("usermode").innerHTML = " " + window.localStorage["Mode"];
+				
 				if(window.localStorage["Image"] == "../img/member.webp"){document.getElementById("userimage").src = "./img/member.webp";}
 				else if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
+				
+				if(window.localStorage["cUserID"] != null)
+			    {
+			    	document.getElementById("toC").onclick = function(){location.href='./consultant/C_MEASUREMENT.html';};
+			        document.getElementById("toB").onclick = function(){location.href='./consultant/B_DIARY.html';};
+			        document.getElementById("toE").onclick = function(){location.href='./consultant/E_SLEEP.html';};
+			    }else{document.getElementById("divnav").style.display = "none";}
+				
+				if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+				{
+					document.getElementById("toC").style.opacity = "0.4";
+					document.getElementById("toC").style.pointerEvents = "none";
+				}
+				if(window.localStorage["cPrivacy"].charAt(2) == "0")
+				{
+					document.getElementById("toB").style.opacity = "0.4";
+					document.getElementById("toB").style.pointerEvents = "none";
+				}
+				if(window.localStorage["cPrivacy"].charAt(3) == "0")
+				{
+					document.getElementById("toE").style.opacity = "0.4";
+					document.getElementById("toE").style.pointerEvents = "none";
+				}
+				
 				document.querySelectorAll("span")[1].style.display = "none";
 				document.querySelectorAll("a")[3].setAttribute("onClick","javascript: location.href = './consultant/D_PRIVACY.html'");
 				document.querySelectorAll("li")[3].style.display = "none";
@@ -109,10 +132,10 @@
        <div id="divnav" data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>測量</a></li>
+            <li><a id="toC" onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>測量</a></li>
             <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
+            <li><a id="toB" onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
+            <li><a id="toE" onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
             </ul>
             </div>
         </div>

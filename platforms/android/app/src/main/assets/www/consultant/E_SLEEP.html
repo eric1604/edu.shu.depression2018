@@ -16,6 +16,23 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
+	$(document).ready(function(){
+		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+		{
+			document.getElementById("toC").style.opacity = "0.4";
+			document.getElementById("toC").style.pointerEvents = "none";
+		}
+		if(window.localStorage["cPrivacy"].charAt(2) == "0")
+		{
+			document.getElementById("toB").style.opacity = "0.4";
+			document.getElementById("toB").style.pointerEvents = "none";
+		}
+		if(window.localStorage["cPrivacy"].charAt(3) == "0")
+		{
+			document.getElementById("toE").style.opacity = "0.4";
+			document.getElementById("toE").style.pointerEvents = "none";
+		}
+	});
 	
 	function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -35,7 +52,7 @@
                 </div>
                 <div data-role="content">
                     <p></p>
-                    <input type="button" onclick="javascript: location.href = 'E_SLEEPCHECK.html'" value="睡眠品質查閱" />
+                    <input type="button" onclick="javascript: location.href = 'E_SLEEPCHECK.html'" value="睡眠品質紀錄" />
                     <table width="100%" border="0">
          　<tr>
 　         <td width="15%"></td>
@@ -50,9 +67,9 @@
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
-            <li><a onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
-            <li><a onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
+            <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+            <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+            <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
             </ul>
             </div>
         </div>

@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>調閱紀錄</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link href="../css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+  <style type="text/css">
+	  textarea{
+		  height: 150px !important;
+		  overflow-y: scroll;
+	  }
+	  #navrecord{visibility: hidden;}
+	  #info{
+		  font-size: 15px;
+		  line-height: 0;
+	  }
+  </style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="F_RECORD.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
+		$(document).ready(function(){$("#btnsearch").click(searchrecord)});
+		$(document).ready(function(){$("#btndelete").click(deleterecord)});
+		$(document).ready(function(){$("#prevrecord").click(prevrecord)});
+		$(document).ready(function(){$("#nextrecord").click(nextrecord)});
+		$(document).ready(function(){
+		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+	    	{
+	    		document.getElementById("toC").style.opacity = "0.4";
+	    		document.getElementById("toC").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(2) == "0")
+	    	{
+	    		document.getElementById("toB").style.opacity = "0.4";
+	    		document.getElementById("toB").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(3) == "0")
+	    	{
+	    		document.getElementById("toE").style.opacity = "0.4";
+	    		document.getElementById("toE").style.pointerEvents = "none";
+	    	}
+	    });
+		
+		var index;
+		var count;
+		var message;
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="F_RECORD.html";
+				},false);
+			},false);
+		}
+																	
+		function searchrecord()
+        {
+			$("#prevrecord").attr("disabled",true).button("refresh");
+			
+			if($("#recorddate").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+					navigator.notification.alert(
+                         '您還沒有指定日期哦 !',
+                         null,
+                         '似乎少了什麼',
+                         '確定'
+                    );
+			    },false);
+			}else
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在翻查紀錄...");},false);
+			    var userData = {ID: window.localStorage["ID"],CurrentUser: window.localStorage["cUserID"],RecordDate: $("#recorddate").val()};
+			    var data = JSON.stringify(userData);
+			      
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/SearchRecord",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+			    		message = (JSON.parse(check)).d;
+			    		if(message[0] == "找不到符合的訪談紀錄 !"){
+			    			document.addEventListener("deviceready",function(){
+			    				SpinnerPlugin.activityStop();
+								location.reload();
+			    				navigator.notification.alert(
+                                    message[0],
+                                    null,
+                                    '空空如也',
+                                    '確定'
+                                );
+			                },false);
+			    		}else{
+			    			index = 0;
+			    			count = message.length;
+			    			$("#recordcontent").val(message[index]);
+			    			if(count != 0)
+			    			{
+								$("#info").html("找到" + count + "篇訪談紀錄。");
+								if(count > 1){$("#nextrecord").removeAttr("disabled").button("refresh");}
+								else{$("#nextrecord").attr("disabled",true).button("refresh");}
+			    				document.getElementById("navrecord").style.visibility = "visible";
+			    			}
+			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError){
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
+                    }
+                });
+			}
+        }
+		
+		function prevrecord()
+		{
+			if(index > 0)
+			{
+				$("#nextrecord").removeAttr("disabled").button("refresh");
+				index--;
+				$("#recordcontent").val(message[index]);
+			}
+			if(index == 0){$("#prevrecord").attr("disabled",true).button("refresh");}
+		}
+		
+		function nextrecord()
+		{
+			if(index < count)
+			{
+				$("#prevrecord").removeAttr("disabled").button("refresh");
+				index++;
+				$("#recordcontent").val(message[index]);
+			}
+			if(index == (count-1)){$("#nextrecord").attr("disabled",true).button("refresh");}
+		}
+		
+		function deleterecord()
+        {
+			document.addEventListener("deviceready",function(){
+					navigator.notification.confirm(
+                        '確定刪除這篇訪談紀錄嗎 ?',
+                        function(btnIndex){if(btnIndex == 1){del();}},
+                        '刪除訪談',
+                        ['確定','取消']
+                    );
+			    },false);
+			function del()
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在刪除...");},false);
+			    var userData = {ID: window.localStorage["ID"],CurrentUser: window.localStorage["cUserID"],RecordContent: $("#recordcontent").val(),RecordDate: $("#recorddate").val()};
+			    var data = JSON.stringify(userData);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteRecord",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+			    		var message = (JSON.parse(check)).d;
+			    		if(message == "已刪除訪談。"){
+			    			document.addEventListener("deviceready",function(){
+			    				searchrecord();
+			    				SpinnerPlugin.activityStop();
+			    				navigator.notification.alert(
+                                    message,
+                                    null,
+                                    '完成',
+                                    '確定'
+                                );
+			                },false);
+			    		}else{
+			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    			alert(message);
+			    		}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError){
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
+                    }
+                });
+			 }
+        }
+		
+		/*function autogrow(textarea){
+        var adjustedHeight=textarea.clientHeight;
+        
+        adjustedHeight=Math.max(textarea.scrollHeight,adjustedHeight);
+        if (adjustedHeight>textarea.clientHeight){
+        	textarea.style.height=adjustedHeight+'px';
+        }}*/
+    </script>
+
+</head>
+
+<body onLoad="backbtn()">
+    <div data-role="page" id="pageone">
+            <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 6px" src="../img/readrecordtitle.webp" width="100%"></h1>
+				<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+            </div>
+		
+			<div data-role="content" align="center">
+              <table align="center" width="90%" border="0">
+              	<tbody align="center" valign="middle" style="height: auto">
+              		<tr>
+              			<td align="left" width="15%">日期</td>
+              			<td><input type="date" id="recorddate" /></td>
+						<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
+              		</tr>
+					<tr><td align="left" colspan="3"><p id="info"></p></td></tr>
+              		<tr>
+           		        <td colspan="3"><textarea readonly placeholder="(日記內容)" id="recordcontent"></textarea></td>  
+					</tr></tbody></table>
+			  <table align="center" width="90%" border="0">
+				<tbody align="center" valign="middle" style="height: auto">
+					<tr id="navrecord">
+						<td><input width="50%" disabled type="button" value="上一則" id="prevrecord"></td>
+						<td><input disabled type="button" value="下一則" id="nextrecord"></td>
+						<td><input type="button" value="刪除" id="btndelete"></td>
+					</tr>
+              	</tbody>
+              </table>
+            </div>
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+		  <div data-role="navbar">
+            <ul>
+                <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+                <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+                <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
+            </ul>
+          </div>
+        </div>
+</div>
+</body>
+</html>
