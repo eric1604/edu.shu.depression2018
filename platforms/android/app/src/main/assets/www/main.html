@@ -56,12 +56,13 @@
 				document.getElementById("showname").innerHTML = " " + window.localStorage["Name"];
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
 				document.getElementById("partner").src = "img/main_" + window.localStorage["Pet"] + ".gif";
+				if(window.localStorage["First"] == "true"){document.getElementById("image").src = "img/new000.webp";}
 			}else
 			{
 				$("#btnlogout").hide();
 				window.localStorage["ID"] = "";
 				document.getElementById("showname").innerHTML = " (未登入)";
-				document.getElementById("image").src = "";
+				document.getElementById("image").src = "img/notlogin00.webp";
 				document.getElementById("partner").src = "img/main_" + pets[Math.floor(Math.random()*4)] + ".gif";
 			}
         }
@@ -118,11 +119,25 @@
             });
 		}
 		
-		var id = 1;
-        function next()
-		{
-	       id = (id + 1) % 6;
-	       document.getElementById("image").src = "./img/" + id + ".webp";
+		var c = 0;
+        function next(){
+		    if(window.localStorage["Name"] != null)
+		    {
+				if(window.localStorage["First"] == "true")
+				{
+					c = (c + 1) % 3;
+			        document.getElementById("image").src = "img/new00" + c + ".webp";
+				}else
+				{
+					c = (c + 1) % 6;
+			        document.getElementById("image").src = "img/" + c + ".webp";
+				}
+		    }
+	        else
+			{
+				c = (c + 1) % 3;
+			    document.getElementById("image").src = "img/notlogin0" + c + ".webp";
+			}
         }
     </script>
 </head>
@@ -136,7 +151,7 @@
 		 </div>
 
         <div data-role="content" >
-           <table align="center" width="90%" border="0">
+           <table align="center" width="98%" border="0">
            	<tbody align="center" valign="middle" style="height: auto">
            		<tr>
            			<td width="48%"><button onClick="javascript: location.href ='C_measurement.html'"><img src="img/hert.webp"><br>心靈觀測</button></td>
@@ -151,8 +166,8 @@
                 
           <table>
               <tr>
-                <td><img src="img/1.webp" id="image"/></td>
-                <td><img onClick="next()" src="" id="partner"></td>
+                <td><img src="img/0.webp" id="image"/></td>
+                <td><img onClick="next()" id="partner"></td>
               </tr>
           </table>
           

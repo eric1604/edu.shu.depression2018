@@ -11,16 +11,22 @@
 </head>
 
 <style type="text/css">
-	  #pageone{position: fixed;}
-  </style>
+	#pageone{position: fixed;}
+	ul li a{text-align: center !important;}
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
 	$(document).ready(function(){
-		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+		if(window.localStorage["cPrivacy"].charAt(0) == "0")
 		{
-			document.getElementById("toC").style.opacity = "0.4";
-			document.getElementById("toC").style.pointerEvents = "none";
+			document.querySelectorAll("li")[0].style.opacity = "0.4";
+			document.querySelectorAll("li")[0].style.pointerEvents = "none";
+		}
+		if(window.localStorage["cPrivacy"].charAt(1) == "0")
+		{
+			document.querySelectorAll("li")[1].style.opacity = "0.4";
+			document.querySelectorAll("li")[1].style.pointerEvents = "none";
 		}
 		if(window.localStorage["cPrivacy"].charAt(2) == "0")
 		{
@@ -52,9 +58,10 @@
         </div>
 		
         <div data-role="content">
-            <p></p>
-            <input type="button" onclick="javascript: location.href = 'C_BSRS5_EXPORT.html'" value="心情檢測資料" />
-            <input type="button" onclick="javascript: location.href = 'C_UTB_EXPORT.html'" value="憂鬱測量資料" />
+            <ul data-role="listview" data-inset="true">
+				<li data-icon="false"><a onClick="javascript: location.href='C_BSRS5_EXPORT.html'">[BSRS-5] 檢測紀錄</a></li>
+				<li data-icon="false"><a onClick="javascript: location.href='C_PHQ9_EXPORT.html'">[PHQ-9] 檢測紀錄</a></li>
+			</ul>
 			<table>
                 <tr>
                    <td width="15%"></td>

@@ -21,12 +21,12 @@
     
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnexit").click(function(){location.href="C_measurement.html";})});
-		$(document).ready(function(){
+		/*$(document).ready(function(){
 			if(window.localStorage["Privacy"].charAt(1) == "1"){document.getElementById("i").innerHTML = I[0];}
 			else{document.getElementById("i").innerHTML = I[1];}
 		});
 		
-		var I = ["會開放予專業諮商師追蹤及提供協助。","不開放予諮商師追蹤。"];
+		var I = ["會開放予專業諮商師追蹤及提供協助。","不開放予諮商師追蹤。"];*/
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -39,7 +39,7 @@
     	
 		function UTBresult()
 		{
-			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
+			//if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["UTBscore"];
 			var date = new Date();

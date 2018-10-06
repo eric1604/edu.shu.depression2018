@@ -111,7 +111,7 @@
 			{
 				document.getElementsByClassName("optContainer")[0].style.visibility = "visible";
 				$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
-			    $("#UTB").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
+			    $("#PHQ9").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
 			    $("#Diary").val(window.localStorage["Privacy"].charAt(2)).flipswitch("refresh");
 			    $("#Sleep").val(window.localStorage["Privacy"].charAt(3)).flipswitch("refresh");
 			    ok = 1;
@@ -122,7 +122,7 @@
         {
 			if(ok == 1)
 			{
-				var set = $("#BSRS5").val() + $("#UTB").val() + $("#Diary").val() + $("#Sleep").val();
+				var set = $("#BSRS5").val() + $("#PHQ9").val() + $("#Diary").val() + $("#Sleep").val();
 			    var setting = {ID: window.localStorage["ID"],PRIVACY: set};
 			    var data = JSON.stringify(setting);
 			     
@@ -181,14 +181,14 @@
 			<ul data-role=listview data-inset="true">
 				<li data-role="list-divider">心靈觀測</li>
 				<li>
-					<snap>心情檢測相關數據</snap>
+					<snap>[心情檢測]相關數據</snap>
 					<select id="BSRS5" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
 				<li>
-					<snap>憂鬱測量相關數據</snap>
-					<select id="UTB" data-role="flipswitch" onChange="update()" >
+					<snap>[心靈健康]相關數據</snap>
+					<select id="PHQ9" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>

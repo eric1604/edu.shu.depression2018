@@ -22,7 +22,7 @@
     <script type="text/javascript">
 		$(document).ready(function(){$("#btnexit").click(function(){location.href="C_measurement.html";})});
 		$(document).ready(function(){
-			if(window.localStorage["Privacy"].charAt(0) == "1"){document.getElementById("i").innerHTML = I[0];}
+			if(window.localStorage["Privacy"].charAt(1) == "1"){document.getElementById("i").innerHTML = I[0];}
 			else{document.getElementById("i").innerHTML = I[1];}
 		});
 		
@@ -84,10 +84,9 @@
 </head>
 
 <body onLoad="backbtn()">
-
  	<div data-role="page" id="pageone">
         <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a" font style="font-size:22px">
-                <h1><img style="padding-top: 4px" src="img/moodtitle.webp" width="100%"></h1>
+                <h1><img style="padding-top: 4px" src="img/healthtitle.webp" width="100%"></h1>
         </div>
 		<p></p>
             <table height="470px" align="center" width="90%">

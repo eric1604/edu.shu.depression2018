@@ -176,7 +176,7 @@
 			if(window.localStorage["cPrivacy"].charAt(2) == "1"){$("#btnB").removeAttr("disabled");}
 			if(window.localStorage["cPrivacy"].charAt(3) == "1"){$("#btnE").removeAttr("disabled");}
 			
-			if(window.localStorage["cPrivacy"].charAt(0) == "0" || window.localStorage["cPrivacy"].charAt(1) == "0"){$("#btnC").attr("disabled","disabled");}
+			if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0"){$("#btnC").attr("disabled","disabled");}
 			if(window.localStorage["cPrivacy"].charAt(2) == "0"){$("#btnB").attr("disabled","disabled");}
 			if(window.localStorage["cPrivacy"].charAt(3) == "0"){$("#btnE").attr("disabled","disabled");}
 		}

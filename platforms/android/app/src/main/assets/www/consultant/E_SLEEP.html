@@ -2,69 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
-    <title>睡眠救星</title>
+    <title>睡眠品質</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="../css/two.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
-</head>
-
-<style type="text/css">
+    <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+    <style type="text/css">
 	  #pageone{position: fixed;}
   </style>
-
-<script type="text/javascript">
-	$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
-	$(document).ready(function(){
-		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
-		{
-			document.getElementById("toC").style.opacity = "0.4";
-			document.getElementById("toC").style.pointerEvents = "none";
-		}
-		if(window.localStorage["cPrivacy"].charAt(2) == "0")
-		{
-			document.getElementById("toB").style.opacity = "0.4";
-			document.getElementById("toB").style.pointerEvents = "none";
-		}
-		if(window.localStorage["cPrivacy"].charAt(3) == "0")
-		{
-			document.getElementById("toE").style.opacity = "0.4";
-			document.getElementById("toE").style.pointerEvents = "none";
-		}
-	});
-	
-	function backbtn(){
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
+		$(document).ready(function(){
+		    if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+	    	{
+	    		document.getElementById("toC").style.opacity = "0.4";
+	    		document.getElementById("toC").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(2) == "0")
+	    	{
+	    		document.getElementById("toB").style.opacity = "0.4";
+	    		document.getElementById("toB").style.pointerEvents = "none";
+	    	}
+	    });
+		
+		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
 					location.href="MAIN.html";
 				},false);
 			},false);
-	}
-</script>
+		}
+    </script>
+
+</head>
 
 <body onLoad="backbtn()">
-    <div data-role="page" id="pageone">
-                <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                    <h1><img style="padding-top: 6px" src="../img/sleeptitle.webp" width="100%"></h1>
-                    <a style="display: none"></a>
-                    <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
-                </div>
-                <div data-role="content">
-                    <p></p>
-                    <input type="button" onclick="javascript: location.href = 'E_SLEEPCHECK.html'" value="睡眠品質紀錄" />
-                    <table width="100%" border="0">
-         　<tr>
-　         <td width="15%"></td>
-         　<td width="62%"><img src="../img/sleepzzz.gif" width="150%"></td>
-         <td width="23%"></td>
-         　</tr>
-         
-          </table>
-                  
-                </div>
+    <div id="pageone" data-role="page" data-theme="a">
+           <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 4px" src="../img/sleepquilitytitle.webp" width="100%"></h1>
+				<a style="display: none"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+            </div>
+        <div>
+            
+          
+            </div>
 
-        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
             <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>檢測</a></li>
@@ -73,7 +59,7 @@
             </ul>
             </div>
         </div>
-
-            </div>
+        </div>
+        
 </body>
 </html>

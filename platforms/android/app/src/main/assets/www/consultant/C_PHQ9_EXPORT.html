@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
+    <title>數據查詢</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
+    <link href="../css/two.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.time.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.axislabels.js"></script>
+    
+    <style type="text/css">
+		#data{height: 200px;width: 100%;}
+	  	#content{vertical-align: middle;}
+		label{width: 60px;}
+		snap{font-size: 15px;}
+  	</style>
+    
+    <script type="text/javascript">
+		$(document).ready(function(){$("#btnprev").click(function(){location.href="C_MEASUREMENT.html";})});
+		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
+		$(document).ready(function(){$("#btnsearch").click(search)});
+		$(document).ready(function(){$(document).find("input[type='checkbox']").click(draw);})
+		$(document).ready(function(){
+		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+	    	{
+	    		document.getElementById("toC").style.opacity = "0.4";
+	    		document.getElementById("toC").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(2) == "0")
+	    	{
+	    		document.getElementById("toB").style.opacity = "0.4";
+	    		document.getElementById("toB").style.pointerEvents = "none";
+	    	}
+	    	if(window.localStorage["cPrivacy"].charAt(3) == "0")
+	    	{
+	    		document.getElementById("toE").style.opacity = "0.4";
+	    		document.getElementById("toE").style.pointerEvents = "none";
+	    	}
+	    });
+		
+		var DATA = "";
+		
+		function backbtn(){
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="C_MEASUREMENT.html";
+				},false);
+			},false);
+		}
+		
+		function draw()
+		{
+			var dataBSRS5 = DATA[0];
+			var dataUTB = DATA[1];
+			
+			var labelarr = ["心情檢測","憂鬱測量"];
+			var dataarr = [dataBSRS5,dataUTB];
+			var colorarr = ["#FF0000","#0062E3"];
+			
+			var dataset = [];
+			   
+			var options = {
+                series: {
+                   lines: { show: true },
+                   points: {radius: 4, show: true},
+	               shadowSize: 5
+                },
+				grid: {
+                   backgroundColor: { colors: ["#D1D1D1", "#7A7A7A"] }
+                },
+			    xaxis: {
+                   mode: "time",
+			       timeformat: "%m/%d",
+                   tickSize: [3, "day"],
+                   tickLength: 5
+                },
+				yaxis: {tickDecimals: 0}
+            };
+			
+			$(document).find("input[type='checkbox']").each(function(){
+                if($(this).is(":checked")){
+                    var position = $(this).attr("id").replace("m", "");
+                    position = parseInt(position) - 1;
+					
+                    dataset.push(
+                        {
+                            label: labelarr[position],
+                            data: dataarr[position],
+							color: colorarr[position]
+                        }
+                    );   
+                }
+            });
+			    		
+			$(document).ready(function(){$.plot($("#data"), dataset, options);});
+		}
+																	
+		function search()
+        {
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在繪製曲線...");},false);
+			if($("#time").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+					SpinnerPlugin.activityStop();
+					navigator.notification.alert(
+                         '您還沒有指定搜尋區間哦 !',
+                         null,
+                         '似乎少了什麼',
+                         '確定'
+                    );
+			    },false);
+			}else
+			{
+				var year = "";
+			    var month = "";
+			    for(var i=0;i<4;i++){year += $("#time").val().charAt(i);}
+			    for(var j=5;j<7;j++){month += $("#time").val().charAt(j);}
+			    
+			    var userData = {ID: window.localStorage["cUserID"], YEAR: year, MONTH: month};
+			    var jdata = JSON.stringify(userData);
+			      
+			    $.ajax(
+			    	{
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/Export",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: jdata,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+						DATA = (JSON.parse(check)).d;
+						if(DATA.length == 0){
+							document.addEventListener("deviceready",function(){
+								SpinnerPlugin.activityStop();
+								draw();
+					            navigator.notification.alert(
+                                     '所選區間沒有發現任何檢測數據。',
+                                     null,
+                                     '空空如也',
+                                     '確定'
+                                );
+			                },false);
+						}else{
+							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+							draw();
+						}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) 
+			    	{
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
+                    }
+                });
+			}
+        }
+    </script>
+</head>
+
+<body>
+    <div id="pageone" data-role="page" data-theme="a">
+            <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+                <h1><img style="padding-top: 4px" src="../img/findtitle.webp" width="100%"></h1>
+				<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+            </div>
+
+            <div align="center" data-role="content">
+            <div data-role="fieldcontain">
+			  <table align="center" width="96%" border="0">
+              	<tr>
+              		<td width="15%">區間</td>
+              		<td><input type="month" id="time" /></td>
+					<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
+              	</tr>
+              </table>
+			  <table align="center" width="96%" border="0">
+				<tr>
+					<td width="15%">類型</td>
+					<td width="43%"><input checked id="m2" name="mode" type="checkbox" value="UTB"/><label for="m2"><snap>憂鬱測量</snap></label></td>
+				</tr>
+				<tr> 
+           		    <td colspan="3"><div id="data"></div></td>  
+           		</tr>
+			  </table>
+            </div>
+		</div>
+
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+			<div data-role="navbar">
+            <ul>
+            <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>檢測</a></li>
+            <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
+            <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+</body>
+</html>
