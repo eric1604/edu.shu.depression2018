@@ -5,15 +5,20 @@
     <title>書寫日記</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="./css/two.css" rel="stylesheet" type="text/css">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	
     <style type="text/css">
 		textarea{
-			height: 200px !important;
+			height: 150px !important;
 			overflow-y: scroll;
 		}
+		#motion div{
+			width: 25%;
+			text-align: center;
+		}
+		#motion img{padding: 5px;}
     </style>
     
     <script type="text/javascript">
@@ -27,6 +32,7 @@
 		var DATE = ["日","一","二","三","四","五","六"];
 		var m = "/";
 		var showdate = date.getFullYear() + m + (date.getMonth()+1) + m + date.getDate();
+		var em = null;
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -36,69 +42,89 @@
 			},false);
 		}
 		
+		function getemotion(e){
+			em = e;
+			for(i=1;i<5;i++){document.getElementById("e" + i).style.backgroundColor = "transparent";}
+			document.getElementById("e" + e).style.backgroundColor = "deepskyblue";
+		}
+		
 		function adddiary()
         {
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在儲存日記...");},false);
-			m = "-";
-			var userData = {ID: window.localStorage["ID"],Diary: $("#diarycontent").val(),DiaryDate: showdate};
-			var data = JSON.stringify(userData);
-			
-			if($("#diarycontent").val() == "")
+			if(em == null)
 			{
 				document.addEventListener("deviceready",function(){
-					SpinnerPlugin.activityStop();
 					navigator.notification.alert(
-                        '您還沒輸入日記內容 !',
+                        '點選來選擇今天的心情~',
                         null,
-                        '空空如也',
+                        '今天過得如何 ?',
                         '確定'
                     );
 			    },false);
 			}else
 			{
-				$.ajax({
-                    url: "http://192.192.155.108/serv/ServicePool.asmx/AddDiary",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "text",
-				    data: data,
-                    type: "POST",
-                    async: false,
-                    success: function(check){
-				    	var message = (JSON.parse(check)).d;
-				    	if(message == "日記已儲存。"){
-				    		document.addEventListener("deviceready",function(){
-				    			SpinnerPlugin.activityStop();
-				    			navigator.notification.alert(
-                                    message,
-                                    null,
-                                    '與你相鬱好幸運',
-                                    '確定'
-                                );
-			                },false);
-				    		location.reload();
-				    	}else{
-				    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-				    		alert(message);
-				    	}
-				    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-				    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-				    	if(thrownError.toString().slice(0,12) == "NetworkError")
-				    	{
-				    		document.addEventListener("deviceready",function(){
-			                    navigator.notification.alert(
-                                    '伺服器連線失敗，請檢查網路。',
-                                    null,
-                                    '⚠️ 錯誤',
-                                    '確定'
-                                );
-			                },false);
-				    	}else
-				    	{
-				    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-				    	}
-                    }
-                });
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在儲存日記...");},false);
+				m = "-";
+				var dc = $("#diarycontent").val().replace(/\n/g,"<br>");
+				var userData = {ID: window.localStorage["ID"],EMOTION: em,Diary: dc,DiaryDate: showdate};
+			    var data = JSON.stringify(userData);
+			    
+			    if($("#diarycontent").val() == "")
+			    {
+			    	document.addEventListener("deviceready",function(){
+			    		SpinnerPlugin.activityStop();
+			    		navigator.notification.alert(
+                            '您還沒輸入日記內容 !',
+                            null,
+                            '空空如也',
+                            '確定'
+                        );
+			        },false);
+			    }else
+			    {
+			    	$.ajax({
+                        url: "http://192.192.155.108/serv/ServicePool.asmx/AddDiary",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "text",
+			    	    data: data,
+                        type: "POST",
+                        async: false,
+                        success: function(check){
+			    	    	var message = (JSON.parse(check)).d;
+			    	    	if(message == "日記已儲存。"){
+			    	    		document.addEventListener("deviceready",function(){
+			    	    			SpinnerPlugin.activityStop();
+			    	    			navigator.notification.alert(
+                                        message,
+                                        null,
+                                        '與你相鬱好幸運',
+                                        '確定'
+                                    );
+			                    },false);
+			    	    		location.reload();
+			    	    	}else{
+			    	    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    	    		alert(message);
+			    	    	}
+			    	    },
+                        error: function(xhr, ajaxOptions, thrownError) {
+			    	    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    	    	if(thrownError.toString().slice(0,12) == "NetworkError")
+			    	    	{
+			    	    		document.addEventListener("deviceready",function(){
+			                        navigator.notification.alert(
+                                        '伺服器連線失敗，請檢查網路。',
+                                        null,
+                                        '⚠️ 錯誤',
+                                        '確定'
+                                    );
+			                    },false);
+			    	    	}else
+			    	    	{
+			    	    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    	    	}
+                        }
+                    });
+			    }
 			}
         }
    </script>
@@ -112,25 +138,32 @@
 				<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
             </div>
-          
-            <div id="content" data-role="content" align="center">
+            
+            <div style="padding-top: 3px" id="content" data-role="content" align="center">
 				<ul data-role=listview data-inset="true">
 				    <li data-role="list-divider"><font id="diarydate"></font></li>
+					<li>
+						<div id="motion" class="ui-grid-b">
+							<div onClick="getemotion(1)" class="ui-block-a"><img id="e1" width="50%" src="img/emotion001.webp"></div>
+							<div onClick="getemotion(2)" class="ui-block-b"><img id="e2" width="50%" src="img/emotion002.webp"></div>
+							<div onClick="getemotion(3)" class="ui-block-c"><img id="e3" width="50%" src="img/emotion003.webp"></div>
+							<div onClick="getemotion(4)" class="ui-block-d"><img id="e4" width="50%" src="img/emotion004.webp"></div>
+						</div>
+					</li>
 			        <li><textarea placeholder="請輸入日記內容" id="diarycontent" class="form-control"></textarea></li>
 			        <li><button type="button" id="btnsave">儲存</button></li>
 				</ul>
             </div>
             <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
-			<div data-role="navbar">
-            <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>測量</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
-            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
-            </ul>
+			    <div data-role="navbar">
+                    <ul>
+                        <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>檢測</a></li>
+                        <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
+                        <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
+                        <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        </div>
-         
+    </div>   
 </body>
 </html>

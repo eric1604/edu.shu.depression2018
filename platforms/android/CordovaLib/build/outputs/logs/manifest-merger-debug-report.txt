@@ -1,11 +1,23 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:22:1-110
-INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:22:1-110
-INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:22:1-110
+ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
+INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:1-22:12
 	package
-		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:22:70-98
+		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:21:7-35
+		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml
+		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml
+	android:versionName
+		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:21:36-61
 		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml
 		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:22:11-69
+		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:20:11-69
+	android:versionCode
+		ADDED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml:21:62-85
+		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml
+		INJECTED from E:\edu.shu.depression2018\platforms\android\CordovaLib\AndroidManifest.xml

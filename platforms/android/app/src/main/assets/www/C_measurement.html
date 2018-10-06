@@ -5,7 +5,7 @@
     <title>心靈觀測</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="./css/two.css" rel="stylesheet" type="text/css">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 </head>
@@ -31,8 +31,8 @@
 	{
 		if(window.localStorage["Name"] == null)
 		{
-			document.querySelectorAll("li")[2].style.opacity = "0.4";
-			document.querySelectorAll("li")[2].style.pointerEvents = "none";
+			document.getElementById("data").style.opacity = "0.4";
+			document.getElementById("data").style.pointerEvents = "none";
 		}
 	}
 </script>
@@ -46,16 +46,19 @@
         </div>
 		
         <div data-role="content">
-			<ul id="option" data-role="listview" data-inset="true">
+			<ul data-role="listview" data-inset="true">
 				<li data-icon="false"><a onClick="javascript: location.href='C_bsrs5.html'">心情檢測</a></li>
+				<li data-icon="false"><a onClick="javascript: location.href='C_phq9.html'">心靈健康</a></li>
 				<li data-icon="false"><a onClick="javascript: location.href='C_utb.html'">憂鬱測量</a></li>
+			</ul>
+			<ul id="data" data-role="listview" data-inset="true">
 				<li data-icon="false"><a onClick="javascript: location.href='C_export.html'">數據查詢</a></li>
 			</ul>
 			<table>
                 <tr>
-                   <td width="15%"></td>
-                   <td width="70%" ><img src="img/mood01.gif" width="100%"></td>
-                   <td width="15%" ></td>
+                   <td width="20%"></td>
+                   <td width="60%" ><img src="img/mood01.gif" width="100%"></td>
+                   <td width="20%" ></td>
                 </tr>
             </table>
         </div>
@@ -63,7 +66,7 @@
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>測量</a></li>
+            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>檢測</a></li>
             <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
             <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
             <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>

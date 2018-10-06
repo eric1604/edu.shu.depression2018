@@ -5,13 +5,15 @@
     <title>調閱紀錄</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="../css/two.css" rel="stylesheet" type="text/css">
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
   <style type="text/css">
-	  textarea{
-		  height: 150px !important;
-		  overflow-y: scroll;
+	  table{table-layout: fixed;}
+	  #recordcontent{
+		  word-wrap: break-word;
+		  background-color: aquamarine;
+		  padding: 5px;
 	  }
 	  #navrecord{visibility: hidden;}
 	  #info{
@@ -100,7 +102,8 @@
 			    		}else{
 			    			index = 0;
 			    			count = message.length;
-			    			$("#recordcontent").val(message[index]);
+							$("#recordcontent").attr("align","left");
+			    			$("#recordcontent").html(message[index]);
 			    			if(count != 0)
 			    			{
 								$("#info").html("找到" + count + "篇訪談紀錄。");
@@ -138,7 +141,7 @@
 			{
 				$("#nextrecord").removeAttr("disabled").button("refresh");
 				index--;
-				$("#recordcontent").val(message[index]);
+				$("#recordcontent").html(message[index]);
 			}
 			if(index == 0){$("#prevrecord").attr("disabled",true).button("refresh");}
 		}
@@ -149,7 +152,7 @@
 			{
 				$("#prevrecord").removeAttr("disabled").button("refresh");
 				index++;
-				$("#recordcontent").val(message[index]);
+				$("#recordcontent").html(message[index]);
 			}
 			if(index == (count-1)){$("#nextrecord").attr("disabled",true).button("refresh");}
 		}
@@ -167,7 +170,7 @@
 			function del()
 			{
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在刪除...");},false);
-			    var userData = {ID: window.localStorage["ID"],CurrentUser: window.localStorage["cUserID"],RecordContent: $("#recordcontent").val(),RecordDate: $("#recorddate").val()};
+			    var userData = {ID: window.localStorage["ID"],CurrentUser: window.localStorage["cUserID"],RecordContent: $("#recordcontent").html(),RecordDate: $("#recorddate").val()};
 			    var data = JSON.stringify(userData);
 			     
 			    $.ajax({
@@ -181,7 +184,8 @@
 			    		var message = (JSON.parse(check)).d;
 			    		if(message == "已刪除訪談。"){
 			    			document.addEventListener("deviceready",function(){
-			    				searchrecord();
+								if(index != 0){searchrecord();}
+								else{location.reload();}
 			    				SpinnerPlugin.activityStop();
 			    				navigator.notification.alert(
                                     message,
@@ -245,7 +249,7 @@
               		</tr>
 					<tr><td align="left" colspan="3"><p id="info"></p></td></tr>
               		<tr>
-           		        <td colspan="3"><textarea readonly placeholder="(日記內容)" id="recordcontent"></textarea></td>  
+           		        <td colspan="3"><div id="recordcontent">(訪談內容)</div></td>
 					</tr></tbody></table>
 			  <table align="center" width="90%" border="0">
 				<tbody align="center" valign="middle" style="height: auto">
@@ -260,7 +264,7 @@
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 		  <div data-role="navbar">
             <ul>
-                <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>測量</a></li>
+                <li><a id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>檢測</a></li>
                 <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
                 <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
             </ul>
