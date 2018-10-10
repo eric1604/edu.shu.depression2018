@@ -19,7 +19,10 @@
 		   font-size: 15px;
 		   background-color:#C3E056;
 	    }
-		#notify{font-size: 15px;}
+		#notify{
+			font-size: 15px;
+			display: none;
+		}
 		#lock{
 			font-size: 12px;
 			font-weight: bold;
@@ -27,10 +30,17 @@
 	</style>
 
     <script>
-		$(document).ready(function(){$("#btnlogout").click(logout)});
-		$(document).ready(function(){$("#btnmember").click(function(){location.href="../D_member.html";})});
-		$(document).ready(function(){$("#btnrecord").click(function(){location.href="F_RECORD.html";})});
 		$(document).ready(loadinfo);
+		$(document).ready(checkmsg);
+		$(document).ready(function(){
+			$("#btnlogout").click(logout);
+			$("#btnmember").click(function(){location.href="../D_member.html"});
+			$("#btnrecord").click(function(){location.href="F_RECORD.html";})
+			$("#notify a").click(function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			    location.href = "../message.html";
+			});
+		});
 		
 		var users;
 		
@@ -181,6 +191,45 @@
 			if(window.localStorage["cPrivacy"].charAt(3) == "0"){$("#btnE").attr("disabled","disabled");}
 		}
 		
+		function checkmsg(){
+			var userdata = {ID: window.localStorage["ID"],chk: true};
+			var data = JSON.stringify(userdata);
+			
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetMessage",
+                dataType: "text",
+				contentType: "application/json; charset=utf-8",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var msg = (JSON.parse(check)).d;
+					if(msg[0][0] >= 1)
+					{
+						$("#notify").css("display","block");
+						$("#noticount").html(msg[0][0]);
+					}
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+			});
+		}
+		
 		function logout(){
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("登出中...");},false);
 			var userData = {ID: window.localStorage["ID"]};
@@ -247,7 +296,7 @@
 	        <h1><img style="padding-top: 2px" src="../img/title01.webp" width="100%"></h1>
             <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
-			<span id="notify">您有<span id="noticount"></span>則諮商訊息&nbsp;&nbsp;<a onClick="javascript: location.href =''">查看</a></span>
+			<span id="notify">您有<span id="noticount"></span>則諮商訊息&nbsp;&nbsp;<a>查看</a></span>
 		 </div>
 
         <div data-role="content" >

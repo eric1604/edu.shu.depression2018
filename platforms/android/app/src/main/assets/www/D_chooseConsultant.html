@@ -79,50 +79,63 @@
 		
 		function updatecst(cstid)
 		{
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
-			var CST = {"ID": window.localStorage["ID"], "CST": cstid};
-			var data = JSON.stringify(CST);
+			document.addEventListener("deviceready",function(){
+				navigator.notification.prompt(
+					'請描述一下自己以及目前面臨的問題，讓諮商師更加了解你 !',
+					function(r){
+						if(r.buttonIndex == 1){
+							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
+			                var CST = {"ID": window.localStorage["ID"], "CST": cstid, "MSG": r.input1};
+			                var data = JSON.stringify(CST);
+			                
+			                $.ajax({
+			                	url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateCST",
+			                	contentType: "application/json; charset=utf-8",
+                                dataType: "text",
+			                	data: data,
+                                type: "POST",
+                                async: false,
+                                success: function(check){
+			                		if((JSON.parse(check)).d == "ok")
+			                		{
+			                			window.localStorage["CST"] = cstid;
+			                			document.addEventListener("deviceready",function(){
+			                				SpinnerPlugin.activityStop();
+			                                navigator.notification.alert(
+                                                '您已成功與諮商師連結 !',
+                                                function(){location.href="D_privacy.html";},
+                                                '搭起橋樑',
+                                                '確定'
+                                            );
+			                            },false);
+			                		}
+			                	},
+                                error: function(xhr, ajaxOptions, thrownError) {
+			                		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			                		if(thrownError.toString().slice(0,12) == "NetworkError")
+			                		{
+			                			document.addEventListener("deviceready",function(){
+			                                navigator.notification.alert(
+                                                '伺服器連線失敗，請檢查網路。',
+                                                null,
+                                                '⚠️ 錯誤',
+                                                '確定'
+                                            );
+			                            },false);
+			                		}else
+			                		{
+			                			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			                		}
+                                }
+			                });
+						}
+					},
+					'在開始之前',
+					['送出','取消'],
+					'我最近覺得...'
+				);
+			},false);
 			
-			$.ajax({
-				url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateCST",
-				contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					if((JSON.parse(check)).d == "ok")
-					{
-						window.localStorage["CST"] = cstid;
-						document.addEventListener("deviceready",function(){
-							SpinnerPlugin.activityStop();
-			                navigator.notification.alert(
-                                '您已成功與諮商師連結 !',
-                                function(){location.href="D_privacy.html";},
-                                '搭起橋樑',
-                                '確定'
-                            );
-			            },false);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-			});
 		}
 	</script>
 
