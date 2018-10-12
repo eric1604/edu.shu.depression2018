@@ -54,19 +54,32 @@
 					var msg = (JSON.parse(check)).d;
 					var title;
 					
-					for(i=0;i<msg.length;i++)
+					if(msg[0][0] == "目前沒有任何通知 !")
 					{
-						switch(msg[i][0]){
-					    	case "1":
-					    		title = "您有一則新的諮商請求 !"
-					    		break;
+						document.addEventListener("deviceready",function(){
+							navigator.notification.alert(
+								msg[0][0],
+								function(){location.href="consultant/MAIN.html";},
+								'與你相鬱好幸運',
+								'確定'
+							);
+						},false);
+					}else
+					{
+						for(i=0;i<msg.length;i++)
+					    {
+					    	switch(msg[i][1]){
+					        	case "new":
+					        		title = "您有一則新的諮商請求 !"
+					        		break;
+					        }
+					    	if(msg[i][3] != ""){imgsrc = msg[i][3];}
+					    	else{imgsrc = "img/member.webp";}
+					    	var newmsg = "<div data-role='collapsible' data-collapsed-icon='carat-d' data-expanded-icon='carat-u' data-inset='false'><h4>" + title + "</h4><table align='center' width='100%'><tr><td width='50px'><img src='" + imgsrc + "' width='100%'></td><td width='50%'><span class='name'>" + msg[i][2] + "</span><br/><span class='time'>" + msg[i][4] + "</span></td><td><input class='clean' onClick='delmsg(" + msg[i][0] + ")' type='button' data-mini='true' value='清除'></td></tr><tr><td colspan='3'><div class='msg'>" + msg[i][5] + "</div></td></tr></table></div>";
+					    	
+					    	$(".ui-content").append($(newmsg).collapsible());
+					    	$(".clean").button().button("refresh");
 					    }
-						if(msg[i][2] != ""){imgsrc = msg[i][2];}
-						else{imgsrc = "img/member.webp";}
-						var newmsg = "<div data-role='collapsible' data-collapsed-icon='carat-d' data-expanded-icon='carat-u' data-inset='false'><h4>" + title + "</h4><table align='center' width='100%'><tr><td width='50px'><img src='" + imgsrc + "' width='100%'></td><td width='50%'><span class='name'>" + msg[i][1] + "</span><br/><span class='time'>" + msg[i][3] + "</span></td><td><input class='clean' type='button' data-mini='true' value='清除'></td></tr><tr><td colspan='3'><div class='msg'>" + msg[i][4] + "</div></td></tr></table></div>";
-						
-						$(".ui-content").append($(newmsg).collapsible());
-						$(".clean").button().button("refresh");
 					}
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 				},
@@ -90,19 +103,52 @@
                 }
 			});
 		}
-		/*<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-inset="false">
-			    <h4></h4>
-			    <table align="center" width="100%">
-			    	<tr>
-			    		<td width="50px"><img width="100%"></td>
-			    		<td width="50%"><span class="name"></span><br/><span class="time"></span></td>
-						<td><input type="button" data-mini="true" value="清除"></td>
-			    	</tr>
-			    	<tr>
-			    		<td colspan="3"><div class="msg"></div></td>
-			    	</tr>
-			    </table>
-		    </div>*/
+		
+		function delmsg(dbid){
+			document.addEventListener("deviceready",function(){
+				navigator.notification.confirm(
+					'確定要清除這則通知嗎 ?',
+					function(btnIndex){if(btnIndex == 1){del();}},
+					'與你相鬱好幸運',
+					["確定","取消"]
+				);
+			},false);
+			
+			function del(){
+				var userData = {dbid: dbid};
+				var data = JSON.stringify(userData);
+				
+				$.ajax({
+					url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteMessage",
+                    dataType: "text",
+				    contentType: "application/json; charset=utf-8",
+				    data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+				    	var msg = (JSON.parse(check)).d;
+				    	if(msg == "ok"){location.reload();}
+				    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+				    	if(thrownError.toString().slice(0,12) == "NetworkError")
+				    	{
+				    		document.addEventListener("deviceready",function(){
+				    			history.back();
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+				    	}else
+				    	{
+				    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    	}
+                    }
+				});
+			}
+		}
 	</script>
 
 </head>
@@ -112,9 +158,7 @@
             <h1 onClick="getmsg()"><img style="padding-top: 4px" src="img/selectconstitle.webp" width="100%"></h1>
 			<a id="btnhome" class="ui-btn-right" style="top:12px" data-role="button" ><img src="img/home.webp" border="0"></a>
         </div>
-        
-		<div data-role="content">
-		</div>
+		<div data-role="content"></div>
     </div>
 </body>
 </html>

@@ -53,6 +53,11 @@
 						
 						$("#listcst").append(newcst).collapsibleset("refresh");
 						$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).button().button("refresh");
+						if(window.localStorage["CST"] == consultants[i].getElementsByTagName("string")[0].innerHTML)
+						{
+							$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).attr("disabled",true).button("refresh");
+							$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).val("您已選擇此諮商師").button("refresh");
+						}
 					}
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 				},
