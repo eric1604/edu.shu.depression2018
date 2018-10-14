@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width; initial-scale=1; charset=utf-8">
     <title>首頁</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -56,7 +56,7 @@
 				document.getElementById("showname").innerHTML = " " + window.localStorage["Name"];
 				if(window.localStorage["Image"] != null){document.getElementById("userimage").src = window.localStorage["Image"];}
 				document.getElementById("partner").src = "img/main_" + window.localStorage["Pet"] + ".gif";
-				if(window.localStorage["First"] == "true"){document.getElementById("image").src = "img/new000.webp";}
+				if(window.localStorage["Rookie"] == "r"){document.getElementById("image").src = "img/new000.webp";}
 			}else
 			{
 				$("#btnlogout").hide();
@@ -69,24 +69,24 @@
 		
 		function logout(){
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("登出中...");},false);
-			var userData = {ID: window.localStorage["ID"]};
-			var data = JSON.stringify(userData);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/Logout",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "ok"){
-						window.localStorage.clear();
-						window.localStorage["ID"] = "";
+			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
+			{
+			    var userData = {ID: window.localStorage["ID"], STATUS: "R"};
+			    var data = JSON.stringify(userData);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/Logout",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(){
+			    		window.localStorage.clear();
+			    		window.localStorage["ID"] = "";
 			            document.addEventListener("deviceready",function(){
-							location.reload();
-							SpinnerPlugin.activityStop();
+		 	                location.reload();
+			                SpinnerPlugin.activityStop();
                             navigator.notification.alert(
                                  '您已登出 !',
                                  null,
@@ -94,36 +94,47 @@
                                  '確定'
                             );
 			            },false);
-					}else{
-						SpinnerPlugin.activityStop();
-						alert(message);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}else
+			    		{
+			    			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		}
+                    }
+                });
+			}else
+			{
+				window.localStorage.clear();
+			    window.localStorage["ID"] = "";
+			    document.addEventListener("deviceready",function(){
+		 	        location.reload();
+			        SpinnerPlugin.activityStop();
+                    navigator.notification.alert(
+                         '您已登出 !',
+                         null,
+                         '與你相鬱好幸運',
+                         '確定'
+                    );
+			    },false);
+			}
 		}
 		
 		var c = 0;
         function next(){
 		    if(window.localStorage["Name"] != null)
 		    {
-				if(window.localStorage["First"] == "true")
+				if(window.localStorage["Rookie"] == "r")
 				{
 					c = (c + 1) % 3;
 			        document.getElementById("image").src = "img/new00" + c + ".webp";

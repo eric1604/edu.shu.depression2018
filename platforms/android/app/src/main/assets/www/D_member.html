@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1, charset=utf-8">
     <title>會員專區</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -24,15 +24,21 @@
   </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
-	$(document).ready(function(){$("#btnlogin").click(function(){location.href="login.html";})})
+	$(document).ready(function(){
+		$("#btnhome").click(function(){
+			if(window.localStorage["Mode"] == "諮商師"){location.href="consultant/MAIN.html";}
+			else{location.href="main.html";}
+		});
+		$("#btnlogin").click(function(){location.href="login.html";})
+	});
 	$("#btnlogin").css({height: "100px"});
 	$(document).ready(loadinfo);
 	
 	function backbtn(){
 		document.addEventListener("deviceready",function(){
 			document.addEventListener("backbutton",function(){
-				location.href="main.html";
+				if(window.localStorage["Mode"] == "諮商師"){location.href="consultant/MAIN.html";}
+			    else{location.href="main.html";}
 			},false);
 		},false);
 	}
@@ -43,7 +49,7 @@
 			if(window.localStorage["Mode"] == "諮商師")
 			{
 				document.querySelectorAll("span")[1].style.display = "none";
-				document.querySelectorAll("a")[3].setAttribute("onClick","javascript: location.href = './consultant/D_PRIVACY.html'");
+				document.querySelectorAll("li")[1].style.display = "none";
 				document.querySelectorAll("li")[3].style.display = "none";
 				$("#lv").listview("refresh");
 				document.querySelectorAll("li")[6].style.display = "none";

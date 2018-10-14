@@ -5,6 +5,7 @@
     <title>諮詢平台</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="./css/two.css" rel="stylesheet" type="text/css">
+	<link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -34,6 +35,7 @@
 				<a style="display: none"></a>
                 <a id="btnhome" style="top:12px" data-role="button" ><img src="img/home.webp" border="0"></a>
             </div>
+		
 
             <div data-role="content" data-type="vertical">
 				<ul id="option" data-role="listview" data-inset="true">
@@ -53,7 +55,7 @@
 			<div data-role="navbar">
             <ul>
             <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>檢測</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
+            <li><a class="ui-btn-active ui-state-persist" onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
             <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
             <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
             </ul>

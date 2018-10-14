@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
     <title>註冊新帳號</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link href="./node_modules/cropper/dist/cropper.css" rel="stylesheet">
@@ -102,7 +102,7 @@
 			    			window.localStorage["ID"] = $("#ID").val();
 			    			window.localStorage["Mode"] = MODE[parseInt($("#MODE").val())-1];
 			    			window.localStorage["Name"] = $("#NAME").val();
-							window.localStorage["First"] = "true";
+							window.localStorage["Rookie"] = "r";
 			    			if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
 			    			if($("#MODE").val() == "2")
 			    			{

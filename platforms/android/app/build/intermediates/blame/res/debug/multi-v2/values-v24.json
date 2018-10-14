@@ -4,7 +4,7 @@
             "outputFile": "E:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\eric8\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\76d1ad93cf1c4b458f6592061b4baf2f\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\eric8\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\6ee3c7bf9f3cff8076bb53b9b5ca26c7\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

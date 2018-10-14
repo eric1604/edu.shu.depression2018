@@ -13,7 +13,7 @@
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
     <style type="text/css">
-	  #info{
+	  .info{
 		  background-color: aquamarine;
 		  font-size: 15px;
 	  }
@@ -23,16 +23,51 @@
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){
-		    if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
-		       else{location.href="main.html";}
-	    })});
-		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
-		$(document).ready(function(){$("#btnchange").click(update)});
-		$(document).ready(function(){$("#btnchoose").click(function(){document.getElementById("inputimg").click();})});
+		$(document).on("mobileinit",function(){$.mobile.autoInitializePage=false;});
 		$(document).ready(function(){
+			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
+			{
+				if(window.localStorage["Mode"] == "諮商師")
+				{
+					window.location.hash="pagecstdata";
+					$(".n").css("opacity","0.4");
+			        $(".n").css("pointerEvents","none");
+					$(".btnprev").css("display","none");
+			        $(".btnhome").css("display","none");
+				}
+				else{window.location.hash="pageuserdata";}
+			    $.mobile.initializePage();
+			    $(".dbtnchange").attr("value","送出");
+			}
+			if(window.localStorage["Mode"] == "諮商師")
+			{
+				$(".data").attr("href","#pagecstdata");
+				$("#contaceprev").attr("href","#pagecstdata");
+			}
+			$(".btnprev").click(function(){location.href="D_member.html";});
+			$(".btnhome").click(function(){
+				if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
+				else{location.href="main.html";}
+			});
+			$(".label").css({fontWeight:"bold"});
+			$("#btnchange").click(update);
+			getlocation();
+			getconsulttype();
+			
+			$("#btnchoose").click(function(){document.getElementById("inputimg").click();});
 			if(window.localStorage["Mode"] == "諮商師"){$("#petlbl").css("display","none");}
+		});
+		$(document).delegate("#pagecontact","pageshow",function(){
+			if(window.localStorage["Mode"] == "諮商師"){a = "諮商對象";}
+			else{a = "諮商師";}
+			document.addEventListener("deviceready",function(){
+				navigator.notification.alert(
+					'您可選擇一種聯絡管道，讓您的' + a + '在特殊情況時能與您直接聯繫。 \n\n請自行評估是否要填寫此資訊。',
+					null,
+					'填寫聯絡資訊',
+					'確定'
+				);
+			},false);
 		});
 		
 		var image;
@@ -133,20 +168,246 @@
                 }
             });
         }
+		
+		function getlocation()
+		{
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetLocation",
+				dataType: "xml",
+				type: "GET",
+				async: false,
+				success: function(check){
+					var locations = check.firstChild.getElementsByTagName("ArrayOfString");
+					for(i=0;i<locations.length;i++){
+						$("<option/>",{
+							"value": locations[i].getElementsByTagName("string")[0].innerHTML,
+							"text": locations[i].getElementsByTagName("string")[1].innerHTML
+						}).appendTo(".CITY");
+					}
+				},
+				error: function(){
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+				}
+			});
+		}
+		
+		function getconsulttype()
+		{
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetConsultType",
+				dataType: "xml",
+				type: "GET",
+				async: false,
+				success: function(check){
+					var types = check.firstChild.getElementsByTagName("ArrayOfString");
+					for(i=0;i<types.length;i++){
+						$("#UTYPE").append("<input id='" + types[i].getElementsByTagName("string")[0].innerHTML + "' type='checkbox'><label for='" + types[i].getElementsByTagName("string")[0].innerHTML + "'>" + types[i].getElementsByTagName("string")[1].innerHTML + "</label>");
+					}
+				},
+				error: function(){
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+				}
+			});
+		}
+		
+		function updatedata(usermode)
+        {
+			var first = "";
+			if(window.localStorage["Rookie"] != undefined){first = window.localStorage["Rookie"];}
+			
+			if(usermode == "u")
+			{
+				var TYPE = "";
+				for(i=1;i<$("input[type='checkbox']").length;i++)//the first checkbox was deducted.
+				{
+					if($("input[type='checkbox']").eq(i).prop("checked") == true){TYPE += $("input[type='checkbox']").eq(i).attr("id");}
+				}
+				if(($("#UNAME").val() == "" || $("input[type='radio']:checked").val() == undefined || $("#UAGE").val() == null || $("#UCITY").val() == null || TYPE == "" || $("#UNOTE").val() == "") && (window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R"))
+			    {
+			    	document.addEventListener("deviceready",function(){
+			            navigator.notification.alert(
+                            '部分的資料尚未填寫 !',
+                            null,
+                            '似乎少了些什麼',
+                            '確定'
+                        );
+			        },false);
+			    }else
+			    {
+					var uloca = "";
+					var uage = "";
+					var usex = "";
+					if($("input[type='radio']:checked").val() != undefined){usex = $("input[type='radio']:checked").val();}
+					if($("#UAGE").val() != null){uage = $("#UAGE").val();}
+					if($("#UCITY").val() != null){uloca = $("#UCITY").val();}
+			    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("儲存中...");},false);
+					
+			        var udt = {FIRST: first, ID: window.localStorage["ID"], REALNAME: $("#UNAME").val(), SEX: usex, AGE: uage, LOCATION: uloca, TYPE: TYPE, NOTE: $("#UNOTE").val()};
+			        var udata = JSON.stringify(udt);
+			         
+			        $.ajax({
+                        url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateUser",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "text",
+			        	data: udata,
+                        type: "POST",
+                        async: false,
+                        success: function(check){
+			        		var uname = (JSON.parse(check)).d;
+			    			var msg;
+			    			if(uname == $("#UNAME").val())
+			    			{
+			    				msg = "相關資料已建立 !";
+			    				window.localStorage["Rookie"] = "";
+			    			}else if(uname == "沒有資料需要更改。"){msg = uname;}
+			    			else{msg = "已成功更改" + uname;}
+			    			
+			        		location.reload();
+			        		document.addEventListener("deviceready",function(){
+			        			SpinnerPlugin.activityStop();
+			                    navigator.notification.alert(
+                                    msg,
+                                    null,
+                                    '更改完成',
+                                    '確定'
+                                );
+			                },false);
+			        	},
+                        error: function(xhr, ajaxOptions, thrownError) {
+			        		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			        		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		    {
+			    		    	document.addEventListener("deviceready",function(){
+			                        navigator.notification.alert(
+                                        '伺服器連線失敗，請檢查網路。',
+                                        null,
+                                        '⚠️ 錯誤',
+                                        '確定'
+                                    );
+			                    },false);
+			    		    }else
+			    		    {
+			    		    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		    }
+                        }
+                    });
+			    }
+			}else
+			{
+				if(($("#CCITY").val() == null || $("#CNAME").val() == "" || $("#CEXPERTISE").val() == "" || $("#CEXP").val() == "" || $("#CMESSAGE").val() == "") && (window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R"))
+			    {
+			    	document.addEventListener("deviceready",function(){
+			            navigator.notification.alert(
+                            '部分的資料尚未填寫 !',
+                            null,
+                            '似乎少了些什麼',
+                            '確定'
+                        );
+			        },false);
+			    }else
+			    {
+					var cloca = "";
+					if($("#CCITY").val() != null){cloca = $("#CCITY").val();}
+			    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("儲存中...");},false);
+					
+			        var cdt = {FIRST: first, ID: window.localStorage["ID"], LOCATION: cloca, REALNAME: $("#CNAME").val(), EXPERTISE: $("#CEXPERTISE").val(), EXP: $("#CEXP").val(), MESSAGE: $("#CMESSAGE").val()};
+			        var cdata = JSON.stringify(cdt);
+			         
+			        $.ajax({
+                        url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateConsultant",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "text",
+			        	data: cdata,
+                        type: "POST",
+                        async: false,
+                        success: function(check){
+			        		var cname = (JSON.parse(check)).d;
+			    			var msg;
+			    			if(cname == $("#CNAME").val())
+			    			{
+			    				msg = "相關資料已建立 !";
+			    				window.localStorage["Rookie"] = "";
+			    			}else if(cname == "沒有資料需要更改。"){msg = cname;}
+			    			else{msg = "已成功更改" + cname;}
+			    			
+			        		location.reload();
+			        		document.addEventListener("deviceready",function(){
+			        			SpinnerPlugin.activityStop();
+			                    navigator.notification.alert(
+                                    msg,
+                                    null,
+                                    '更改完成',
+                                    '確定'
+                                );
+			                },false);
+			        	},
+                        error: function(xhr, ajaxOptions, thrownError) {
+			        		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			        		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		    {
+			    		    	document.addEventListener("deviceready",function(){
+			                        navigator.notification.alert(
+                                        '伺服器連線失敗，請檢查網路。',
+                                        null,
+                                        '⚠️ 錯誤',
+                                        '確定'
+                                    );
+			                    },false);
+			    		    }else
+			    		    {
+			    		    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		    }
+                        }
+                    });
+			    }
+			}
+        }
 	</script>
 
 </head>
 <body onLoad="backbtn()">
-    <div data-role="page" id="pageone">
-        <div style="font-size:10px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-            <h1><img style="padding-top: 12px" src="img/memberchangtitlle.webp" width="100%"></h1>
-			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
-            <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
-			<span id="info">&nbsp;不需更改的項目請留白&nbsp;</span>
+    <div data-role="page" id="pageacc">
+        <div style="font-size:22px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 6px" src="img/memberchangtitlle.webp" width="100%"></h1>
+			<a class="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+            <a class="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
         </div>
         
         <div align="center" data-role="content">
-			<br/>
+			<div data-role="navbar">
+				<ul>
+					<li><a class="ui-btn-active ui-state-persist" href="#pageacc">帳號資料</a></li>
+					<li><a class="data" href="#pageuserdata">個人資料</a></li>
+				</ul>
+			</div><br/>
             <table width="90%" align="center" border="0">
             	<tbody align="center" valign="middle" style="height: auto">
             		<tr>
@@ -177,6 +438,131 @@
             </table>
 		</div>
     </div>
+	<div data-role="page" id="pageuserdata">
+        <div style="font-size:22px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 6px" src="img/memberchangtitlle.webp" width="100%"></h1>
+			<a class="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+            <a class="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
+        </div>
+        
+        <div align="center" data-role="content">
+			<div class="n" data-role="navbar">
+				<ul>
+					<li><a href="#pageacc">帳號資料</a></li>
+					<li><a class="ui-btn-active ui-state-persist data" href="#pageuserdata">個人資料</a></li>
+				</ul>
+			</div>
+			<table width="90%" align="center">
+            	<tr>
+            	   <td width="25%" class="label">真實姓名&nbsp;</td>
+            	   <td colspan="2"><input type="text" id="UNAME"/></td>
+            	</tr>
+		        <tr>
+            	   <td width="25%" class="label">生理性別&nbsp;</td>
+            	   <td><input data-mini="true" id="chkm" name="sex" value="男" type="radio"><label for="chkm">男性</label></td>
+				   <td><input data-mini="true" id="chkf" name="sex" value="女" type="radio"><label for="chkf">女性</label></td>
+            	</tr>
+		    	<tr>
+                   <td class="label">年齡區間&nbsp;</td>
+                   <td colspan="2">
+		    	       <select data-mini="true" id="UAGE">
+					       <option selected hidden disabled>請選擇</option>
+					       <option value="14-">14歲(含)以下</option>
+					       <option value="15-24">15-24歲</option>
+					       <option value="25-44">25-44歲</option>
+					       <option value="45-64">45-64歲</option>
+					       <option value="65+">65歲(含)以上</option>
+		    	       </select>
+		    	   </td>
+                </tr>
+		        <tr>
+                   <td class="label">居住地區&nbsp;</td>
+		    	   <td colspan="2">
+		    	       <select data-mini="true" class="CITY" id="UCITY">
+					       <option selected hidden disabled>請選擇</option>
+		    	       </select>
+		    	   </td>
+                </tr>
+            	<tr>
+                   <td class="label">遭遇困擾&nbsp;</td>
+                   <td colspan="2">
+					   <div id="UTYPE" data-role="collapsible" data-mini="true">
+						   <h4>請選擇</h4>
+					   </div>
+				   </td>
+                </tr>
+		    	<tr>
+                   <td class="label">其他備註&nbsp;</td>
+                   <td colspan="2"><textarea id="UNOTE"></textarea></td>
+                </tr>
+            </table>
+            <table width="90%" align="center">
+				<tr>
+				   <td width="40%"><a href="#pagecontact" data-role="button">聯絡資訊</a></td>
+            	   <td><input class="dbtnchange" onClick="updatedata('u')" type="button" value="更改"/></td>
+            	</tr>
+	        </table>
+		</div>
+    </div>
+	<div data-role="page" id="pagecstdata">
+        <div style="font-size:22px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 6px" src="img/memberchangtitlle.webp" width="100%"></h1>
+			<a class="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+            <a class="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
+        </div>
+        
+        <div align="center" data-role="content">
+			<div class="n" data-role="navbar">
+				<ul>
+					<li><a href="#pageacc">帳號資料</a></li>
+					<li><a class="ui-btn-active ui-state-persist data" href="#pageuserdata">個人資料</a></li>
+				</ul>
+			</div><br/>
+            <table width="90%" align="center">
+		    	<tr>
+                   <td class="label">居住地區&nbsp;</td>
+		    	   <td>
+		    	       <select data-mini="true" class="CITY" id="CCITY">
+					       <option selected hidden disabled>請選擇</option>
+		    	       </select>
+		    	   </td>
+                </tr>
+            	<tr>
+            	   <td width="25%" class="label">真實姓名&nbsp;</td>
+            	   <td><input type="text" id="CNAME"/></td>
+            	</tr>
+		    	<tr>
+                   <td class="label">專長取向&nbsp;</td>
+                   <td><input type="text" id="CEXPERTISE"/></td>
+                </tr>
+            	<tr>
+                   <td class="label">相關經歷&nbsp;</td>
+                   <td><textarea id="CEXP"></textarea></td>
+                </tr>
+		    	<tr>
+                   <td class="label">個性小語&nbsp;</td>
+                   <td><textarea id="CMESSAGE"></textarea></td>
+                </tr>
+            </table>
+	        <table width="90%" align="center">
+				<tr>
+				   <td width="40%"><a href="#pagecontact" data-role="button">聯絡資訊</a></td>
+            	   <td><input class="dbtnchange" onClick="updatedata('c')" type="button" value="更改"/></td>
+            	</tr>
+	        </table>
+		</div>
+    </div>
+    <div data-role="page" id="pagecontact">
+        <div style="font-size:22px;text-align: center" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 6px" src="img/memberchangtitlle.webp" width="100%"></h1>
+			<a href="#pageuserdata" id="contaceprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+            <a class="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
+        </div>
+        
+        <div align="center" data-role="content">
+			
+            
+		</div>
+    </div>
 </body>
 </html>
-

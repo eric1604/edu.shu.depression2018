@@ -49,7 +49,7 @@
 						if(consultants[i].getElementsByTagName("string")[1].innerHTML != ""){imgsrc = consultants[i].getElementsByTagName("string")[1].innerHTML;}
 						else{imgsrc = "./img/member.webp";}
 						var newcst = 
-							"<div id='div" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' data-role='collapsible'><h4>" + consultants[i].getElementsByTagName("string")[2].innerHTML + "</h4><div class='cstfile'><table align='center' width='98%'><tr><td style='padding-right: 10px' width='40%'><img width='100%' class='cstimage' src='" + imgsrc + "'></td><td><span class='lbl'>地區</span>&nbsp;<strong class='cstlcn'>" + consultants[i].getElementsByTagName("string")[3].innerHTML + "</strong><br/><span class='ftop'><span class='lbl'>專長</span>&nbsp;<strong class='cstept'>" + consultants[i].getElementsByTagName("string")[4].innerHTML + "</strong></span></td></tr></table><table align='center' width='98%'><tr><td width='35px'><span class='lbl'>經歷</span></td><td colspan='2'><strong class='cstexp'>" + consultants[i].getElementsByTagName("string")[5].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>小語</span></td><td colspan='2'><strong class='cstmsg'>" + consultants[i].getElementsByTagName("string")[6].innerHTML + "</strong></td></tr><tr><td colspan='3'><input id='" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' type='button' onClick='javascript: updatecst(this.id)' value='選擇此諮商師'></td></tr></table></div></div>";
+							"<div id='div" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' data-role='collapsible'><h4>" + consultants[i].getElementsByTagName("string")[2].innerHTML + "</h4><div class='cstfile'><table align='center' width='98%'><tr><td style='padding-right: 10px' width='30%'><img width='100%' class='cstimage' src='" + imgsrc + "'></td><td><span class='lbl'>地區</span>&nbsp;<strong class='cstlcn'>" + consultants[i].getElementsByTagName("string")[3].innerHTML + "</strong><br/><span class='ftop'><span class='lbl'>專長</span>&nbsp;<strong class='cstept'>" + consultants[i].getElementsByTagName("string")[4].innerHTML + "</strong></span></td></tr></table><table align='center' width='98%'><tr><td width='35px'><span class='lbl'>經歷</span></td><td colspan='2'><strong class='cstexp'>" + consultants[i].getElementsByTagName("string")[5].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>小語</span></td><td colspan='2'><strong class='cstmsg'>" + consultants[i].getElementsByTagName("string")[6].innerHTML + "</strong></td></tr><tr><td colspan='3'><input id='" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' type='button' onClick='javascript: updatecst(this.id)' value='選擇此諮商師'></td></tr></table></div></div>";
 						
 						$("#listcst").append(newcst).collapsibleset("refresh");
 						$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).button().button("refresh");
@@ -90,7 +90,7 @@
 					function(r){
 						if(r.buttonIndex == 1){
 							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
-			                var CST = {"ID": window.localStorage["ID"], "CST": cstid, "MSG": r.input1};
+			                var CST = {"ID": window.localStorage["ID"], "CST": cstid, "EXCST": window.localStorage["CST"], "MSG": r.input1};
 			                var data = JSON.stringify(CST);
 			                
 			                $.ajax({
@@ -151,6 +151,7 @@
             <h1><img style="padding-top: 4px" src="img/selectconstitle.webp" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
         </div>
+		
         
         <div data-role="content">
 			<div id="listcst" data-role="collapsible-set"></div>

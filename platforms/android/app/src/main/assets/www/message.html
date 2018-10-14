@@ -70,12 +70,20 @@
 					    {
 					    	switch(msg[i][1]){
 					        	case "new":
-					        		title = "您有一則新的諮商請求 !"
+					        		title = "您有一位新的諮商對象 !"
 					        		break;
+								case "chg":
+									title = "一位諮商對象已更換諮商師。"
 					        }
 					    	if(msg[i][3] != ""){imgsrc = msg[i][3];}
 					    	else{imgsrc = "img/member.webp";}
+							
 					    	var newmsg = "<div data-role='collapsible' data-collapsed-icon='carat-d' data-expanded-icon='carat-u' data-inset='false'><h4>" + title + "</h4><table align='center' width='100%'><tr><td width='50px'><img src='" + imgsrc + "' width='100%'></td><td width='50%'><span class='name'>" + msg[i][2] + "</span><br/><span class='time'>" + msg[i][4] + "</span></td><td><input class='clean' onClick='delmsg(" + msg[i][0] + ")' type='button' data-mini='true' value='清除'></td></tr><tr><td colspan='3'><div class='msg'>" + msg[i][5] + "</div></td></tr></table></div>";
+							
+							if(msg[i][5] == "")
+							{
+								newmsg = "<div data-role='collapsible' data-collapsed-icon='carat-d' data-expanded-icon='carat-u' data-inset='false'><h4>" + title + "</h4><table align='center' width='100%'><tr><td width='50px'><img src='" + imgsrc + "' width='100%'></td><td width='50%'><span class='name'>" + msg[i][2] + "</span><br/><span class='time'>" + msg[i][4] + "</span></td><td><input class='clean' onClick='delmsg(" + msg[i][0] + ")' type='button' data-mini='true' value='清除'></td></tr></table></div>";
+							}
 					    	
 					    	$(".ui-content").append($(newmsg).collapsible());
 					    	$(".clean").button().button("refresh");
@@ -125,10 +133,7 @@
 				    data: data,
                     type: "POST",
                     async: false,
-                    success: function(check){
-				    	var msg = (JSON.parse(check)).d;
-				    	if(msg == "ok"){location.reload();}
-				    },
+                    success: function(){location.reload();},
                     error: function(xhr, ajaxOptions, thrownError) {
 				    	if(thrownError.toString().slice(0,12) == "NetworkError")
 				    	{
@@ -160,6 +165,7 @@
         </div>
 		<div data-role="content"></div>
     </div>
+	
 </body>
 </html>
 

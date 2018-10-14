@@ -5,6 +5,7 @@
     <title>首頁</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link href="../css/two.css" rel="stylesheet" type="text/css">
+	<link href="../css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
@@ -15,7 +16,7 @@
 		#btnlogout{right: 10px; top: 10px;}
 		#showname{vertical-align: super;}
 		#pageone{position: fixed;}
-		table{padding-top: 3%;}
+		table{padding-top: 5%;}
 		#lblspan{
 		   font-size: 15px;
 		   background-color:#C3E056;
@@ -61,12 +62,12 @@
 		}
 		
 		function loadinfo(){
-			if(window.localStorage["First"] == "true")
+			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
 			{
 				document.addEventListener("deviceready",function(){
                      navigator.notification.alert(
                           '為了使您的諮商對象更了解您 \n請先填寫一些資料 !',
-                          function(){location.href = "./D_PRIVACY.html";},
+                          function(){location.href = "../D_updatedata.html";},
                           '歡迎使用，諮商師 !',
                           '確定'
                      );
@@ -233,23 +234,23 @@
 		
 		function logout(){
 			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("登出中...");},false);
-			var userData = {ID: window.localStorage["ID"]};
-			var data = JSON.stringify(userData);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/Logout",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "ok"){
-						window.localStorage.clear();
+			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
+			{
+			    var userData = {ID: window.localStorage["ID"], STATUS: "R"};
+			    var data = JSON.stringify(userData);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/Logout",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(){
+			    		window.localStorage.clear();
 			            document.addEventListener("deviceready",function(){
-							location.href = "../main.html";
-							SpinnerPlugin.activityStop();
+		 	                location.reload();
+			                SpinnerPlugin.activityStop();
                             navigator.notification.alert(
                                  '您已登出 !',
                                  null,
@@ -257,29 +258,39 @@
                                  '確定'
                             );
 			            },false);
-					}else{
-						SpinnerPlugin.activityStop();
-						alert(message);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}else
+			    		{
+			    			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		}
+                    }
+                });
+			}else
+			{
+				window.localStorage.clear();
+			    document.addEventListener("deviceready",function(){
+		 	        location.reload();
+			        SpinnerPlugin.activityStop();
+                    navigator.notification.alert(
+                         '您已登出 !',
+                         null,
+                         '與你相鬱好幸運',
+                         '確定'
+                    );
+			    },false);
+			}
 		}
 		
 		var id = 1;
@@ -299,6 +310,7 @@
             <a id="btnlogout" data-role="button">登出</a>
 			<span id="notify">您有<span id="noticount"></span>則系統通知&nbsp;&nbsp;<a>查看</a></span>
 		 </div>
+		
 
         <div data-role="content" >
 		   <table align="center" width="90%">

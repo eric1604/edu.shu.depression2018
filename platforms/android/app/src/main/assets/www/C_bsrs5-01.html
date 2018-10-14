@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
     <title>心情檢測表</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -14,19 +14,30 @@
   	</style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnexit").click(function(){
+		$(document).ready(function(){
+			$("#btnnext").click(bsrs5count);
+			$("#btnexit").click(function(){
+			    document.addEventListener("deviceready",function(){
+			    	navigator.notification.confirm(
+			    		'您要中止這次檢測嗎 ?',
+			    		function(btnIndex){
+			    			if(btnIndex == 1){location.href="C_measurement.html";}
+			    		},
+			    		'就差一點點了',
+			    		['是的','不']
+			    	);
+			    },false);
+			});
+			
 			document.addEventListener("deviceready",function(){
-				navigator.notification.confirm(
-					'您要中止這次檢測嗎 ?',
-					function(btnIndex){
-						if(btnIndex == 1){location.href="C_measurement.html";}
-					},
-					'就差一點點了',
-					['是的','不']
+				navigator.notification.alert(
+					'請仔細回想在最近一星期中(包括今天)，以下問題使您感到困擾或苦惱的程度，然後圈選一個您認為最能代表您感覺的答案。',
+					null,
+					'歡迎來到心情檢測',
+					'我知道了'
 				);
 			},false);
-		})});
-		$(document).ready(function(){$("#btnnext").click(bsrs5count)});
+		});
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){

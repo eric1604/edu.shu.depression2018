@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
     <title>諮商設定</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="./css/two.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -109,6 +109,19 @@
 			    },false);
 			}else
 			{
+				if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
+				{
+					document.addEventListener("deviceready",function(){
+				    navigator.notification.confirm(
+				    	'看來您還沒填寫個人資料 ! \n要現在填寫嗎 ?',
+				    	function(btnIndex){
+				    		if(btnIndex == 1){location.href="D_updatedata.html";}
+				    	},
+				    	'似乎少了些什麼',
+				    	['好的','等一下']
+				    );
+			    },false);
+				}
 				document.getElementsByClassName("optContainer")[0].style.visibility = "visible";
 				$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
 			    $("#PHQ9").val(window.localStorage["Privacy"].charAt(1)).flipswitch("refresh");
