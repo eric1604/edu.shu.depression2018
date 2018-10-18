@@ -13,18 +13,51 @@
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
     <style type="text/css">
-	  .info{
-		  background-color: aquamarine;
-		  font-size: 15px;
-	  }
-	  table{padding-top: 0px;}
-	  #prvlbl{visibility: hidden;}
-	  #preview{display: none;}
+		.label{font-weight: bold;}
+	    .info{
+		    background-color: aquamarine;
+		    font-size: 15px;
+	    }
+	    table{padding-top: 0px;}
+	    #prvlbl{visibility: hidden;}
+	    #preview{display: none;}
+	    #warn{
+		    background-color: antiquewhite;
+		    width: 96%;
+	    	height: 143px;
+	    }
+		#warn span:nth-child(1){
+			background-color: indianred;
+			display: inline-block;
+			margin: 5px;
+			padding: 3px;
+			font-size: 18px;
+			color: white;
+		}
+		#warn span:nth-child(3){
+			font-size: 15px;
+			display: inline-block;
+			margin: 0 5px;
+		}
+		.icon{
+			position: absolute;
+			top: 12px;
+		}
+		.iw::before{content: "\a0\a0\a0\a0\a0\a0";}
+		#icon8{
+			font-size: 10px;
+			text-decoration: none;
+		}
+		#pagecontact table:nth-child(3){visibility: hidden;}
     </style>
     
     <script type="text/javascript">
 		$(document).on("mobileinit",function(){$.mobile.autoInitializePage=false;});
 		$(document).ready(function(){
+			getlocation();
+			getconsulttype();
+			loaddata(window.localStorage["Mode"]);
+			
 			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
 			{
 				if(window.localStorage["Mode"] == "諮商師")
@@ -49,31 +82,33 @@
 				if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
 				else{location.href="main.html";}
 			});
-			$(".label").css({fontWeight:"bold"});
 			$("#btnchange").click(update);
-			getlocation();
-			getconsulttype();
 			
 			$("#btnchoose").click(function(){document.getElementById("inputimg").click();});
 			if(window.localStorage["Mode"] == "諮商師"){$("#petlbl").css("display","none");}
 		});
 		$(document).delegate("#pagecontact","pageshow",function(){
-			if(window.localStorage["Mode"] == "諮商師"){a = "諮商對象";}
-			else{a = "諮商師";}
-			document.addEventListener("deviceready",function(){
-				navigator.notification.alert(
-					'您可選擇一種聯絡管道，讓您的' + a + '在特殊情況時能與您直接聯繫。 \n\n請自行評估是否要填寫此資訊。',
-					null,
-					'填寫聯絡資訊',
-					'確定'
-				);
-			},false);
+			if(window.localStorage["datastat"].charAt(0) == "0")
+			{
+				if(window.localStorage["Mode"] == "諮商師"){a = "諮商對象";}
+			    else{a = "諮商師";}
+			    document.addEventListener("deviceready",function(){
+			    	navigator.notification.alert(
+			    		'您可選擇一種聯絡管道，讓您的' + a + '在特殊情況時能與您直接聯繫。 \n\n請自行評估是否要填寫此資訊。',
+			    		null,
+			    		'填寫聯絡資訊',
+			    		'確定'
+			    	);
+			    },false);
+			}
 		});
 		
 		var image;
 		var imagebase64 = "";
 		var noimg = 0;
 		var delimg = document.querySelector("input[id=delimg]");
+		var inputtype;
+		var contacttype;
 
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -83,91 +118,6 @@
 			},false);
 			$("#inputimg").hide();
 		}
-		
-		function getimage()
-		{
-			noimg = 2;
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("圖片載入中...");},false);
-			$(".imglbl").css("display","none");
-			document.querySelector("label").style.display = "none";
-            var preview = document.getElementById("preview");
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-
-            reader.addEventListener("load", function(){
-			  document.getElementById("preview").style.display = "block";
-              preview.src = reader.result;
-			  $("#preview").cropper({
-				  viewMode: 1,
-				  aspectRatio: 1/1,
-				  zoomable: false,
-				  rotatable: false,
-				  crop: function(){document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);}
-			  })
-            }, false);
-			
-            if (file){reader.readAsDataURL(file);}
-        }
-		
-		function update()
-        {
-			if(noimg == 2)
-			{
-				noimg = 0;
-				image = $("#preview").cropper("getCroppedCanvas");
-			    imagebase64 = image.toDataURL('image/webp');
-			}
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			if($("#delimg").prop("checked") && imagebase64 == ""){imagebase64 = "";noimg = 1;}
-			var newName = {ID: window.localStorage["ID"],NAME: $("#NEWNAME").val(),PWD: $("#PWD").val(),PETNAME: $("#petname").val(),IMAGE: imagebase64,noimg: noimg};
-			var data = JSON.stringify(newName);
-			 
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateData",
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					if($("#NEWNAME").val() != ""){window.localStorage["Name"] = $("#NEWNAME").val();}
-					if($("#petname").val() != ""){window.localStorage["Petname"] = $("#petname").val();}
-					if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
-					else if(noimg == 1)
-					{
-						if(window.localStorage["Mode"] == "諮商師"){window.localStorage["Image"] = "../img/member.webp";}
-						else{window.localStorage["Image"] = "img/member.webp";}
-					}
-					var name = (JSON.parse(check)).d;
-					document.addEventListener("deviceready",function(){
-						    SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                name,
-                                function(){location.reload();},
-                                '更改完成',
-                                '確定'
-                            );
-			            },false);
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
-        }
 		
 		function getlocation()
 		{
@@ -214,8 +164,10 @@
 				async: false,
 				success: function(check){
 					var types = check.firstChild.getElementsByTagName("ArrayOfString");
+					var change = "";
 					for(i=0;i<types.length;i++){
-						$("#UTYPE").append("<input id='" + types[i].getElementsByTagName("string")[0].innerHTML + "' type='checkbox'><label for='" + types[i].getElementsByTagName("string")[0].innerHTML + "'>" + types[i].getElementsByTagName("string")[1].innerHTML + "</label>");
+						if(i == 0){change = "onChange='clean(this)'";}else{change = "";}
+						$("#UTYPE").append("<input " + change + " id='" + types[i].getElementsByTagName("string")[0].innerHTML + "' type='checkbox'><label for='" + types[i].getElementsByTagName("string")[0].innerHTML + "'>" + types[i].getElementsByTagName("string")[1].innerHTML + "</label>");
 					}
 				},
 				error: function(){
@@ -237,6 +189,195 @@
 				}
 			});
 		}
+		
+		function loaddata(mode)
+		{
+			var userdata = {MODE: mode, ID: window.localStorage["ID"]};
+			var data = JSON.stringify(userdata);
+			
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/LoadData",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			    data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+			       	var DATA = (JSON.parse(check)).d;
+			   		var dACC = DATA[0];
+					var dCONTACT = DATA[1];
+			   		var dDATA = DATA[2];
+					
+					var datastat = "";
+					
+					$("#NEWNAME").val(dACC[0]);
+					$("#PWD").val(dACC[1]);
+					$("#petname").val(dACC[2]);
+					if(window.localStorage["Image"] != undefined){$("#btnchoose").attr("value","更改照片").button("refresh");}
+					
+					if(dCONTACT[0] != null)
+					{
+						datastat += "1";
+						$("#pagecontact table:nth-child(3)").css("visibility","visible");
+				        $("#DEL").removeAttr("disabled");
+						
+						$("#SAVE").attr("value","更改");
+						initialcontact(dCONTACT[0],"1");
+						$("#contactdata").val(dCONTACT[1]);
+					}else{datastat += "0";}
+					
+					if(dDATA[0] != null)
+					{
+						datastat += "1";
+						if(window.localStorage["Mode"] == "諮商師")
+						{
+							$("#CNAME").val(dDATA[0]);
+							$("#CCITY").val(dDATA[1]);
+							$("#CEXPERTISE").val(dDATA[2]);
+							$("#CEXP").val(dDATA[3]);
+							$("#CMESSAGE").val(dDATA[4]);
+						}else
+						{
+							$("#UNAME").val(dDATA[0]);
+							$("#UCITY").val(dDATA[1]);
+							$("input[value='" + dDATA[2] + "']").attr("checked",true);
+							$("#UAGE").val(dDATA[3]);
+							for(i=0;i<dDATA[4].length;i++){$("#" + dDATA[4][i]).attr("checked","checked");}
+							$("#UNOTE").val(dDATA[5]);
+						}
+					}else{datastat += "0";}
+					
+					window.localStorage["datastat"] = datastat;
+			    },
+                error: function(xhr, ajaxOptions, thrownError) {
+			       	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			       	if(thrownError.toString().slice(0,12) == "NetworkError")
+			   		{
+			   		   	document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			           },false);
+			   		}else
+			   		{
+			   		   alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			   		}
+                }
+			});
+		}
+		
+		function getimage()
+		{
+			noimg = 2;
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("圖片載入中...");},false);
+			$(".imglbl").css("display","none");
+			document.querySelector("label").style.display = "none";
+            var preview = document.getElementById("preview");
+            var file    = document.querySelector('input[type=file]').files[0];
+            var reader  = new FileReader();
+
+            reader.addEventListener("load", function(){
+			  document.getElementById("preview").style.display = "block";
+              preview.src = reader.result;
+			  $("#preview").cropper({
+				  viewMode: 1,
+				  aspectRatio: 1/1,
+				  zoomable: false,
+				  rotatable: false,
+				  crop: function(){document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);}
+			  })
+            }, false);
+			
+            if (file){reader.readAsDataURL(file);}
+        }
+		
+		function clean(c)
+		{
+			$("input[type='checkbox']").removeAttr("checked").checkboxradio("refresh");
+			c.attr("checked","checked").checkboxradio("refresh");
+		}
+		
+		function update()
+        {
+			if(noimg == 2)
+			{
+				noimg = 0;
+				image = $("#preview").cropper("getCroppedCanvas");
+			    imagebase64 = image.toDataURL('image/webp');
+			}
+			if($("#delimg").prop("checked") && imagebase64 == ""){imagebase64 = "";noimg = 1;}
+			
+			if(($("#NEWNAME").val() == "" || $("#NEWNAME").val() == window.localStorage["Name"]) && $("#PWD").val() == "" && ($("#petname").val() == "" || $("#petname").val() == window.localStorage["Petname"]) && imagebase64 == "" && noimg == 0)
+			{
+				document.addEventListener("deviceready",function(){
+					location.reload();
+					navigator.notification.alert(
+                        '沒有資料被更改。',
+                        null,
+                        '一切安好',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			    var newname = ""; var newpname = "";
+			    if($("#NEWNAME").val() != window.localStorage["Name"]){newname = $("#NEWNAME").val();}
+			    if(window.localStorage["Mode"] != "諮商師" && $("#petname").val() != window.localStorage["Petname"]){newpname = $("#petname").val();}
+			    
+			    var newd = {ID: window.localStorage["ID"],NAME: newname,PWD: $("#PWD").val(),PETNAME: newpname,IMAGE: imagebase64,noimg: noimg};
+			    var data = JSON.stringify(newd);
+			     
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateData",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+			    		if($("#NEWNAME").val() != ""){window.localStorage["Name"] = $("#NEWNAME").val();}
+			    		if($("#petname").val() != ""){window.localStorage["Petname"] = $("#petname").val();}
+			    		if(imagebase64 != ""){window.localStorage["Image"] = imagebase64;}
+			    		else if(noimg == 1)
+			    		{
+			    			if(window.localStorage["Mode"] == "諮商師"){window.localStorage["Image"] = "../img/member.webp";}
+			    			else{window.localStorage["Image"] = "img/member.webp";}
+			    		}
+			    		document.addEventListener("deviceready",function(){
+							location.reload();
+			    			SpinnerPlugin.activityStop();
+			    			navigator.notification.alert(
+                                '資料已完成更動。',
+                                null,
+                                '成功了 !',
+                                '確定'
+                                );
+			                },false);
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}else
+			    		{
+			    			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		}
+                    }
+                });
+			}
+        }
 		
 		function updatedata(usermode)
         {
@@ -288,15 +429,15 @@
 			    				msg = "相關資料已建立 !";
 			    				window.localStorage["Rookie"] = "";
 			    			}else if(uname == "沒有資料需要更改。"){msg = uname;}
-			    			else{msg = "已成功更改" + uname;}
+			    			else{msg = "資料已更改";}
 			    			
-			        		location.reload();
 			        		document.addEventListener("deviceready",function(){
+								loaddata(window.localStorage["Mode"]);
 			        			SpinnerPlugin.activityStop();
 			                    navigator.notification.alert(
                                     msg,
                                     null,
-                                    '更改完成',
+                                    '成功了 !',
                                     '確定'
                                 );
 			                },false);
@@ -356,15 +497,15 @@
 			    				msg = "相關資料已建立 !";
 			    				window.localStorage["Rookie"] = "";
 			    			}else if(cname == "沒有資料需要更改。"){msg = cname;}
-			    			else{msg = "已成功更改" + cname;}
+			    			else{msg = "資料已更改";}
 			    			
-			        		location.reload();
 			        		document.addEventListener("deviceready",function(){
+								loaddata(window.localStorage["Mode"]);
 			        			SpinnerPlugin.activityStop();
 			                    navigator.notification.alert(
                                     msg,
                                     null,
-                                    '更改完成',
+                                    '成功了 !',
                                     '確定'
                                 );
 			                },false);
@@ -390,6 +531,111 @@
 			    }
 			}
         }
+		
+		function initialcontact(type,load)
+		{
+			if(type != "save" && type != "delete")
+			{
+				switch(type){
+				case "tel":
+					inputtype = type;
+					contacttype = type;
+					break;
+				case "email":
+					inputtype = type;
+					contacttype = type;
+					break;
+				case "fb":
+					inputtype = "text";
+					contacttype = type;
+					break;
+				case "line":
+					inputtype = "text";
+					contacttype = type;
+			    }
+				if(load == "1"){$("#chostype").html($("#l" + contacttype).html());}
+				else
+				{
+					$('#divcontact .ui-collapsible-heading-toggle').html($("#l" + contacttype).html()).append($('#divcontact .ui-collapsible-heading-toggle .ui-collapsible-heading-status'));
+					$("#divcontact").collapsible("collapse");
+				}
+			    $("#contactdata").attr("type",inputtype);
+			    $("#contactdata").val("");
+			    $("#pagecontact table:nth-child(3)").css("visibility","visible");
+				
+			}else
+			{
+				if($("#contactdata").val() == "" && type == "save")
+				{
+					document.addEventListener("deviceready",function(){
+			            navigator.notification.alert(
+                            '您尚未填寫好資訊。',
+                            null,
+                            '似乎少了些什麼',
+                            '確定'
+                        );
+			        },false);
+				}else
+				{
+					if(window.localStorage["datastat"].charAt(0) == "1" && type != "delete"){type = "update";}
+				    if(type == "delete")
+					{
+						document.addEventListener("deviceready",function(){
+			            	navigator.notification.confirm(
+			            		'確定要刪除聯絡資訊 ?',
+			            		function(btnIndex){if(btnIndex == 1){sendcontact(type,contacttype);}},
+			            		'與你相鬱好幸運',
+			            		["確定","取消"]
+			            	);
+			            },false);
+					}else{sendcontact(type,contacttype);}
+				}
+			}
+		}
+		
+		function sendcontact(type,contacttype)
+		{
+			var userdata = {mode: type, ID: window.localStorage["ID"], TYPE: contacttype, DATA: $("#contactdata").val()};
+			var data = JSON.stringify(userdata);
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateContact",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			    data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+			        var msg = (JSON.parse(check)).d;
+			        document.addEventListener("deviceready",function(){
+					    location.href = "D_updatedata.html";
+						SpinnerPlugin.activityStop();
+			            navigator.notification.alert(
+                            msg,
+                            null,
+                            '完成了 !',
+                            '確定'
+                        );
+			        },false);
+			    },
+                error: function(xhr, ajaxOptions, thrownError) {
+			        document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			        if(thrownError.toString().slice(0,12) == "NetworkError")
+			        {
+			        	document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+			        }else
+			        {
+			           	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			        }
+                }
+			});
+		}
 	</script>
 
 </head>
@@ -486,8 +732,8 @@
             	<tr>
                    <td class="label">遭遇困擾&nbsp;</td>
                    <td colspan="2">
-					   <div id="UTYPE" data-role="collapsible" data-mini="true">
-						   <h4>請選擇</h4>
+					   <div id="UTYPE" data-role="collapsible" data-mini="true" data-iconpos="right" data-expanded-icon="arrow-d">
+						   <h4>點選查看</h4>
 					   </div>
 				   </td>
                 </tr>
@@ -560,8 +806,39 @@
         </div>
         
         <div align="center" data-role="content">
-			
-            
+			<div id="warn">
+				<span>免責聲明</span><br/>
+				<span>根據行政院衛福部規定，目前台灣地區尚未開放任何形式的網路諮商。此功能僅提供諮商師及使用者雙方一個聯繫管道，請避免用於諮商用途，以免受罰。若有因使用此功能產生之問題，本平台不負任何法律責任。</span>
+			</div>
+			<table width="96%" align="center">
+				<tr>
+					<td colspan="2">
+						<div id="divcontact" align="right" data-role="collapsible" data-iconpos="right" data-collapsed-icon="info">
+							<h4 id="chostype">請選擇聯絡方式</h4>
+							<table width="100%">
+								<tr>
+									<td width="50%"><input onChange="initialcontact('tel')" id="tel" name="t" type="radio"><label id="ltel" for="tel"><img class="icon" width="20px" src="img/callicon.webp"><span class="iw">手機</span></label></td>
+									<td><input onChange="initialcontact('email')" id="email" name="t" type="radio"><label id="lemail" for="email"><img class="icon" width="20px" src="img/mailicon.webp"><span class="iw">電郵</span></label></td>
+								</tr>
+								<tr>
+									<td><input onChange="initialcontact('fb')" id="fb" name="t" type="radio"><label id="lfb" for="fb"><img class="icon" width="20px" src="img/fbicon.webp"><span class="iw">臉書</span></label></td>
+									<td><input onChange="initialcontact('line')" id="line" name="t" type="radio"><label id="lline" for="line"><img class="icon" width="20px" src="img/lineicon.webp"><span class="iw">LINE</span></label></td>
+								</tr>
+							</table>
+							<a id="icon8" href="https://icons8.com">Icon pack by Icons8</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table align="center" width="96%">
+				<tr>
+					<td id="inputcontact" colspan="2"><input id="contactdata" type="text"></td>
+				</tr>
+				<tr>
+					<td width="40%"><input disabled id="DEL" onClick="initialcontact('delete')" type="button" value="刪除資料"></td>
+					<td><input id="SAVE" onClick="initialcontact('save')" type="button" value="儲存"></td>
+				</tr>
+			</table>
 		</div>
     </div>
 </body>

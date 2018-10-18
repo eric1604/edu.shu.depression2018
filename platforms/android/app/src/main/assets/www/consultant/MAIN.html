@@ -33,7 +33,6 @@
 
     <script>
 		$(document).ready(loadinfo);
-		$(document).ready(checkmsg);
 		$(document).ready(function(){
 			$("#btnlogout").click(logout);
 			$("#btnmember").click(function(){location.href="../D_member.html"});
@@ -42,6 +41,8 @@
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			    location.href = "../message.html";
 			});
+			
+			if(window.localStorage["ID"] != undefined && window.localStorage["ID"] != ""){checkmsg();}
 		});
 		
 		var users;
@@ -248,8 +249,9 @@
                     async: false,
                     success: function(){
 			    		window.localStorage.clear();
+						window.localStorage["ID"] = "";
 			            document.addEventListener("deviceready",function(){
-		 	                location.reload();
+		 	                location.href = "../main.html";
 			                SpinnerPlugin.activityStop();
                             navigator.notification.alert(
                                  '您已登出 !',
@@ -280,8 +282,9 @@
 			}else
 			{
 				window.localStorage.clear();
+				window.localStorage["ID"] = "";
 			    document.addEventListener("deviceready",function(){
-		 	        location.reload();
+		 	        location.href = "../main.html";
 			        SpinnerPlugin.activityStop();
                     navigator.notification.alert(
                          '您已登出 !',
