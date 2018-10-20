@@ -4,10 +4,13 @@
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
     <title>翻閱日記</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="../css/two.css" rel="stylesheet" type="text/css"><link href="../css/all.css" rel="stylesheet" type="text/css">
+    <link href="../css/two.css" rel="stylesheet" type="text/css">
+	<link href="../css/all.css" rel="stylesheet" type="text/css">
+	<link href="../css/glDatePicker.flatwhite.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../js/glDatePicker.min.js"></script>
   <style type="text/css">
 	  #diary{visibility: hidden;}
 	  table{table-layout: fixed;}
@@ -16,20 +19,38 @@
 		  background-color: aquamarine;
 		  padding: 5px;
 	  }
+	  tr:first-child{visibility: hidden;}
+	  #diarydate{
+		  height: 0;
+		  border: none;
+	  }
 	  #navdiary{visibility: hidden;}
 	  #info{
 		  font-size: 15px;
 		  line-height: 0;
+		  font-weight: bold;
+	  }
+	  #cld{
+		  height:200px;
+		  position: absolute;
 	  }
   </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
-		$(document).ready(function(){$("#btnsearch").click(searchdiary)});
-		$(document).ready(function(){$("#prevdiary").click(prevdiary)});
-		$(document).ready(function(){$("#nextdiary").click(nextdiary)});
+		var index;
+		var count;
+		var message;
+		var datenow;
+		var daterange = [];
+		
 		$(document).ready(function(){
-		if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
+			$("#btnhome").click(function(){location.href="MAIN.html";});
+			$("#prevdiary").click(prevdiary);
+			$("#nextdiary").click(nextdiary);
+			$("#cld").css("width",Math.ceil(($(".ui-content").width())*0.96));
+			getdaterange();
+			
+			if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
 	    	{
 	    		document.getElementById("toC").style.opacity = "0.4";
 	    		document.getElementById("toC").style.pointerEvents = "none";
@@ -41,10 +62,6 @@
 	    	}
 	    });
 		
-		var index;
-		var count;
-		var message;
-		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
@@ -52,83 +69,105 @@
 				},false);
 			},false);
 		}
-																	
-		function searchdiary()
+		
+		function getdaterange()
+		{
+			var userData = {table: "Diary", ID: window.localStorage["cUserID"]};
+			var data = JSON.stringify(userData);
+			     
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetDateRange",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			   	data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+			   		var dates = (JSON.parse(check)).d;
+					for(i=0;i<dates.length;i++)
+					{
+						daterange.push({date: new Date(dates[i])});
+					}
+					$(window).load(function(){
+						$("#diarydate").glDatePicker({
+							showAlways: true,
+				            cssName: "flatwhite",
+				            selectableDates: daterange,
+				            onClick: function(target, cell, date, data){searchdiary(date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate());}
+			            });
+					});
+			   	},
+                error: function(xhr, ajaxOptions, thrownError){
+			   		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			   		if(thrownError.toString().slice(0,12) == "NetworkError")
+				    {
+				    	document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+				    }else
+				    {
+				    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    }
+                }
+            });
+		}
+		
+		function searchdiary(date)
         {
+			datenow = date;
 			$("#prevdiary").attr("disabled",true).button("refresh");
 			
-			if($("#diarydate").val() == "")
-			{
-				document.addEventListener("deviceready",function(){
-					navigator.notification.alert(
-                         '您還沒有指定日期哦 !',
-                         null,
-                         '似乎少了什麼',
-                         '確定'
-                    );
-			    },false);
-			}else
-			{
-				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在翻查日記...");},false);
-			    var userData = {ID: window.localStorage["cUserID"],DiaryDate: $("#diarydate").val()};
-			    var data = JSON.stringify(userData);
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在翻查日記...");},false);
+			var userData = {ID: window.localStorage["cUserID"],DiaryDate: date};
+			var data = JSON.stringify(userData);
 			      
-			    $.ajax({
-                    url: "http://192.192.155.108/serv/ServicePool.asmx/SearchDiary",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "text",
-			    	data: data,
-                    type: "POST",
-                    async: false,
-                    success: function(check){
-			    		message = (JSON.parse(check)).d;
-			    		if(message.length == 0){
-			    			document.addEventListener("deviceready",function(){
-			    				SpinnerPlugin.activityStop();
-								location.reload();
-			    				navigator.notification.alert(
-                                    '這一天沒有寫日記哦 !',
-                                    null,
-                                    '平凡的一天',
-                                    '確定'
-                                );
-			                },false);
-			    		}else{
-			    			index = 0;
-			    			count = message.length;
-							$("#diarycontent").attr("align","left");
-							$("#diary").css("visibility","visible");
-							$("#emimg").attr("src","../img/emotion00" + message[index][0] + ".webp");
-			    			$("#diarycontent").html(message[index][1]);
-			    			if(count != 0)
-			    			{
-								$("#info").html("找到" + count + "則日記。");
-								if(count > 1){$("#nextdiary").removeAttr("disabled").button("refresh");}
-								else{$("#nextdiary").attr("disabled",true).button("refresh");}
-			    				document.getElementById("navdiary").style.visibility = "visible";
-			    			}
-			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-			    		}
-			    	},
-                    error: function(xhr, ajaxOptions, thrownError){
-			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-			    		if(thrownError.toString().slice(0,12) == "NetworkError")
-					    {
-					    	document.addEventListener("deviceready",function(){
-			                    navigator.notification.alert(
-                                    '伺服器連線失敗，請檢查網路。',
-                                    null,
-                                    '⚠️ 錯誤',
-                                    '確定'
-                                );
-			                },false);
-					    }else
-					    {
-					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					    }
-                    }
-                });
-			}
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/SearchDiary",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			    data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+			    	message = (JSON.parse(check)).d;
+			    	index = 0;
+			    	count = message.length;
+					$("#diarycontent").attr("align","left");
+					$("#diary").css("visibility","visible");
+					$("#emimg").attr("src","../img/emotion00" + message[index][0] + ".webp");
+			    	$("#diarycontent").html(message[index][1]);
+			    	if(count != 0)
+			    	{
+						$("#info").html("第" + (index+1) + "則，共" + count + "則日記。");
+						if(count > 1){$("#nextdiary").removeAttr("disabled").button("refresh");}
+						else{$("#nextdiary").attr("disabled",true).button("refresh");}
+			    		document.getElementById("navdiary").style.visibility = "visible";
+			    	}
+			    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    },
+                error: function(xhr, ajaxOptions, thrownError){
+			   		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			   		if(thrownError.toString().slice(0,12) == "NetworkError")
+				    {
+				    	document.addEventListener("deviceready",function(){
+		                    navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+		                },false);
+				    }else
+				    {
+				    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    }
+                }
+            });
         }
 		
 		function prevdiary()
@@ -139,6 +178,7 @@
 				index--;
 				$("#emimg").attr("src","../img/emotion00" + message[index][0] + ".webp");
 				$("#diarycontent").html(message[index][1]);
+				$("#info").html("第" + (index+1) + "則，共" + count + "則日記。");
 			}
 			if(index == 0){$("#prevdiary").attr("disabled",true).button("refresh");}
 		}
@@ -151,6 +191,7 @@
 				index++;
 				$("#emimg").attr("src","../img/emotion00" + message[index][0] + ".webp");
 				$("#diarycontent").html(message[index][1]);
+				$("#info").html("第" + (index+1) + "則，共" + count + "則日記。");
 			}
 			if(index == (count-1)){$("#nextdiary").attr("disabled",true).button("refresh");}
 		}
@@ -161,23 +202,26 @@
 <body onLoad="backbtn()">
     <div data-role="page" id="pageone">
             <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <h1><img style="padding-top: 6px" src="../img/lookdiarytitle.webp" width="100%"></h1>
+                <h1><img style="padding-top: 6px" src="../img/diaryserconsulttitle.webp" width="100%"></h1>
                 <a class="ui-btn-right" id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
             </div>
             
             <div data-role="content" align="center">
               <table align="center" width="98%">
-              	<tbody align="center" valign="middle" style="height: auto">
-              		<tr>
-              			<td align="left" width="15%">日期</td>
-              			<td><input type="date" id="diarydate" /></td>
-						<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
-              		</tr>
-					<tr><td align="left" colspan="3"><p id="info"></p></td></tr>
-				    <tr id="diary">
-						<td><img id="emimg" width="80%"></td>
-						<td colspan="2"><div id="diarycontent">(日記內容)</div></td>
-					</tr></tbody></table>
+              	<tr>
+              		<td><input type="" id="diarydate" gldp-id="cld"/></td>
+              	</tr>
+				<tr>
+					<td height="195px"><div id="cld" gldp-el="cld"></div></td>
+				</tr>
+				<tr><td align="center"><p id="info"></p></td></tr>
+			  </table>
+			  <table align="center" width="98%">
+				<tr id="diary">
+					<td width="15%"><img id="emimg" width="80%"></td>
+					<td><div id="diarycontent">(日記內容)</div></td>
+				</tr>
+			  </table>
 			  <table align="center" width="98%">
 				<tbody align="center" valign="middle" style="height: auto">
 					<tr id="navdiary">

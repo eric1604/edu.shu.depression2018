@@ -164,9 +164,8 @@
 				async: false,
 				success: function(check){
 					var types = check.firstChild.getElementsByTagName("ArrayOfString");
-					var change = "";
+					var change = "onChange='clean(this.id)'";
 					for(i=0;i<types.length;i++){
-						if(i == 0){change = "onChange='clean(this)'";}else{change = "";}
 						$("#UTYPE").append("<input " + change + " id='" + types[i].getElementsByTagName("string")[0].innerHTML + "' type='checkbox'><label for='" + types[i].getElementsByTagName("string")[0].innerHTML + "'>" + types[i].getElementsByTagName("string")[1].innerHTML + "</label>");
 					}
 				},
@@ -296,8 +295,14 @@
 		
 		function clean(c)
 		{
-			$("input[type='checkbox']").removeAttr("checked").checkboxradio("refresh");
-			c.attr("checked","checked").checkboxradio("refresh");
+			if(c == "a")
+			{
+				$("input[type='checkbox']").removeAttr("checked").checkboxradio("refresh");
+			    $("#" + c).prop("checked",true).checkboxradio("refresh");
+			}else
+			{
+				$("#a").removeAttr("checked").checkboxradio("refresh");
+			}
 		}
 		
 		function update()

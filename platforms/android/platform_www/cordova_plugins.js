@@ -82,6 +82,14 @@ module.exports = [
     "clobbers": [
       "SpinnerPlugin"
     ]
+  },
+  {
+    "id": "cordova-plugin-calendar.Calendar",
+    "file": "plugins/cordova-plugin-calendar/www/Calendar.js",
+    "pluginId": "cordova-plugin-calendar",
+    "clobbers": [
+      "Calendar"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -93,7 +101,8 @@ module.exports.metadata =
   "cordova-plugin-local-notification": "0.9.0-beta.2",
   "cordova-plugin-network-information": "2.0.1",
   "cordova-plugin-spinner": "1.1.0",
-  "cordova-plugin-whitelist": "1.3.3"
+  "cordova-plugin-whitelist": "1.3.3",
+  "cordova-plugin-calendar": "5.1.2"
 };
 // BOTTOM OF METADATA
 });
