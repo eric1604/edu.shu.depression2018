@@ -115,12 +115,12 @@
 			    				location.href = "signUp2.html";
 			    			    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 			    			}
-			    		}else if(message == "帳號已存在或者該ID已被使用。 \n已註冊者請直接登入。"){
+			    		}else if(message == "registed"){
 			    			document.addEventListener("deviceready",function(){
 			    				location.href="login.html";
 			    				SpinnerPlugin.activityStop();
 			    				navigator.notification.alert(
-                                    message,
+                                    '帳號已存在或者該ID已被使用。 \n已註冊者請直接登入。',
                                     null,
                                     '我們見過面了',
                                     '確定'
@@ -141,19 +141,6 @@
                                     ['回復帳號','取消']
                                 );
 			                },false);
-			    		}else if(message == "資料不完整，請檢查。"){
-			    			document.addEventListener("deviceready",function(){
-			    				SpinnerPlugin.activityStop();
-			    				navigator.notification.alert(
-                                    message,
-                                    null,
-                                    '好像少了些什麼',
-                                    '好'
-                                );
-			                },false);
-			    		}else{
-			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-			    			alert(message);
 			    		}
 			    	},
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -190,23 +177,17 @@
 				data: data,
                 type: "POST",
                 async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "ok"){
-						document.addEventListener("deviceready",function(){
-							location.href="login.html";
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                '已經為你重啟帳號，請再次登入。',
-                                null,
-                                '歡迎再次回來',
-                                '太好了'
-                            );
-			            },false);
-					}else{
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
+                success: function(){
+					document.addEventListener("deviceready",function(){
+						location.href="login.html";
+						SpinnerPlugin.activityStop();
+						navigator.notification.alert(
+                            '已經為你重啟帳號，請再次登入。',
+                            null,
+                            '歡迎再次回來',
+                            '太好了'
+                        );
+			        },false);
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);

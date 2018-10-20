@@ -48,24 +48,18 @@
 				data: data,
                 type: "POST",
                 async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "已重設帳號。"){
-						document.addEventListener("deviceready",function(){
-							if(window.localStorage["Mode"] == "諮商師"){location.href="main.html";}
-							else{location.href="signUp2.html";}
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                message,
-                                null,
-                                '已經為您準備好囉 ! \n帳號之ID、密碼、暱稱及圖片皆保留 \n稍後可至會員專區變更。',
-                                '確定'
-                            );
-			            },false);
-					}else{
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
+                success: function(){
+					document.addEventListener("deviceready",function(){
+						if(window.localStorage["Mode"] == "諮商師"){location.href="main.html";}
+						else{location.href="signUp2.html";}
+						SpinnerPlugin.activityStop();
+						navigator.notification.alert(
+                            message,
+                            null,
+                            '已經為您準備好囉 ! \n帳號之ID、密碼、暱稱及圖片皆保留 \n稍後可至會員專區變更。',
+                            '確定'
+                        );
+			        },false);
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);

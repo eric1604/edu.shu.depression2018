@@ -79,26 +79,20 @@
 				data: data,
                 type: "POST",
                 async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "ok"){
-						window.localStorage["Pet"] = PET[parseInt(pet)-1];
-						window.localStorage["Petname"] = $("#petname").val();
-						window.localStorage["Privacy"] = "1111";
-						document.addEventListener("deviceready",function(){
-							location.href="main.html";
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
-                                '註冊完成，歡迎使用 !',
-                                null,
-                                '與你相鬱好幸運',
-                                '確定'
-                            );
-			            },false);
-					}else{
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
+                success: function(){
+					window.localStorage["Pet"] = PET[parseInt(pet)-1];
+					window.localStorage["Petname"] = $("#petname").val();
+					window.localStorage["Privacy"] = "1111";
+					document.addEventListener("deviceready",function(){
+						location.href="main.html";
+						SpinnerPlugin.activityStop();
+						navigator.notification.alert(
+							'註冊完成，歡迎使用 !',
+                            null,
+                            '與你相鬱好幸運',
+                            '確定'
+                        );
+			        },false);
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
 					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);

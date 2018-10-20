@@ -15,7 +15,7 @@
             float: right;
             margin-right: 10px;
         }
-		strong{font-size: 14px;}
+		#n{font-size: 14px;}
 		table{padding-top: 5%;}
 		#lbl{
 		   font-size: 18px;
@@ -190,17 +190,17 @@
 					</td>
 				</tr>
 		    </table>
-			<strong>您可開放相關資料供您的諮商師做關懷及追蹤。<br/>透過資料的分析，在您需要幫助時提出協助。</strong>
+			<strong id="n">您可開放相關資料供您的諮商師做關懷及追蹤。<br/>透過資料的分析，在您需要幫助時提出協助。</strong>
 			<ul data-role=listview data-inset="true">
 				<li data-role="list-divider">心靈觀測</li>
 				<li>
-					<snap>[心情檢測]相關數據</snap>
+					<snap><strong>心情檢測</strong>相關數據</snap>
 					<select id="BSRS5" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
 				</li>
 				<li>
-					<snap>[心靈健康]相關數據</snap>
+					<snap><strong>心靈健康</strong>相關數據</snap>
 					<select id="PHQ9" data-role="flipswitch" onChange="update()" >
 						<option value="0">關</option><option value="1">開</option>
 					</select>
