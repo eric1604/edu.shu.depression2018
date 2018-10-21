@@ -220,24 +220,18 @@
 			    	data: data,
                     type: "POST",
                     async: false,
-                    success: function(check){
-			    		var message = (JSON.parse(check)).d;
-			    		if(message == "已刪除訪談。"){
-			    			document.addEventListener("deviceready",function(){
-								if(index != 0){searchrecord();}
-								else{location.reload();}
-			    				SpinnerPlugin.activityStop();
-			    				navigator.notification.alert(
-                                    message,
-                                    null,
-                                    '完成',
-                                    '確定'
-                                );
-			                },false);
-			    		}else{
-			    			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-			    			alert(message);
-			    		}
+                    success: function(){
+			    		document.addEventListener("deviceready",function(){
+							if(index != 0){searchrecord();}
+							else{location.reload();}
+			    			SpinnerPlugin.activityStop();
+			    			navigator.notification.alert(
+                                '已刪除訪談。',
+                                null,
+                                '完成',
+                                '確定'
+                            );
+			            },false);
 			    	},
                     error: function(xhr, ajaxOptions, thrownError){
 			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);

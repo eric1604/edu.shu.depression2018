@@ -100,20 +100,17 @@
 			                	data: data,
                                 type: "POST",
                                 async: false,
-                                success: function(check){
-			                		if((JSON.parse(check)).d == "ok")
-			                		{
-			                			window.localStorage["CST"] = cstid;
-			                			document.addEventListener("deviceready",function(){
-			                				SpinnerPlugin.activityStop();
-			                                navigator.notification.alert(
-                                                '您已成功與諮商師連結 !',
-                                                function(){location.href="D_privacy.html";},
-                                                '搭起橋樑',
-                                                '確定'
-                                            );
-			                            },false);
-			                		}
+                                success: function(){
+			                		window.localStorage["CST"] = cstid;
+			                		document.addEventListener("deviceready",function(){
+			                			SpinnerPlugin.activityStop();
+			                            navigator.notification.alert(
+                                            '您已成功與諮商師連結 !',
+                                            function(){location.href="D_privacy.html";},
+                                            '搭起橋樑',
+                                            '確定'
+                                        );
+			                        },false);
 			                	},
                                 error: function(xhr, ajaxOptions, thrownError) {
 			                		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);

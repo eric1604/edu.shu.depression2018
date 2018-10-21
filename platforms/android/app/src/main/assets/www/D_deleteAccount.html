@@ -22,11 +22,13 @@
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){
-		    if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
-		       else{location.href="main.html";}
-	    })});
+		$(document).ready(function(){
+			$("#btnprev").click(function(){location.href="D_member.html";});
+			$("#btnhome").click(function(){
+				if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
+				else{location.href="main.html";}
+	        })
+		});
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -37,100 +39,102 @@
 		}
 		
 		function resetacc(){
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			var userData = {ID: window.localStorage["ID"]};
-			var data = JSON.stringify(userData);
-			
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/ResetAccount",
-				contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(){
-					document.addEventListener("deviceready",function(){
-						if(window.localStorage["Mode"] == "諮商師"){location.href="main.html";}
-						else{location.href="signUp2.html";}
-						SpinnerPlugin.activityStop();
-						navigator.notification.alert(
-                            message,
-                            null,
-                            '已經為您準備好囉 ! \n帳號之ID、密碼、暱稱及圖片皆保留 \n稍後可至會員專區變更。',
-                            '確定'
-                        );
-			        },false);
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
+			if(window.localStorage["ID"] == "test" || window.localStorage["ID"] == "TEST"){alert("測試用帳號無法被重設。");}
+			else
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			    var userData = {MODE: window.localStorage["Mode"], ID: window.localStorage["ID"]};
+			    var data = JSON.stringify(userData);
+			    
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/ResetAccount",
+			    	contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(){
+			    		document.addEventListener("deviceready",function(){
+			    			window.localStorage["Rookie"] = "r";
+			    			if(window.localStorage["Mode"] == "諮商師"){location.href="./consultant/MAIN.html";}
+			    			else{location.href="signUp2.html";}
+			    			SpinnerPlugin.activityStop();
+			    			navigator.notification.alert(
+                                message,
                                 null,
-                                '⚠️ 錯誤',
+                                '已經為您準備好囉 ! \n帳號之ID、密碼、暱稱及圖片皆保留 \n稍後可至會員專區變更。',
                                 '確定'
                             );
 			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}else
+			    		{
+			    			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		}
+                    }
+                });
+			}
 		}
 		
 		function deleteacc(){
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			var userData = {ID: window.localStorage["ID"]};
-			var data = JSON.stringify(userData);
-			
-			$.ajax({
-                url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteAccount",
-				contentType: "application/json; charset=utf-8",
-                dataType: "text",
-				data: data,
-                type: "POST",
-                async: false,
-                success: function(check){
-					var message = (JSON.parse(check)).d;
-					if(message == "已刪除帳號。"){
-						window.localStorage.clear();
-						document.addEventListener("deviceready",function(){
-							location.href="main.html";
-							SpinnerPlugin.activityStop();
-							navigator.notification.alert(
+			if(window.localStorage["ID"] == "test" || window.localStorage["ID"] == "TEST"){alert("測試用帳號無法被刪除。");}
+			else
+			{
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+			    var userData = {ID: window.localStorage["ID"]};
+			    var data = JSON.stringify(userData);
+			    
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteAccount",
+			    	contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: data,
+                    type: "POST",
+                    async: false,
+                    success: function(){
+			    		window.localStorage.clear();
+			    		document.addEventListener("deviceready",function(){
+			    			location.href="main.html";
+			    			SpinnerPlugin.activityStop();
+			    			navigator.notification.alert(
                                 message,
                                 null,
                                 '期待再次相見',
                                 '確定'
                             );
 			            },false);
-					}else if(message == "測試用帳號無法被刪除。"){
-						location.reload();
-						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-						alert(message);
-					}
-				},
-                error: function(xhr, ajaxOptions, thrownError) {
-					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-					if(thrownError.toString().slice(0,12) == "NetworkError")
-					{
-						document.addEventListener("deviceready",function(){
-			                navigator.notification.alert(
-                                '伺服器連線失敗，請檢查網路。',
-                                null,
-                                '⚠️ 錯誤',
-                                '確定'
-                            );
-			            },false);
-					}else
-					{
-						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
-					}
-                }
-            });
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) {
+			    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+			    		{
+			    			document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+			    		}else
+			    		{
+			    			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			    		}
+                    }
+                });
+			}
 		}
 		
 		function showdialog(e){

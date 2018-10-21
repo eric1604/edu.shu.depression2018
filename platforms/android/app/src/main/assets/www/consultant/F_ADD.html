@@ -91,23 +91,17 @@
 				    data: data,
                     type: "POST",
                     async: false,
-                    success: function(check){
-				    	var message = (JSON.parse(check)).d;
-				    	if(message == "紀錄已儲存。"){
-				    		document.addEventListener("deviceready",function(){
-				    			SpinnerPlugin.activityStop();
-				    			navigator.notification.alert(
-                                    message,
-                                    null,
-                                    '與你相鬱好幸運',
-                                    '確定'
-                                );
-			                },false);
-				    		location.reload();
-				    	}else{
-				    		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-				    		alert(message);
-				    	}
+                    success: function(){
+				    	document.addEventListener("deviceready",function(){
+				    		SpinnerPlugin.activityStop();
+				    		navigator.notification.alert(
+                                '紀錄已儲存。',
+                                null,
+                                '與你相鬱好幸運',
+                                '確定'
+                            );
+			            },false);
+				    	location.reload();
 				    },
                     error: function(xhr, ajaxOptions, thrownError) {
 				    	document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
