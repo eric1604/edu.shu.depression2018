@@ -18,12 +18,8 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/e4BjBP+JkXNonFBLzswKbitOcjY=" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/e4BjBP+JkXNonFBLzswKbitOcjY=" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_chooseConsultant.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/signUp.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/signUp.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/signUp2.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/signUp2.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -3493,7 +3489,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="601" />
     <option name="y" value="-20" />
     <option name="width" value="1460" />

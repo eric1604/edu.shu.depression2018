@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Oct 23 03:17:53 CST 2018
+#Tue Oct 23 04:28:05 CST 2018
 20.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 143.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 237.path=www/img/PHQ001.gif
@@ -158,7 +158,7 @@
 210.set=ASSET
 165.set=ASSET
 115.path=www/img/no002.webp
-465.path=www/css/images/icons-png/bullets-white.png
+465.path=www/css/images/icons-png/cloud-black.png
 371.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 201.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 25.path=www/css/images/icons-png/arrow-u-r-white.png
@@ -311,7 +311,7 @@
 337.set=ASSET
 358.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 88.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
-470.path=www/node_modules/jquery/dist/jquery.min.map
+470.path=www/css/images/icons-png/edit-black.png
 30.path=www/node_modules/jquery/src/var/pnum.js
 138.set=ASSET
 17.baseType=DIRECTORY
@@ -467,7 +467,7 @@
 18.baseType=DIRECTORY
 46.baseType=DIRECTORY
 117.path=www/plugins/cordova-plugin-badge/www/badge.js
-467.path=www/node_modules/cropperjs/src/index.scss
+467.path=www/D_member.html
 373.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 24.baseType=DIRECTORY
 52.baseType=DIRECTORY
@@ -616,8 +616,7 @@
 439.baseType=DIRECTORY
 21.baseType=DIRECTORY
 467.baseType=DIRECTORY
-472.path=www/img/main_rabbit.gif
-473.baseType=DIRECTORY
+472.path=www/node_modules/jquery/dist/jquery.js
 203.set=ASSET
 158.set=ASSET
 32.path=www/node_modules/jquery/src/ajax/parseXML.js
@@ -760,7 +759,7 @@
 342.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 250.set=ASSET
 119.path=www/node_modules/jquery/bower.json
-469.path=www/node_modules/jquery/src/manipulation/support.js
+469.path=www/node_modules/jquery/dist/jquery.min.map
 375.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 205.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 173.set=ASSET
@@ -949,7 +948,7 @@
 227.baseType=DIRECTORY
 114.path=www/img/phq9score003.webp
 255.baseType=DIRECTORY
-464.path=www/signUp2.html
+464.path=www/css/images/icons-png/bullets-white.png
 370.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 9.set=ASSET
 411.baseType=DIRECTORY
@@ -1257,7 +1256,7 @@
 297.set=ASSET
 220.set=ASSET
 116.path=www/node_modules/jquery/external/sizzle/dist/sizzle.js
-466.path=www/css/images/icons-png/cloud-black.png
+466.path=www/node_modules/cropperjs/src/index.scss
 372.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 202.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 58.baseType=DIRECTORY
@@ -1267,7 +1266,6 @@
 92.baseType=DIRECTORY
 235.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 2.baseType=DIRECTORY
-473.set=ASSET
 406.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 106.baseType=DIRECTORY
 59.path=www/D_contact.html
@@ -1382,7 +1380,6 @@
 316.set=ASSET
 93.path=www/img/membertitle.webp
 217.path=www/img/consult.webp
-473.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 239.set=ASSET
 33.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 117.set=ASSET
@@ -1416,7 +1413,7 @@
 347.set=ASSET
 359.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 89.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
-471.path=www/css/images/icons-png/edit-black.png
+471.path=www/img/main_rabbit.gif
 33.baseType=DIRECTORY
 148.set=ASSET
 31.path=www/node_modules/jquery/src/core/access.js
@@ -1568,7 +1565,7 @@
 240.set=ASSET
 40.baseType=DIRECTORY
 118.path=www/img/lineicon.webp
-468.path=www/D_member.html
+468.path=www/node_modules/jquery/src/manipulation/support.js
 374.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 110.baseType=DIRECTORY
 204.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
@@ -1633,7 +1630,7 @@
 169.baseType=DIRECTORY
 147.baseType=DIRECTORY
 175.baseType=DIRECTORY
-count=474
+count=473
 303.baseType=DIRECTORY
 331.baseType=DIRECTORY
 77.set=ASSET
@@ -1719,7 +1716,6 @@ count=474
 455.baseType=DIRECTORY
 440.path=www/node_modules/jquery/src/attributes/val.js
 461.baseType=DIRECTORY
-473.path=www/node_modules/jquery/dist/jquery.js
 213.set=ASSET
 168.set=ASSET
 33.path=www/node_modules/cropper/dist/cropper.css

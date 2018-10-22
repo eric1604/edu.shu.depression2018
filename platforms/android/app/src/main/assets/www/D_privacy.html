@@ -59,8 +59,8 @@
 				location.href="#pagechoose";
 			});
 			if(window.localStorage["CST"] != null){loadcst();}
+			$(document).delegate("#pagechoose","pageinit",getconsultant);
 			$(document).delegate("#pagechoose","pageshow",function(){
-				getconsultant();
 				document.addEventListener("backbutton",function(){
 					location.href="D_privacy.html";
 			    },false);
