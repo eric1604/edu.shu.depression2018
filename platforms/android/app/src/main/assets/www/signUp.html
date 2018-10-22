@@ -13,17 +13,45 @@
     
     <style>
 		#preview{display: none;}
+		#pagetwo{position: fixed;}
+		#slideshow{
+		  position: relative;
+		  margin: auto;
+		}
+        #prev, #next {
+		  cursor: pointer;
+          position: absolute;
+          top: 50%;
+          width: 50%;
+          padding: 16px;
+          margin-top: -52px;
+          color: #bbbbbb;
+          font-weight: bold;
+          font-size: 50px;
+          transition: 0.6s ease;
+        }
+        #next {right: -20%;}
+		#prev{left: -20%;}
 	</style>
 
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnnext").click(register)});
-		$(document).ready(function(){$("#btnprev").click(function(){location.href = "login.html";})});
-		$(document).ready(function(){$(".label").css({fontWeight:"bold"})});
-		$(document).ready(function(){$("#btnchoose").click(function(){document.getElementById("inputimg").click();})});
+		$(document).ready(function(){
+			$("#btnnext").click(register);
+			$("#btnprev").click(function(){location.href = "login.html";});
+			$(".label").css({fontWeight:"bold"});
+			$("#btnchoose").click(function(){document.getElementById("inputimg").click();});
+			$("#btnNEXT").click(choosepet);
+			$(document).delegate("#pagetwo","pageshow",function(){
+				showSlides(pet);
+				document.addEventListener("backbutton",function(e){e.preventDefault();},false);
+			});
+		});
 		
 		var image = "";
 		var imagebase64 = "";
 		var noimg = 1;
+		var pet = 1;
+		var PET = ["cat","dog","rabbit","giraffe"];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -112,7 +140,7 @@
 			                    },false);
 			    			}else
 			    			{
-			    				location.href = "signUp2.html";
+			    				location.href = "#pagetwo";
 			    			    document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
 			    			}
 			    		}else if(message == "registed"){
@@ -208,11 +236,67 @@
                 }
             });
 		}
+		
+		function plusSlides(n) {
+          showSlides(pet += n);
+        }
+        
+        function showSlides(n) {
+          if (n > 4) {pet = 1}    
+          if (n < 1) {pet = 4}
+          $("#slides img").attr("src","img/selectpet000" + pet + ".gif");
+        }
+		
+		function choosepet(){
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("等待小夥伴準備好...");},false);
+			var userData = {ID: window.localStorage["ID"],PET: pet.toString(),PETNAME: $("#petname").val()};
+			var data = JSON.stringify(userData);
+			 
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/ChoosePet",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(){
+					window.localStorage["Pet"] = PET[parseInt(pet)-1];
+					window.localStorage["Petname"] = $("#petname").val();
+					window.localStorage["Privacy"] = "1111";
+					document.addEventListener("deviceready",function(){
+						location.href="main.html";
+						SpinnerPlugin.activityStop();
+						navigator.notification.alert(
+							'註冊完成，歡迎使用 !',
+                            null,
+                            '與你相鬱好幸運',
+                            '確定'
+                        );
+			        },false);
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+            });
+		}
     </script> 
 </head>
 <body onLoad="backbtn()">
-    
-    <div data-role="page">
+    <div data-role="page" id="pageone">
         <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
            <div data-role="header" data-theme="a" font style="font-size: 22px">
              <h1><img style="padding-top: 4px" src="img/signuptitle.webp" width="100%"></h1>
@@ -259,9 +343,37 @@
                </tbody>
               </table>
 		   </div>
+        </div>
+    </div>
+	<div data-role="page" id="pagetwo">
+        <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+           <div data-role="header" data-theme="a" font style="font-size: 22px">
+             <h1><img style="padding-top: 6px" src="img/selectpettitle.webp" width="100%"></h1>
+           </div>
+        </div>
+
+        <div align="center" data-role="content">
+			<div><br>
+              <div id="slideshow">
+                 <div id="slides">
+                   <img src="img/selectpet0001.gif" style="width:90%">
+				 </div>
+                 <a id="prev" onclick="plusSlides(-1)">&#10094;</a>
+                 <a id="next" onclick="plusSlides(1)">&#10095;</a>
+			  </div>
+              <table align="center" width="90%" border="0">
+                 <tr>
+                   <td class="label" width="35%">夥伴小名&nbsp;</td>
+                   <td><input type="text" id="petname"/></td>
+                 </tr>
+                 <tr>
+                   <td colspan="2"><button type="button" id="btnNEXT">開始使用</button></td>
+                 </tr>
+              </table>
+		   </div>
            
         </div>
-           
-        </div>
+           <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a"><h1>【與你相鬱，好幸運】</h1></div>
+    </div>
 </body>
 </html>

@@ -101,6 +101,12 @@
 			    	);
 			    },false);
 			}
+			document.addEventListener("deviceready",function(){
+				document.addEventListener("backbutton",function(){
+					if(window.localStorage["Mode"] == "諮商師"){location.href="#pagecstdata";}
+					else{location.href="#pageuserdata";}
+				},false);
+			},false);
 		});
 		
 		var image;

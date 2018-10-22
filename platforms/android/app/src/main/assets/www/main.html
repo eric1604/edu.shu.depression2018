@@ -29,9 +29,11 @@
 	</style>
 
     <script>
-		$(document).ready(function(){$("#btnlogout").click(logout)});
-		$(document).ready(function(){$("#btnmember").click(function(){location.href="D_member.html";})});
-		$(document).ready(loadinfo);
+		$(document).ready(function(){
+			loadinfo();
+			$("#btnlogout").click(logout);
+			$("#btnmember").click(function(){location.href="D_member.html";});
+		});
 		
 		var pets = ["dog","cat","rabbit","giraffe"];
 		

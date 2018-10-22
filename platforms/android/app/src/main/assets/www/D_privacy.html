@@ -15,8 +15,15 @@
             float: right;
             margin-right: 10px;
         }
-		#n{font-size: 14px;}
-		table{padding-top: 5%;}
+		.n{
+			font-size: 14px;
+			padding-left: 5%;
+		}
+		#pageprivacy table{padding-top: 5%;}
+		table td:nth-child(2){
+			padding-left: 10px;
+			padding-top: 8px;
+		}
 		#lbl{
 		   font-size: 18px;
 		   background-color:#C3E056;
@@ -26,17 +33,39 @@
 			font-size: 18px;
 			font-weight: bold;
 		}
+		.ui-input-btn.b{
+			display: inline-block;
+			width: 32%;
+		}
+		.lbl{
+		   font-size: 15px;
+		   background-color:#C3E056;
+		   padding: 2px;
+	    }
+		.cstfile{padding: 12px 1%;}
+		.ftop{
+			top: 4px;
+			position: relative;
+		}
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="D_member.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
-		$(document).ready(function(){$("#choosecst").click(function(){
-			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			location.href="D_chooseConsultant.html";
-		})});
-		$(document).ready(get);
-		$(document).ready(function(){if(window.localStorage["CST"] != null){loadcst();}});
+		$(document).ready(function(){
+			get();
+			$("#btnprev").click(function(){location.href="D_member.html";});
+			$("#btnhome").click(function(){location.href="main.html";});
+			$("#choosecst").click(function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+				location.href="#pagechoose";
+			});
+			if(window.localStorage["CST"] != null){loadcst();}
+			$(document).delegate("#pagechoose","pageshow",function(){
+				getconsultant();
+				document.addEventListener("backbutton",function(){
+					location.href="D_privacy.html";
+			    },false);
+			});
+		});
 		
 		var ok = 0;
 		
@@ -44,7 +73,7 @@
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
 					location.href="D_member.html";
-				},false);
+			    },false);
 			},false);
 		}
 		
@@ -169,11 +198,116 @@
                 });
 			}
         }
+		
+		function getconsultant()
+        {
+			$.ajax({
+                url: "http://192.192.155.108/serv/ServicePool.asmx/GetConsultant",
+                dataType: "xml",
+                type: "GET",
+                async: false,
+                success: function(check){
+					var consultants = check.firstChild.getElementsByTagName("ArrayOfString");
+					var imgsrc = "img/member.webp";
+					for(i=0;i<consultants.length;i++)
+					{
+						if(consultants[i].getElementsByTagName("string")[1].innerHTML != ""){imgsrc = consultants[i].getElementsByTagName("string")[1].innerHTML;}
+						else{imgsrc = "./img/member.webp";}
+						var newcst = 
+							"<div id='div" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' data-role='collapsible'><h4>" + consultants[i].getElementsByTagName("string")[2].innerHTML + "</h4><div class='cstfile'><table align='center' width='98%'><tr><td style='padding-right: 10px' width='30%'><img width='100%' class='cstimage' src='" + imgsrc + "'></td><td><span class='lbl'>地區</span>&nbsp;<strong class='cstlcn'>" + consultants[i].getElementsByTagName("string")[3].innerHTML + "</strong><br/><span class='ftop'><span class='lbl'>專長</span>&nbsp;<strong class='cstept'>" + consultants[i].getElementsByTagName("string")[4].innerHTML + "</strong></span></td></tr></table><table align='center' width='98%'><tr><td width='35px'><span class='lbl'>經歷</span></td><td colspan='2'><strong class='cstexp'>" + consultants[i].getElementsByTagName("string")[5].innerHTML + "</strong></td></tr><tr><td><span class='lbl'>小語</span></td><td colspan='2'><strong class='cstmsg'>" + consultants[i].getElementsByTagName("string")[6].innerHTML + "</strong></td></tr><tr><td colspan='3'><input id='" + consultants[i].getElementsByTagName("string")[0].innerHTML + "' type='button' onClick='javascript: updatecst(this.id)' value='選擇此諮商師'></td></tr></table></div></div>";
+						
+						$("#listcst").append(newcst).collapsibleset("refresh");
+						$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).button().button("refresh");
+						if(window.localStorage["CST"] == consultants[i].getElementsByTagName("string")[0].innerHTML)
+						{
+							$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).attr("disabled",true).button("refresh");
+							$("#" + consultants[i].getElementsByTagName("string")[0].innerHTML).val("您已選擇此諮商師").button("refresh");
+						}
+					}
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+            });
+        }
+		
+		function updatecst(cstid)
+		{
+			document.addEventListener("deviceready",function(){
+				navigator.notification.prompt(
+					'請描述一下自己以及目前面臨的問題，讓諮商師更加了解你 !',
+					function(r){
+						if(r.buttonIndex == 1){
+							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
+			                var CST = {"ID": window.localStorage["ID"], "CST": cstid, "EXCST": window.localStorage["CST"], "MSG": r.input1};
+			                var data = JSON.stringify(CST);
+			                
+			                $.ajax({
+			                	url: "http://192.192.155.108/serv/ServicePool.asmx/UpdateCST",
+			                	contentType: "application/json; charset=utf-8",
+                                dataType: "text",
+			                	data: data,
+                                type: "POST",
+                                async: false,
+                                success: function(){
+			                		window.localStorage["CST"] = cstid;
+			                		document.addEventListener("deviceready",function(){
+			                			SpinnerPlugin.activityStop();
+			                            navigator.notification.alert(
+                                            '您已成功與諮商師連結 !',
+                                            function(){location.href="D_privacy.html";},
+                                            '搭起橋樑',
+                                            '確定'
+                                        );
+			                        },false);
+			                	},
+                                error: function(xhr, ajaxOptions, thrownError) {
+			                		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			                		if(thrownError.toString().slice(0,12) == "NetworkError")
+			                		{
+			                			document.addEventListener("deviceready",function(){
+			                                navigator.notification.alert(
+                                                '伺服器連線失敗，請檢查網路。',
+                                                null,
+                                                '⚠️ 錯誤',
+                                                '確定'
+                                            );
+			                            },false);
+			                		}else
+			                		{
+			                			alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+			                		}
+                                }
+			                });
+						}
+					},
+					'在開始之前',
+					['送出','取消'],
+					'我最近覺得...'
+				);
+			},false);
+		}
 	</script>
 
 </head>
 <body onLoad="backbtn()">
-    <div data-role="page" id="pageone">
+    <div data-role="page" id="pageprivacy">
         <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
             <h1><img style="padding-top: 4px" src="img/consset.webp" width="100%"></h1>
 			<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
@@ -184,14 +318,15 @@
 			<table align="center" width="90%">
 				<tr>
 					<td width="18%"><img width="100%" id="cstimage" src="img/member.webp"></td>
-					<td width="40%" style="padding-left: 10px">
+					<td width="40%">
 						<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">無</strong><br/>
-						<input id="choosecst" value="更換諮商師" type="button">
+						<input value="聯絡" data-wrapper-class="b" type="button"><input id="choosecst" value="更換" data-wrapper-class="b" type="button">
 					</td>
 				</tr>
 		    </table>
-			<strong id="n">您可開放相關資料供您的諮商師做關懷及追蹤。<br/>透過資料的分析，在您需要幫助時提出協助。</strong>
-			<ul data-role=listview data-inset="true">
+			<strong class="n">您可開放相關資料供諮商師關懷及追蹤。</strong><br/>
+			<strong class="n">透過資料的分析，在需要幫助時提供協助。</strong>
+			<ul data-role="listview" data-inset="true">
 				<li data-role="list-divider">心靈觀測</li>
 				<li>
 					<snap><strong>心情檢測</strong>相關數據</snap>
@@ -206,7 +341,7 @@
 					</select>
 				</li>
 			</ul>
-			<ul data-role=listview data-inset="true">
+			<ul data-role="listview" data-inset="true">
 				<li data-role="list-divider">日記小築</li>
 				<li>
 					<snap>您的日記</snap>
@@ -215,7 +350,7 @@
 					</select>
 				</li>
 			</ul>
-			<ul data-role=listview data-inset="true">
+			<ul data-role="listview" data-inset="true">
 				<li data-role="list-divider">睡眠救星</li>
 				<li>
 					<snap>睡眠品質與生理數據</snap>
@@ -225,6 +360,15 @@
 				</li>
 			</ul>
         </div>
+    </div>
+	<div data-role="page" id="pagechoose">
+        <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 4px" src="img/selectconstitle.webp" width="100%"></h1>
+			<a href="#pageprivacy" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
+        </div>
+        <div data-role="content">
+			<div id="listcst" data-role="collapsible-set"></div>
+		</div>
     </div>
 </body>
 </html>
