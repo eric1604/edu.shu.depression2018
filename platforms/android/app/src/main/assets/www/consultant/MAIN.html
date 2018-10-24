@@ -29,6 +29,9 @@
 			font-size: 12px;
 			font-weight: bold;
 		}
+		#btnspan .ui-input-btn{
+			display: inline-block;
+		}
 	</style>
 
     <script>
@@ -36,7 +39,11 @@
 		$(document).ready(function(){
 			$("#btnlogout").click(logout);
 			$("#btnmember").click(function(){location.href="../D_member.html"});
-			$("#btnrecord").click(function(){location.href="F_RECORD.html";})
+			$("#btnrecord").click(function(){location.href="F_RECORD.html";});
+			$("#btncontact").click(function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+				loadcontact();
+			});
 			$("#notify a").click(function(){
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
 			    location.href = "../message.html";
@@ -46,6 +53,7 @@
 		});
 		
 		var users;
+		var contact = [2];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -149,6 +157,20 @@
 							"value": users[i][0],
 							"text": users[i][1]
 						}).appendTo("#ALLUSERS");
+						
+						switch(users[i][4]){
+				            case "tel":
+				            	users[i][4] = "手機";
+				            	break;
+				            case "email":
+				            	users[i][4] = "電子郵件";
+				            	break;
+				            case "fb":
+				            	users[i][4] = "臉書";
+				            	break;
+				            case "line":
+				            	users[i][4] = "LINE";
+			            }
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -173,10 +195,13 @@
 		function setuser(user){
 			window.localStorage["cUserID"] = user.value;
 			window.localStorage["cUserName"] = user.options[user.selectedIndex].text;
-			window.localStorage["cPrivacy"] = users[user.selectedIndex-1][3];
 			if(users[user.selectedIndex-1][2] != ""){window.localStorage["cPicture"] = users[user.selectedIndex-1][2];}
 			else{window.localStorage["cPicture"] = "../img/member.webp";}
+			window.localStorage["cPrivacy"] = users[user.selectedIndex-1][3];
+			contact[0] = users[user.selectedIndex-1][4];
+			contact[1] = users[user.selectedIndex-1][5];
 			document.getElementById("userimg").src = window.localStorage["cPicture"];
+			if(contact[0] != ""){$("#btncontact").removeAttr("disabled").button("refresh");}
 			$("#btnrecord").removeAttr("disabled").button("refresh");
 			setprivacy();
 		}
@@ -192,6 +217,17 @@
 			if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0"){$("#btnC").attr("disabled","disabled");}
 			if(window.localStorage["cPrivacy"].charAt(2) == "0"){$("#btnB").attr("disabled","disabled");}
 			if(window.localStorage["cPrivacy"].charAt(3) == "0"){$("#btnE").attr("disabled","disabled");}
+		}
+		
+		function loadcontact()
+		{
+			var title = "聯絡資訊";
+			var info = "聯絡方式 : " + contact[0] + " \n資訊 : " + contact[1];
+			
+			document.addEventListener("deviceready",function(){
+				SpinnerPlugin.activityStop();
+				navigator.notification.alert(info,null,title,'確定');
+			},false);
 		}
 		
 		function checkmsg(){
@@ -316,7 +352,7 @@
 		
 
         <div data-role="content" >
-		   <table align="center" width="90%">
+		   <table align="center" width="94%">
 			    <tr>
 			    	<td style="padding-top: 5px" rowspan="2" width="35%"><img width="100%" id="userimg" src="../img/member.webp"></td>
 			    	<td>
@@ -326,12 +362,12 @@
 			    	</td>
 			    </tr>
 			    <tr>
-					<td><span id="btnspan"><input data-mini="true" disabled id="btnrecord" type="button" value="訪談紀錄"></span></td>
+					<td><span id="btnspan"><input id="btncontact" value="聯絡" data-mini="true" disabled type="button"><input data-mini="true" disabled id="btnrecord" type="button" value="訪談記錄"></span></td>
 			    </tr>
 			   <tr><td colspan="2"><span id="lock">*該使用者已鎖定部分資料之瀏覽權限。</span></td></tr>
 		   </table>
 		   
-           <table align="center" width="90%">
+           <table align="center" width="94%">
            	   <tr><td><button disabled id="btnC" onClick="javascript: location.href ='C_MEASUREMENT.html'"><img src="../img/hert.webp">檢測數據</button></td></tr>
            	   <tr><td><button disabled id="btnB" onClick="javascript: location.href = 'B_DIARY.html'"><img src="../img/diary.webp">&nbsp;&nbsp;&nbsp;&nbsp;日記查閱</button></td></tr>
            	   <tr><td><button disabled id="btnE" onClick="javascript: location.href = 'E_SLEEP.html'"><img src="../img/sleep.webp">&nbsp;睡眠紀錄</button></td></tr>

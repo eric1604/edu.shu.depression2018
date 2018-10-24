@@ -35,7 +35,7 @@
 		}
 		.ui-input-btn.b{
 			display: inline-block;
-			width: 32%;
+			width: 30%;
 		}
 		.lbl{
 		   font-size: 15px;
@@ -51,15 +51,19 @@
     
     <script type="text/javascript">
 		$(document).ready(function(){
-			get();
 			$("#btnprev").click(function(){location.href="D_member.html";});
 			$("#btnhome").click(function(){location.href="main.html";});
-			$("#choosecst").click(function(){
-				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-				location.href="#pagechoose";
-			});
+			get();
 			if(window.localStorage["CST"] != null){loadcst();}
-			$(document).delegate("#pagechoose","pageinit",getconsultant);
+			$("#choosecst").click(function(){location.href="#pagechoose";});
+			$("#btncontact").click(function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+				loadcontact();
+			});
+			$(document).delegate("#pagechoose","pageinit",function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+				getconsultant();
+			});
 			$(document).delegate("#pagechoose","pageshow",function(){
 				document.addEventListener("backbutton",function(){
 					location.href="D_privacy.html";
@@ -68,6 +72,7 @@
 		});
 		
 		var ok = 0;
+		var contact = [2];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -95,6 +100,24 @@
 						document.getElementById("cstname").innerHTML = cst[1];
 						if(cst[2] == ""){cst[2] = "./img/member.webp";}
 						document.getElementById("cstimage").src = cst[2];
+						switch(cst[3]){
+				            case "tel":
+				            	contact[0] = "手機";
+				            	break;
+				            case "email":
+				            	contact[0] = "電子郵件";
+				            	break;
+				            case "fb":
+				            	contact[0] = "臉書";
+				            	break;
+				            case "line":
+				            	contact[0] = "LINE";
+								break;
+							default:
+								contact[0] = cst[3];
+			            }
+						contact[1] = cst[4];
+						if(contact[0] != ""){$("#btncontact").removeAttr("disabled").button("refresh");}
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -198,6 +221,17 @@
                 });
 			}
         }
+		
+		function loadcontact()
+		{
+			var title = "聯絡資訊";
+			var info = "聯絡方式 : " + contact[0] + " \n資訊 : " + contact[1];
+			
+			document.addEventListener("deviceready",function(){
+				SpinnerPlugin.activityStop();
+				navigator.notification.alert(info,null,title,'確定');
+			},false);
+		}
 		
 		function getconsultant()
         {
@@ -320,7 +354,7 @@
 					<td width="18%"><img width="100%" id="cstimage" src="img/member.webp"></td>
 					<td width="40%">
 						<span id="lbl">諮商師</span>&nbsp;<strong id="cstname">無</strong><br/>
-						<input value="聯絡" data-wrapper-class="b" type="button"><input id="choosecst" value="更換" data-wrapper-class="b" type="button">
+						<input disabled id="btncontact" value="聯絡" data-wrapper-class="b" type="button">&nbsp;<input id="choosecst" value="更換" data-wrapper-class="b" type="button">
 					</td>
 				</tr>
 		    </table>
