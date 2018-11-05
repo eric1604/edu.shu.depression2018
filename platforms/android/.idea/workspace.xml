@@ -13,14 +13,34 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugAssets/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugAssets/merger.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/e4BjBP+JkXNonFBLzswKbitOcjY=" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/e4BjBP+JkXNonFBLzswKbitOcjY=" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5result.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_measurement.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_measurement.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9result.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_utbresult.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_utbresult.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_utb-01.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_utb.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_utbresult.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/MAIN.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/MAIN.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9001.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9002.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9003.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9004.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9005.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9006.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9007.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9008.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/9009.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/depresstitle.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/noselect.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/start003.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/utbtalk.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/yesselect.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/message.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/message.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -3490,7 +3510,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="601" />
     <option name="y" value="-20" />
     <option name="width" value="1460" />
@@ -3679,8 +3699,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -3696,8 +3715,8 @@
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10341151" />
-      <window_info active="true" anchor="bottom" id="Build" order="7" visible="true" weight="0.14669652" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10341151" />
+      <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.14669652" />
       <window_info anchor="right" id="Gradle" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />

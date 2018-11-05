@@ -70,10 +70,14 @@
 					    {
 					    	switch(msg[i][1]){
 					        	case "new":
-					        		title = "您有一位新的諮商對象 !"
+					        		title = "您有一位新的諮商對象 !";
 					        		break;
 								case "chg":
-									title = "一位諮商對象已更換諮商師。"
+									title = "一位諮商對象已更換諮商師。";
+									break;
+								case "lsc":
+									title = "量表分數警示";
+									break;
 					        }
 					    	if(msg[i][3] != ""){imgsrc = msg[i][3];}
 					    	else{imgsrc = "img/member.webp";}

@@ -20,7 +20,7 @@
 			padding-left: 5%;
 		}
 		#pageprivacy table{padding-top: 5%;}
-		table td:nth-child(2){
+		#pageprivacy table td:nth-child(2){
 			padding-left: 10px;
 			padding-top: 8px;
 		}
@@ -95,29 +95,43 @@
                 async: false,
                 success: function(check){
 					var cst = (JSON.parse(check)).d;
-					if(cst[0] == window.localStorage["CST"])
+					document.getElementById("cstname").innerHTML = cst[1];
+					if(cst[2] == ""){cst[2] = "./img/member.webp";}
+					document.getElementById("cstimage").src = cst[2];
+					switch(cst[3]){
+				        case "tel":
+							contact[0] = "手機";
+				           	break;
+				        case "email":
+				           	contact[0] = "電子郵件";
+				           	break;
+				        case "fb":
+				           	contact[0] = "臉書";
+				           	break;
+				        case "line":
+				           	contact[0] = "LINE";
+							break;
+						default:
+							contact[0] = cst[3];
+			        }
+					contact[1] = cst[4];
+					if(contact[0] != ""){$("#btncontact").removeAttr("disabled").button("refresh");}
+					if(cst[0] != window.localStorage["CST"])
 					{
-						document.getElementById("cstname").innerHTML = cst[1];
-						if(cst[2] == ""){cst[2] = "./img/member.webp";}
-						document.getElementById("cstimage").src = cst[2];
-						switch(cst[3]){
-				            case "tel":
-				            	contact[0] = "手機";
-				            	break;
-				            case "email":
-				            	contact[0] = "電子郵件";
-				            	break;
-				            case "fb":
-				            	contact[0] = "臉書";
-				            	break;
-				            case "line":
-				            	contact[0] = "LINE";
-								break;
-							default:
-								contact[0] = cst[3];
-			            }
-						contact[1] = cst[4];
-						if(contact[0] != ""){$("#btncontact").removeAttr("disabled").button("refresh");}
+						window.localStorage["CST"] = cst[0];
+						document.addEventListener("deviceready",function(){
+				            navigator.notification.confirm(
+				            	'偵測到諮商師已變更。 \n是否要更改聯絡資訊設定 ?',
+				            	function(btnIndex){
+				            		if(btnIndex == 1){
+										window.localStorage["chgcat"] = "1";
+										location.href="D_updatedata.html";
+									}
+				            	},
+				            	'似乎少了些什麼',
+				            	['好的','不用了']
+				            );
+			            },false);
 					}
 				},
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -150,8 +164,9 @@
 				    	function(btnIndex){
 				    		if(btnIndex == 1)
 							{
+								window.localStorage["CST"] = "";
 								SpinnerPlugin.activityStart("載入中...");
-								location.href="D_chooseConsultant.html";
+								window.location.hash = "pagechoose";
 							}
 							else{location.href="D_member.html";}
 				    	},
@@ -164,15 +179,15 @@
 				if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
 				{
 					document.addEventListener("deviceready",function(){
-				    navigator.notification.confirm(
-				    	'看來您還沒填寫個人資料 ! \n要現在填寫嗎 ?',
-				    	function(btnIndex){
-				    		if(btnIndex == 1){location.href="D_updatedata.html";}
-				    	},
-				    	'似乎少了些什麼',
-				    	['好的','等一下']
-				    );
-			    },false);
+				        navigator.notification.confirm(
+				        	'看來您還沒填寫個人資料 ! \n要現在填寫嗎 ?',
+				        	function(btnIndex){
+				        		if(btnIndex == 1){location.href="D_updatedata.html";}
+				        	},
+				        	'似乎少了些什麼',
+				        	['好的','等一下']
+				        );
+			        },false);
 				}
 				document.getElementsByClassName("optContainer")[0].style.visibility = "visible";
 				$("#BSRS5").val(window.localStorage["Privacy"].charAt(0)).flipswitch("refresh");
@@ -300,7 +315,6 @@
                                 type: "POST",
                                 async: false,
                                 success: function(){
-			                		window.localStorage["CST"] = cstid;
 			                		document.addEventListener("deviceready",function(){
 			                			SpinnerPlugin.activityStop();
 			                            navigator.notification.alert(
@@ -395,6 +409,7 @@
 			</ul>
         </div>
     </div>
+	
 	<div data-role="page" id="pagechoose">
         <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
             <h1><img style="padding-top: 4px" src="img/selectconstitle.webp" width="100%"></h1>

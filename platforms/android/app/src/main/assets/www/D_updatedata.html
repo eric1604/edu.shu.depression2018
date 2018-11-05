@@ -57,12 +57,12 @@
 			getlocation();
 			getconsulttype();
 			loaddata(window.localStorage["Mode"]);
-			
+			//jump to page
 			if(window.localStorage["Rookie"] == "r" || window.localStorage["Rookie"] == "R")
 			{
 				if(window.localStorage["Mode"] == "諮商師")
 				{
-					window.location.hash="pagecstdata";
+					window.location.hash = "pagecstdata";
 					$(".n").css("opacity","0.4");
 			        $(".n").css("pointerEvents","none");
 					$(".btnprev").css("display","none");
@@ -72,6 +72,13 @@
 			    $.mobile.initializePage();
 			    $(".dbtnchange").attr("value","送出");
 			}
+			if(window.localStorage["chgcat"] == "1")
+			{
+				window.location.hash = "pagecontact";
+				localStorage.removeItem("chgcat");
+				$.mobile.initializePage();
+			}
+			//
 			if(window.localStorage["Mode"] == "諮商師")
 			{
 				$(".data").attr("href","#pagecstdata");

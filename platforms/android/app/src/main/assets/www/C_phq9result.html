@@ -41,12 +41,13 @@
 		function phq9result()
 		{
 			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
+			else{window.localStorage["CST"] = "";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["phq9score"];
 			var date = new Date();
 			var month = date.getMonth()+1;
 			var time = date.getFullYear() + "-" + month + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
-			var userData = {TYPE: "PHQ9",ID: window.localStorage["ID"],TIME: time,SCORE: window.localStorage["phq9score"]};
+			var userData = {TYPE: "PHQ9", ID: window.localStorage["ID"], CST: window.localStorage["CST"], TIME: time, SCORE: window.localStorage["phq9score"]};
 			var data = JSON.stringify(userData);
 			
 			$.ajax(
@@ -80,6 +81,7 @@
 					}
                 }
             });
+			if(window.localStorage["CST"] == ""){localStorage.removeItem("CST");}
 		}
     </script>
 </head>
