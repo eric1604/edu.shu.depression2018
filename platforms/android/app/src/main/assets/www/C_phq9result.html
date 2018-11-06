@@ -41,7 +41,7 @@
 		function phq9result()
 		{
 			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
-			else{window.localStorage["CST"] = "";}
+			if(window.localStorage["CST"] == null){window.localStorage["CST"] = "";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["phq9score"];
 			var date = new Date();

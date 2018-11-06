@@ -41,7 +41,7 @@
 		function bsrs5result()
 		{
 			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
-			else{window.localStorage["CST"] = "";}
+			if(window.localStorage["CST"] == null){window.localStorage["CST"] = "";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["bsrs5score"];
 			var date = new Date();

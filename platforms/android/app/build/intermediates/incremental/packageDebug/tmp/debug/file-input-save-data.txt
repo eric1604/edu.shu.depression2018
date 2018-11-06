@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon Nov 05 18:54:54 CST 2018
+#Wed Nov 07 03:08:52 CST 2018
 20.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 143.base=E\:\\edu.shu.depression2018\\platforms\\android\\app\\build\\intermediates\\merged_assets\\debug\\mergeDebugAssets\\out
 237.path=www/node_modules/cropper/dist/cropper.esm.js
