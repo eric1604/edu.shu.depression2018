@@ -13,10 +13,34 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugAssets/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugAssets/merger.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/file-input-save-data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/A_pipeline.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/A_pipeline.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/B_added.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/B_added.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/B_search.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/B_search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5-01.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5-01.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_bsrs5result.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_export.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_export.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9-01.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9-01.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9result.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/C_phq9result.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_contact.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_privacy.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/D_updatedata.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/E_sleep.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/E_sleep.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/E_sleepcheck.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/E_sleepcheck.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/C_BSRS5_EXPORT.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/C_BSRS5_EXPORT.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/C_PHQ9_EXPORT.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/C_PHQ9_EXPORT.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/E_SLEEP.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/E_SLEEP.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_ADD.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_ADD.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_RECORD.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_RECORD.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_SEARCH.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/F_SEARCH.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/consultant/MAIN.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/consultant/MAIN.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/depresstalk.gif" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/img/depresstalk.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/img/visrecordtitle.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/www/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/www/message.html" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,8 +66,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-96">
-              <caret line="59" column="35" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="35" />
+            <state relative-caret-position="456">
+              <caret line="82" column="64" selection-start-line="82" selection-start-column="64" selection-end-line="82" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -3510,8 +3534,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3676,8 +3700,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="Android Profiler" order="7" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
@@ -3691,8 +3716,8 @@
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10341151" />
-      <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.14669652" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10341151" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" visible="true" weight="0.14669652" />
       <window_info anchor="right" id="Gradle" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
@@ -3713,6 +3738,27 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1968">
+          <caret line="82" column="64" selection-start-line="82" selection-start-column="64" selection-end-line="82" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2016">
+          <caret line="84" column="5" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1992">
+          <caret line="83" column="44" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1416">
@@ -3770,23 +3816,23 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CordovaLib/AndroidManifest.xml">
       <provider editor-type-id="android-manifest">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CordovaLib/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="20" column="85" selection-start-line="20" selection-start-column="85" selection-end-line="20" selection-end-column="85" />
         </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
@@ -3830,8 +3876,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-96">
-          <caret line="59" column="35" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="35" />
+        <state relative-caret-position="456">
+          <caret line="82" column="64" selection-start-line="82" selection-start-column="64" selection-end-line="82" selection-end-column="64" />
         </state>
       </provider>
     </entry>

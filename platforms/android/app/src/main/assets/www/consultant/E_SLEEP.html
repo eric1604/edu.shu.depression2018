@@ -8,13 +8,22 @@
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.time.js"></script>
+	<script type="text/javascript" src="../js/jquery.flot.axislabels.js"></script>
+	
     <style type="text/css">
-	  #pageone{position: fixed;}
+	    #pageone{position: fixed;}
+		#data{height: 250px;width: 100%;}
+	  	#content{vertical-align: middle;}
+		label{width: 65px;}
+		snap{font-size: 15px;}
   </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
 		$(document).ready(function(){
+			$("#btnhome").click(function(){location.href="MAIN.html";});
+			$("#btnsearch").click(search);
 		    if(window.localStorage["cPrivacy"].charAt(0) == "0" && window.localStorage["cPrivacy"].charAt(1) == "0")
 	    	{
 	    		document.getElementById("toC").style.opacity = "0.4";
@@ -34,6 +43,112 @@
 				},false);
 			},false);
 		}
+		
+		function draw()
+		{
+			var dataset = [{label: "睡眠時間", data: DATA, color: "#00C200"}];
+			   
+			var options = {
+                series: {
+                    lines: { show: true },
+                    points: {radius: 4, show: true},
+	                shadowSize: 5
+                },
+				grid: {
+                    backgroundColor: { colors: ["#D1D1D1", "#7A7A7A"] }
+                },
+			    xaxis: {
+                    mode: "time",
+			        timeformat: "%d",
+				    axisLabel: "日期",
+				    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelPadding: 10,
+                    tickSize: [3, "day"],
+                    tickLength: 5
+                },
+				yaxis: {
+					tickDecimals: 0,
+					axisLabel: "時間(小時)",
+					axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelPadding: 3
+				}
+            };
+			    		
+			$(document).ready(function(){$.plot($("#data"), dataset, options);});
+		}
+																	
+		function search()
+        {
+			document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在繪製曲線...");},false);
+			if($("#time").val() == "")
+			{
+				document.addEventListener("deviceready",function(){
+					SpinnerPlugin.activityStop();
+					navigator.notification.alert(
+                         '您還沒有指定搜尋區間哦 !',
+                         null,
+                         '似乎少了什麼',
+                         '確定'
+                    );
+			    },false);
+			}else
+			{
+				var year = "";
+			    var month = "";
+			    for(var i=0;i<4;i++){year += $("#time").val().charAt(i);}
+			    for(var j=5;j<7;j++){month += $("#time").val().charAt(j);}
+			    
+			    var userData = {ID: window.localStorage["cUserID"], YEAR: year, MONTH: month};
+			    var jdata = JSON.stringify(userData);
+			      
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/ViewSleepData",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+			    	data: jdata,
+                    type: "POST",
+                    async: false,
+                    success: function(check){
+						DATA = (JSON.parse(check)).d;
+						if(DATA.length == 0){
+							document.addEventListener("deviceready",function(){
+								SpinnerPlugin.activityStop();
+								location.reload();
+					            navigator.notification.alert(
+                                     '所選區間沒有發現任何檢測數據。',
+                                     null,
+                                     '沒有資料',
+                                     '確定'
+                                );
+			                },false);
+						}else{
+							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+							draw();
+						}
+			    	},
+                    error: function(xhr, ajaxOptions, thrownError) 
+			    	{
+						document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			    		if(thrownError.toString().slice(0,12) == "NetworkError")
+					    {
+					    	document.addEventListener("deviceready",function(){
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+					    }else
+					    {
+					    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					    }
+                    }
+                });
+			}
+		}
     </script>
 
 </head>
@@ -45,11 +160,24 @@
 				<a style="display: none"></a>
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
             </div>
-        <div>
-            
-          
+		
+		<div align="center" data-role="content">
+            <div data-role="fieldcontain">
+			  <table align="center" width="96%" border="0">
+              	<tr>
+              		<td width="15%">區間</td>
+              		<td><input type="month" id="time" /></td>
+					<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
+              	</tr>
+              </table>
+			  <table align="center" width="96%">
+				<tr> 
+           		    <td colspan="3"><div id="data"></div></td>  
+           		</tr>
+			  </table>
             </div>
-
+		</div>
+		
             <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
             <ul>

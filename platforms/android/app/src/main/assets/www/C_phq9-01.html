@@ -14,20 +14,30 @@
   	</style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnexit").click(function(){
+		$(document).ready(function(){
+			$("#btnexit").click(function(){
+				document.addEventListener("deviceready",function(){
+				    navigator.notification.confirm(
+				    	'您要中止這次檢測嗎 ?',
+				    	function(btnIndex){
+				    		if(btnIndex == 1){location.href="C_measurement.html";}
+				    	},
+				    	'就差一點點了',
+				    	['是的','不']
+				    );
+			    },false);
+			});
+			$("#btnnext").click(phq9count);
+			
 			document.addEventListener("deviceready",function(){
-				navigator.notification.confirm(
-					'您要中止這次檢測嗎 ?',
-					function(btnIndex){
-						if(btnIndex == 1){location.href="C_measurement.html";}
-					},
-					'就差一點點了',
-					['是的','不']
+				navigator.notification.alert(
+					'請回想在過去兩週，有多少時候您受到以下各題所擾，選取一個最能代表您感覺的答案。',
+					null,
+					'歡迎來到心靈健康',
+					'我知道了'
 				);
 			},false);
-		})});
-		$(document).ready(function(){$("#btnnext").click(phq9count)});
-		
+		});
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){

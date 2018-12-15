@@ -14,10 +14,18 @@
 <style type="text/css">
 	#pageone{position: fixed;}
 	ul li a{text-align: center !important;}
+	table{padding: 0;}
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+	$(document).ready(function(){
+		$("#btnhome").click(function(){location.href="main.html";});
+		if(window.localStorage["Name"] == null)
+		{
+			document.getElementById("mycst").style.opacity = "0.4";
+			document.getElementById("mycst").style.pointerEvents = "none";
+		}
+	});
 	
 	function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -43,12 +51,14 @@
 				    <li data-icon="false"><a onClick="javascript: location.href='A_Lectures.html'">好站推薦</a></li>
 					<li data-icon="false"><a onClick="javascript: location.href='A_Melancholic.html'">資訊抱抱</a></li>
 			    </ul>
+				<ul data-role="listview" data-inset="true">
+				    <li id="mycst" data-icon="false"><a onClick="javascript: location.href='D_privacy.html'">我的諮商師</a></li>
+			    </ul>
             </div>
 		<table>
             <tr>
-                <td width="25%"></td>
-                <td width="70%" ><img src="img/help03.gif" width="70%"></td>
-                <td width="5%" ></td>
+                <td width="30%"></td>
+                <td width="70%" ><img src="img/help03.gif" width="55%"></td>
             </tr>
         </table>
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">

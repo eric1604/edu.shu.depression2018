@@ -164,7 +164,7 @@
 				    	function(btnIndex){
 				    		if(btnIndex == 1)
 							{
-								window.localStorage["CST"] = "";
+								$("#pagechoose a").css("display","none");
 								SpinnerPlugin.activityStart("載入中...");
 								window.location.hash = "pagechoose";
 							}
@@ -303,6 +303,7 @@
 					'請描述一下自己以及目前面臨的問題，讓諮商師更加了解你 !',
 					function(r){
 						if(r.buttonIndex == 1){
+							if(window.localStorage["CST"] == null){window.localStorage["CST"] = "";}
 							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("正在寫入資料...");},false);
 			                var CST = {"ID": window.localStorage["ID"], "CST": cstid, "EXCST": window.localStorage["CST"], "MSG": r.input1};
 			                var data = JSON.stringify(CST);
@@ -316,6 +317,7 @@
                                 async: false,
                                 success: function(){
 			                		document.addEventListener("deviceready",function(){
+										window.localStorage["CST"] = cstid;
 			                			SpinnerPlugin.activityStop();
 			                            navigator.notification.alert(
                                             '您已成功與諮商師連結 !',
@@ -343,6 +345,7 @@
 			                		}
                                 }
 			                });
+							if(window.localStorage["CST"] == ""){localStorage.removeItem("CST");}
 						}
 					},
 					'在開始之前',

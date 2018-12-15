@@ -9,12 +9,26 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <style type="text/css">
-	  #pageone{position: fixed;}
-  </style>
+	    #pageone{position: fixed;}
+		table{text-align: center;}
+		.title{
+			font-size: 20px;
+			font-weight: bold;
+			background-color: aquamarine !important;
+			border: solid;
+		}
+		.t{font-size: 35px;}
+		input{text-align: center !important;}
+		#new{visibility: hidden;}
+    </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="E_sleep.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="main.html";})});
+		$(document).ready(function(){
+			$("#btnprev").click(function(){location.href="E_sleep.html";});
+			$("#btnhome").click(function(){location.href="main.html";});
+			$("#btnnew").click(newday);
+			gettime();
+		});
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -23,6 +37,193 @@
 				},false);
 			},false);
 		}
+		
+		var time = [2];
+		var d = new Date();
+		var D = d.getTime() - 1000*60*60*24;
+		D = new Date(D);
+		
+		var day = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+		var lastday = D.getFullYear() + "-" + (D.getMonth()+1) + "-" + D.getDate();
+		var d1,d2;
+		var D1 = "";
+		var hr = "";
+		var del = "";
+		
+		function gettime(){
+			var userData = {ID: window.localStorage["ID"]};
+			var data = JSON.stringify(userData);
+			     
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetSleepCheck",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			   	data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					t = (JSON.parse(check)).d;
+					if(t[0] != "n") //sleeptime of yesterday found
+					{
+						time = [t[0], "N"];
+						d1 = new Date(d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + t[0]);
+						$("#is").empty();
+						$("#getup").textinput({disabled: false});
+						$("#iu input[type='button']").removeAttr("disabled").button("refresh");
+						$("#stime").html(time[0]);
+						D1 = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + $("#stime").html();
+					}
+			   		
+			   	},
+                error: function(xhr, ajaxOptions, thrownError){
+			   		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			   		if(thrownError.toString().slice(0,12) == "NetworkError")
+				    {
+				    	document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+				    }else
+				    {
+				    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    }
+                }
+            });
+		}
+		
+		function savetime(mode){
+			if(mode == "gosleep")
+			{
+				if($("#gosleep").val() != "")
+				{
+					time = [$("#gosleep").val(), "N"];
+					$("#stime").html(time[0]);
+					D1 = d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + $("#stime").html();
+					d1 = new Date(D1);
+				    $("#is").empty();
+					$("#getup").textinput({disabled: false});
+					$("#iu input[type='button']").removeAttr("disabled").button("refresh");
+					sendtime();
+				}else{e();}
+			}
+			else
+			{
+				if($("#getup").val() != "")
+				{
+					time = [$("#stime").html(), $("#getup").val()];
+					$("#iu").empty();
+				    $("#utime").html(time[1]);
+					d2 = new Date(d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + $("#utime").html());
+					
+					var h = (parseInt(d2 - d1)/1000/60/60).toString().substring(0,2);
+					var m = (parseInt(d2 - d1)/1000/60%60).toString();
+					
+					if(parseInt(h) < 0)
+					{
+						d1 = new Date(lastday + " " + $("#stime").html());
+						h = (parseInt(d2 - d1)/1000/60/60).toString().substring(0,2);
+					}console.log(d1 + " " + d2 + " " + h + " " + m);
+					if(parseInt(m) < 0){m = (parseInt(m)+60).toString();}
+					/*if(parseInt(h) == 0)
+					{
+						h = "23";
+						m = 60-parseInt(m);
+					}*/
+					if(h.charAt(1) == "."){h = "0" + h.substring(0,1);}
+					if(parseInt(h) >= 24)
+					{
+						e("re");
+						del = "y";
+					}else
+					{
+					    if(m.length == 1){m = "0" + m;}
+					    $("#hours").html(h + ":" + m);
+					    hr = $("#hours").html();
+						$("#new").css("visibility","visible");
+					}
+					sendtime();
+				}else{e();}
+			}
+		}
+		
+		function sendtime()
+		{
+			var userData = {ID: window.localStorage["ID"], DATE: day, D1: D1, GOSLEEP: time[0], GETUP: time[1], HOURS: hr, del: del};
+			var data = JSON.stringify(userData);
+			     
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/SaveSleepCheck",
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+			   	data: data,
+                type: "POST",
+                async: false,
+                success: function(){
+			   		if(del == "y"){newday();}
+			   	},
+                error: function(xhr, ajaxOptions, thrownError){
+			   		document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+			   		if(thrownError.toString().slice(0,12) == "NetworkError")
+				    {
+				    	document.addEventListener("deviceready",function(){
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+				    }else
+				    {
+				    	alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    }
+                }
+            });
+		}
+		
+		function newday(){
+			$("#new").css("visibility","hidden");
+			$("#is").append("<td width='65%'><input class='text' id='gosleep' type='time'></td><td><input class='btn' type='button' onClick='savetime(&quot;gosleep&quot;)' value='輸入'></td>");
+			$("#iu").append("<td><input class='text' id='getup' type='time'></td><td><input disabled class='btn' type='button' onClick='savetime(&quot;getup&quot;)' value='輸入'></td>");
+			$(".text").textinput();
+			$(".btn").button();
+			$(".t").empty();
+			
+			d = new Date();
+			D = d.getTime() - 1000*60*60*24;
+			D = new Date(D);
+			day = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+			lastday = D.getFullYear() + "-" + (D.getMonth()+1) + "-" + D.getDate();
+			D1 = hr = del = "";
+		}
+		
+		function e(i){
+			if(i == "re")
+			{
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '您輸入的時間已超出正常範圍(時間差超過一天)。 \n將重新開始計算。',
+                        null,
+                        '超出範圍',
+                        '確定'
+                    );
+			    },false);
+			}else
+			{
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '您輸入的時間有誤。',
+                        null,
+                        '沒有時間',
+                        '確定'
+                    );
+			    },false);
+			}
+		}
     </script>
 
 </head>
@@ -30,26 +231,48 @@
 <body onLoad="backbtn()">
     <div id="pageone" data-role="page" data-theme="a">
            <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <h1><img style="padding-top: 4px" src="img/sleepquilitytitle.webp" width="100%"></h1>
+                <h1><img style="padding-top: 4px" src="img/sleeptwotitle.webp" width="100%"></h1>
 				<a id="btnprev" style="top:12px" data-role="button" ><img src="img/up.webp" border="0"></a>
                 <a id="btnhome" style="top:10px" data-role="button" ><img src="img/home.webp" border="0"></a>
             </div>
-        <div>
-            
-          
-            </div>
+        <div data-role="content">
+			<br/>
+			<table align="center" width="70%">
+				<tr><td colspan="2"><img width="50%" src="img/nightnight.webp"></td></tr>
+				<tr id="is">
+					<td width="65%"><input id="gosleep" type="time"></td>
+				    <td><input type="button" onClick="savetime('gosleep')" value="輸入"></td>
+			    </tr>
+				<tr><td colspan="2"><span class="t" id="stime"></span></td></tr>
+		    </table><br/>
+			<table align="center" width="70%">
+				<tr><td colspan="2"><img width="50%" src="img/wakeupupup.webp"></td></tr>
+				<tr id="iu">
+					<td width="65%"><input disabled id="getup" type="time"></td>
+					<td><input disabled type="button" onClick="savetime('getup')" value="輸入"></td>
+			    </tr>
+			    <tr><td colspan="2"><span class="t" id="utime"></span></td></tr>
+			</table><br/>
+	        <table align="center" width="96%">
+			    <tr><td><img width="50%" src="img/sleepsleep02.webp"></td></tr>
+				<tr><td><span class="t" id="hours">--:--</span></td></tr>
+			</table>
+		    <table id="new" align="center" width="50%">
+				<tr><td><input id="btnnew" type="button" value="記錄新的睡眠"></td></tr>
+		    </table>
+        </div>
 
-            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
-            <ul>
-            <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>檢測</a></li>
-            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
-            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
-            <li><a class="ui-btn-active ui-state-persist" onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
-            </ul>
+                <ul>
+                    <li><a onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="img/hert.webp"><br>檢測</a></li>
+                    <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="img/consult.webp"><br>諮詢</a></li>
+                    <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="img/diary.webp"><br>日記</a></li>
+                    <li><a class="ui-btn-active ui-state-persist" onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="img/sleep.webp"><br>睡眠</a></li>
+                </ul>
             </div>
         </div>
-        </div>
+    </div>
         
 </body>
 </html>

@@ -15,8 +15,8 @@
 		#btnmember{left: 7px; top: 8px; padding: 0;width: auto;height: 35px;padding-top: 5px;}
 		#btnlogout{right: 10px; top: 10px;}
 		#showname{vertical-align: super;}
-		#pageone{position: fixed;}
-		table{padding-top: 5%;}
+		#pagemain{position: fixed;}
+		table{padding-top: 3%;}
 		#lblspan{
 		   font-size: 15px;
 		   background-color:#C3E056;
@@ -32,6 +32,17 @@
 		#btnspan .ui-input-btn{
 			display: inline-block;
 		}
+		
+		.msg{
+			background-color: skyblue !important;
+			padding: 5px;
+		}
+		#pagemsg .ui-content td:first-child{padding-right: 10px;}
+		.name{font-size: 25px;}
+		.time{
+			color: lightgray;
+			font-size: 12px;
+		}
 	</style>
 
     <script>
@@ -39,17 +50,23 @@
 		$(document).ready(function(){
 			$("#btnlogout").click(logout);
 			$("#btnmember").click(function(){location.href="../D_member.html"});
-			$("#btnrecord").click(function(){location.href="F_RECORD.html";});
-			$("#btncontact").click(function(){
+			$("#btndata").click(function(){
 				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-				loadcontact();
+				loaddata();
 			});
-			$("#notify a").click(function(){
-				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
-			    location.href = "../message.html";
-			});
+			$("#btncontact").click(loadcontact);
 			
 			if(window.localStorage["ID"] != undefined && window.localStorage["ID"] != ""){checkmsg();}
+			
+			$(document).delegate("#pagemsg","pageinit",function(){
+				document.addEventListener("deviceready",function(){SpinnerPlugin.activityStart("載入中...");},false);
+				getmsg();
+			});
+			$(document).delegate("#pagemsg","pageshow",function(){
+				document.addEventListener("backbutton",function(){
+					location.href="MAIN.html";
+			    },false);
+			});
 		});
 		
 		var users;
@@ -106,7 +123,7 @@
 				}
 				if(count < document.getElementById("ALLUSERS").length)
 				{
-					$("#btnrecord").removeAttr("disabled").button("refresh");
+					$("#btndata").removeAttr("disabled").button("refresh");
 				    $("#ALLUSERS").val(window.localStorage["cUserID"]).selectmenu("refresh");
 				    document.getElementById("userimg").src = window.localStorage["cPicture"];
 				    setuser(document.getElementById("ALLUSERS"));
@@ -202,7 +219,8 @@
 			contact[1] = users[user.selectedIndex-1][5];
 			document.getElementById("userimg").src = window.localStorage["cPicture"];
 			if(contact[0] != ""){$("#btncontact").removeAttr("disabled").button("refresh");}
-			$("#btnrecord").removeAttr("disabled").button("refresh");
+			$("#btndata").removeAttr("disabled").button("refresh");
+			$("#btnR").removeAttr("disabled");
 			setprivacy();
 		}
 		
@@ -219,15 +237,64 @@
 			if(window.localStorage["cPrivacy"].charAt(3) == "0"){$("#btnE").attr("disabled","disabled");}
 		}
 		
-		function loadcontact()
+		function loadcontact(name)
 		{
 			var title = "聯絡資訊";
 			var info = "聯絡方式 : " + contact[0] + " \n資訊 : " + contact[1];
 			
+			if(name != undefined)
+			{
+				for(i=0;i<users.length;i++)
+				{
+					if(users[i][1] == name){info = "聯絡方式 : " + users[i][4] + " \n資訊 : " + users[i][5];}
+				}
+			}
+			
 			document.addEventListener("deviceready",function(){
-				SpinnerPlugin.activityStop();
 				navigator.notification.alert(info,null,title,'確定');
 			},false);
+		}
+		
+		function loaddata(){
+			var userdata = {ID: window.localStorage["cUserID"]};
+			var data = JSON.stringify(userdata);
+			
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetUserData",
+                dataType: "text",
+				contentType: "application/json; charset=utf-8",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var msg = (JSON.parse(check)).d;
+					var title = "個人資料";
+			        var info = "居住地區 : " + msg[0] + " \n生理性別 : " + msg[1] + " \n年齡區間 : " + msg[2] + " \n遭遇困擾 : " + msg[3] + " \n其他備註 : " + msg[4];
+					
+					document.addEventListener("deviceready",function(){
+			        	SpinnerPlugin.activityStop();
+			        	navigator.notification.alert(info,null,title,'確定');
+			        },false);
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+			});
 		}
 		
 		function checkmsg(){
@@ -338,19 +405,149 @@
 	       id = (id + 1) % 6;
 	       document.getElementById("image").src = "../img/" + id + ".webp";
         }
+		
+		function getmsg(){
+			var userdata = {ID: window.localStorage["ID"],chk: false};
+			var data = JSON.stringify(userdata);
+			
+			$.ajax({
+				url: "http://192.192.155.108/serv/ServicePool.asmx/GetMessage",
+                dataType: "text",
+				contentType: "application/json; charset=utf-8",
+				data: data,
+                type: "POST",
+                async: false,
+                success: function(check){
+					var msg = (JSON.parse(check)).d;
+					var title;
+					var warn = "";
+					var msgelm = "";
+					
+					if(msg[0][0] == "目前沒有任何通知 !")
+					{
+						document.addEventListener("deviceready",function(){
+							navigator.notification.alert(
+								msg[0][0],
+								function(){location.href="MAIN.html";},
+								'與你相鬱好幸運',
+								'確定'
+							);
+						},false);
+					}else
+					{
+						for(i=0;i<msg.length;i++)
+					    {
+					    	switch(msg[i][1]){
+					        	case "new":
+					        		title = "您有一位新的諮商對象 !";
+					        		break;
+								case "chg":
+									title = "一位諮商對象已更換諮商師。";
+									break;
+								case "lsc":
+									title = "量表分數警示";
+									warn = "style='background-color: orange !important;color: white;'";
+									break;
+					        }
+					    	if(msg[i][3] != ""){imgsrc = msg[i][3];}
+					    	else{imgsrc = "../img/member.webp";}
+							
+							if(msg[i][5] != "" && title == "量表分數警示")
+							{
+								msgelm = "<tr><td colspan='2'><div class='msg' " + warn + ">" + msg[i][5] + "</div></td><td><input class='contact' onClick='loadcontact(&quot;" + msg[i][2] + "&quot;)' type='button' data-mini='true' value='聯絡'></td></tr>";
+							}
+							else if(msg[i][5] != ""){msgelm = "<tr><td colspan='3'><div class='msg' " + warn + ">" + msg[i][5] + "</div></td></tr>";}
+							
+					    	var newmsg = "<div data-role='collapsible' data-collapsed-icon='carat-d' data-expanded-icon='carat-u' data-inset='false'><h4>" + title + "</h4><table align='center' width='100%'><tr><td width='50px'><img src='" + imgsrc + "' width='100%'></td><td width='50%'><span class='name'>" + msg[i][2] + "</span><br/><span class='time'>" + msg[i][4] + "</span></td><td><input class='clean' onClick='delmsg(" + msg[i][0] + ")' type='button' data-mini='true' value='清除'></td></tr>" + msgelm + "</table></div>";
+					    	
+					    	$("#pagemsg .ui-content").append($(newmsg).collapsible());
+					    	$(".clean").button().button("refresh");
+							$(".contact").button().button("refresh");
+							warn = "";
+							msgelm = "";
+					    }
+					}
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+				},
+                error: function(xhr, ajaxOptions, thrownError) {
+					document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
+					if(thrownError.toString().slice(0,12) == "NetworkError")
+					{
+						document.addEventListener("deviceready",function(){
+							history.back();
+			                navigator.notification.alert(
+                                '伺服器連線失敗，請檢查網路。',
+                                null,
+                                '⚠️ 錯誤',
+                                '確定'
+                            );
+			            },false);
+					}else
+					{
+						alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+					}
+                }
+			});
+		}
+		
+		function delmsg(dbid){
+			document.addEventListener("deviceready",function(){
+				navigator.notification.confirm(
+					'確定要清除這則通知嗎 ?',
+					function(btnIndex){if(btnIndex == 1){del();}},
+					'與你相鬱好幸運',
+					["確定","取消"]
+				);
+			},false);
+			
+			function del(){
+				var userData = {dbid: dbid};
+				var data = JSON.stringify(userData);
+				
+				$.ajax({
+					url: "http://192.192.155.108/serv/ServicePool.asmx/DeleteMessage",
+                    dataType: "text",
+				    contentType: "application/json; charset=utf-8",
+				    data: data,
+                    type: "POST",
+                    async: false,
+                    success: function()
+					{
+						$("#pagemsg .ui-content").empty();
+						getmsg();
+					},
+                    error: function(xhr, ajaxOptions, thrownError) {
+				    	if(thrownError.toString().slice(0,12) == "NetworkError")
+				    	{
+				    		document.addEventListener("deviceready",function(){
+				    			history.back();
+			                    navigator.notification.alert(
+                                    '伺服器連線失敗，請檢查網路。',
+                                    null,
+                                    '⚠️ 錯誤',
+                                    '確定'
+                                );
+			                },false);
+				    	}else
+				    	{
+				    		alert("[Ready State] " + xhr.readyState + "\n[Ajax Options] " + ajaxOptions + "\n[Thrown Error]\n" + thrownError + "\n\n[Response Text] " + xhr.responseText);
+				    	}
+                    }
+				});
+			}
+		}
     </script>
 </head>
 
 <body onLoad="backbtn()">
-    <div data-role="page" id="pageone">
+    <div data-role="page" id="pagemain">
          <div data-role="header" data-theme="a" data-position="fixed" data-tap-toggle="false" style=" font-size: 20px; width:100%; margin: auto; font-weight: bolder; text-align: center">
 	        <h1><img style="padding-top: 2px" src="../img/title01.webp" width="100%"></h1>
             <a id="btnmember" data-role="button">&nbsp;<img width="31" id="userimage" src="../img/member.webp"><font id="showname"></font>&nbsp;</a>
             <a id="btnlogout" data-role="button">登出</a>
-			<span id="notify">您有<span id="noticount"></span>則系統通知&nbsp;&nbsp;<a>查看</a></span>
+			<span id="notify">您有<span id="noticount"></span>則系統通知&nbsp;&nbsp;<a href="#pagemsg">查看</a></span>
 		 </div>
 		
-
         <div data-role="content" >
 		   <table align="center" width="94%">
 			    <tr>
@@ -362,17 +559,31 @@
 			    	</td>
 			    </tr>
 			    <tr>
-					<td><span id="btnspan"><input id="btncontact" value="聯絡" data-mini="true" disabled type="button"><input data-mini="true" disabled id="btnrecord" type="button" value="訪談記錄"></span></td>
+					<td><span id="btnspan"><input id="btncontact" value="聯絡" data-mini="true" disabled type="button"><input data-mini="true" disabled id="btndata" type="button" value="個人資料"></span></td>
 			    </tr>
 			   <tr><td colspan="2"><span id="lock">*該使用者已鎖定部分資料之瀏覽權限。</span></td></tr>
 		   </table>
 		   
-           <table align="center" width="94%">
-           	   <tr><td><button disabled id="btnC" onClick="javascript: location.href ='C_MEASUREMENT.html'"><img src="../img/hert.webp">檢測數據</button></td></tr>
-           	   <tr><td><button disabled id="btnB" onClick="javascript: location.href = 'B_DIARY.html'"><img src="../img/diary.webp">&nbsp;&nbsp;&nbsp;&nbsp;日記查閱</button></td></tr>
-           	   <tr><td><button disabled id="btnE" onClick="javascript: location.href = 'E_SLEEP.html'"><img src="../img/sleep.webp">&nbsp;睡眠紀錄</button></td></tr>
+           <table align="center" width="98%">
+           	   <tr>
+				   <td><button disabled id="btnC" onClick="javascript: location.href ='C_MEASUREMENT.html'"><img src="../img/hert.webp"><br/>檢測數據</button></td>
+				   <td width="4%"></td>
+				   <td><button disabled id="btnR" onClick="javascript: location.href='F_RECORD.html'"><img width="55px" src="../img/icontalk.webp"><br/>訪談備註</button></td>
+			   </tr>
+           	   <tr>
+				   <td><button disabled id="btnB" onClick="javascript: location.href = 'B_DIARY.html'"><img src="../img/diary.webp"><br/>日記查閱</button></td>
+				   <td></td>
+				   <td><button disabled id="btnE" onClick="javascript: location.href = 'E_SLEEP.html'"><img src="../img/sleep.webp"><br/>睡眠紀錄</button></td>
+			   </tr>
 		   </table>
       </div>
 	</div>
-	</body>
+	<div data-role="page" id="pagemsg">
+        <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <h1><img style="padding-top: 4px" src="../img/informationtitlesection.webp" width="100%"></h1>
+			<a id="btnhome" href="#pagemain" class="ui-btn-right" style="top:12px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+        </div>
+		<div data-role="content"></div>
+    </div>
+</body>
 </html>

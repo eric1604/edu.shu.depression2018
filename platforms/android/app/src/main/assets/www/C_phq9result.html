@@ -21,13 +21,23 @@
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnexit").click(function(){location.href="C_measurement.html";})});
 		$(document).ready(function(){
+			$("#btnexit").click(function(){location.href="C_measurement.html";});
+			$("#btnabout").click(function(){
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '病人健康問卷(Patient Health Questionnaire，PHQ)是翻譯於初步心理診斷工具量表(RIME-MD)的自陳式問卷量表，作為初步判斷憂鬱或其他心理疾病的有效測量工具。 \n\n受試者以自陳式的填答，反映過去兩週有關憂鬱症狀的困擾程度，各題項包含一點也不、有幾天、超過一半、幾乎天天此四種困擾程度，得分範圍0-3分，總分共27分。 \n\n依據PHQ分數可分類為五種憂鬱程度，分別為很少(0-4分)、輕度(5-9分)、中度(10-14分)、中重度(15-19分)與非常嚴重(20-27分)。分數愈高，罹患重憂鬱症的預測值及可能性皆愈高。',
+                        null,
+                        '關於PHQ-9',
+                        '確定'
+                    );
+			    },false);
+			});
 			if(window.localStorage["Privacy"].charAt(1) == "1"){document.getElementById("i").innerHTML = I[0];}
 			else{document.getElementById("i").innerHTML = I[1];}
 		});
 		
-		var I = ["會開放予專業諮商師追蹤及提供協助。","不開放予諮商師追蹤。"];
+		var I = ["會","暫不"];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -40,7 +50,7 @@
     	
 		function phq9result()
 		{
-			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
+			if(window.localStorage["ID"] != "" && window.localStorage["CST"] != null){document.querySelectorAll("tr")[4].style.visibility = "visible";}
 			if(window.localStorage["CST"] == null){window.localStorage["CST"] = "";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["phq9score"];
@@ -94,22 +104,23 @@
 		<p></p>
             <table height="470px" align="center" width="90%">
 				<tr height="10%">
-					<td><img src="img/score01.webp" width="30%"></td>
+					<td colspan="2"><img src="img/score01.webp" width="30%"></td>
 				</tr>
 				<tr height="25%">
-					<td><font id="score"></font><span id="sco">分</span></td>
+					<td colspan="2"><font id="score"></font><span id="sco">分</span></td>
 				</tr>
 				<tr height="10%">
-					<td><img src="img/score02.webp" width="30%"></td>
+					<td colspan="2"><img src="img/score02.webp" width="30%"></td>
 				</tr>
 				<tr height="40%">
-					<td><font id="info"></font></td>
+					<td colspan="2"><font id="info"></font></td>
 				</tr>
 				<tr style="visibility: hidden">
-					<td><snap>您的檢測相關資料將<span id="i"></span><br/>如欲調整相關設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">諮商設定</a>。</snap></td>
+					<td colspan="2"><snap>根據您目前的設定，您的數據將<span id="i"></span>開放予您的諮商師瀏覽。<br/>如欲調整隱私設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">諮商設定</a>。</snap></td>
 				</tr>
 				<tr>
-					<td><input type="button" id="btnexit" value="完成"></td>
+					<td width="70%"><input type="button" id="btnexit" value="完成"></td>
+					<td><input type="button" id="btnabout" value="關於此量表"></td>
 				</tr>
 			</table>
     </div>

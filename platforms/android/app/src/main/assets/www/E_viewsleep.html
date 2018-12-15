@@ -2,60 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1; charset=utf-8">
-    <title>[PHQ-9] 檢測數據</title>
+    <title>數據查詢</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link href="../css/two.css" rel="stylesheet" type="text/css"><link href="../css/all.css" rel="stylesheet" type="text/css">
+    <link href="./css/two.css" rel="stylesheet" type="text/css"><link href="./css/all.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="../cordova.js"></script>
-	<script type="text/javascript" src="../js/jquery.flot.js"></script>
-	<script type="text/javascript" src="../js/jquery.flot.time.js"></script>
-	<script type="text/javascript" src="../js/jquery.flot.axislabels.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script type="text/javascript" src="js/jquery.flot.js"></script>
+	<script type="text/javascript" src="js/jquery.flot.time.js"></script>
+	<script type="text/javascript" src="js/jquery.flot.axislabels.js"></script>
     
     <style type="text/css">
-		#data{height: 200px;width: 100%;}
+		#pageone{position: fixed;}
+		#data{height: 250px;width: 100%;}
 	  	#content{vertical-align: middle;}
-		label{width: 135px;}
+		label{width: 65px;}
 		snap{font-size: 15px;}
   	</style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnprev").click(function(){location.href="C_MEASUREMENT.html";})});
-		$(document).ready(function(){$("#btnhome").click(function(){location.href="MAIN.html";})});
-		$(document).ready(function(){$("#btnsearch").click(search)});
-		$(document).ready(function(){$(document).find("input[type='radio']").click(draw);})
 		$(document).ready(function(){
-			if(window.localStorage["cPrivacy"].charAt(2) == "0")
-	    	{
-	    		document.getElementById("toB").style.opacity = "0.4";
-	    		document.getElementById("toB").style.pointerEvents = "none";
-	    	}
-	    	if(window.localStorage["cPrivacy"].charAt(3) == "0")
-	    	{
-	    		document.getElementById("toE").style.opacity = "0.4";
-	    		document.getElementById("toE").style.pointerEvents = "none";
-	    	}
-	    });
+			$("#btnprev").click(function(){location.href="E_sleep.html";});
+			$("#btnhome").click(function(){location.href="main.html";});
+			$("#btnsearch").click(search);
+		});
 		
 		var DATA = "";
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
 				document.addEventListener("backbutton",function(){
-					location.href="C_MEASUREMENT.html";
+					location.href="E_sleep.html";
 				},false);
 			},false);
 		}
 		
 		function draw()
 		{
-			var dataPHQ9 = DATA[1];
-			
-			var labelarr = ["心靈健康"];
-			var dataarr = [dataPHQ9];
-			var colorarr = ["#0062E3"];
-			
-			var dataset = [];
+			var dataset = [{label: "睡眠時間", data: DATA, color: "#00C200"}];
 			   
 			var options = {
                 series: {
@@ -78,26 +62,12 @@
                 },
 				yaxis: {
 					tickDecimals: 0,
-					axisLabel: "分數",
+					axisLabel: "時間(小時)",
 					axisLabelUseCanvas: true,
                     axisLabelFontSizePixels: 12,
                     axisLabelPadding: 3
 				}
             };
-			
-			$("input[type='radio']").each(function(){
-                if($(this).is(":checked")){
-                    var position = $(this).attr("id").replace("m", "");
-                    position = parseInt(position) - 1;
-					
-                    dataset.push({
-                            label: labelarr[position],
-                            data: dataarr[position],
-							color: colorarr[position]
-                        }
-                    );   
-                }
-            });
 			    		
 			$(document).ready(function(){$.plot($("#data"), dataset, options);});
 		}
@@ -123,12 +93,11 @@
 			    for(var i=0;i<4;i++){year += $("#time").val().charAt(i);}
 			    for(var j=5;j<7;j++){month += $("#time").val().charAt(j);}
 			    
-			    var userData = {TYPE: "1", ID: window.localStorage["cUserID"], YEAR: year, MONTH: month};
+			    var userData = {ID: window.localStorage["ID"], YEAR: year, MONTH: month};
 			    var jdata = JSON.stringify(userData);
 			      
-			    $.ajax(
-			    	{
-                    url: "http://192.192.155.108/serv/ServicePool.asmx/Export",
+			    $.ajax({
+                    url: "http://192.192.155.108/serv/ServicePool.asmx/ViewSleepData",
                     contentType: "application/json; charset=utf-8",
                     dataType: "text",
 			    	data: jdata,
@@ -136,7 +105,7 @@
                     async: false,
                     success: function(check){
 						DATA = (JSON.parse(check)).d;
-						if(DATA[1].length == 0){
+						if(DATA.length == 0){
 							document.addEventListener("deviceready",function(){
 								SpinnerPlugin.activityStop();
 								location.reload();
@@ -149,7 +118,6 @@
 			                },false);
 						}else{
 							document.addEventListener("deviceready",function(){SpinnerPlugin.activityStop();},false);
-							$("input[type='radio']").checkboxradio('enable');
 							draw();
 						}
 			    	},
@@ -180,9 +148,9 @@
 <body>
     <div id="pageone" data-role="page" data-theme="a">
             <div style="font-size:22px" data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-                <h1><img style="padding-top: 4px" src="../img/Consultanttesttitle0.webp" width="100%"></h1>
-				<a id="btnprev" style="top:12px" data-role="button" ><img src="../img/up.webp" border="0"></a>
-                <a id="btnhome" style="top:10px" data-role="button" ><img src="../img/home.webp" border="0"></a>
+                <h1><img style="padding-top: 4px" src="./img/sleeptitleee.webp" width="100%"></h1>
+				<a id="btnprev" style="top:12px" data-role="button" ><img src="./img/up.webp" border="0"></a>
+                <a id="btnhome" style="top:10px" data-role="button" ><img src="./img/home.webp" border="0"></a>
             </div>
 
             <div align="center" data-role="content">
@@ -194,11 +162,7 @@
 					<td width="30%"><input type="button" value="查詢" id="btnsearch"></td>
               	</tr>
               </table>
-			  <table align="center" width="96%" border="0">
-				<tr>
-					<td width="15%">類型</td>
-					<td><input checked id="m1" type="radio" data-mini="true" value="PHQ9" /><label for="m1"><snap>心靈健康 (PHQ-9)</snap></label></td>
-				</tr>
+			  <table align="center" width="96%">
 				<tr> 
            		    <td colspan="3"><div id="data"></div></td>  
            		</tr>
@@ -206,15 +170,17 @@
             </div>
 		</div>
 
-        <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+            <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 			<div data-role="navbar">
-                <ul>
-                    <li><a class="ui-btn-active ui-state-persist" id="toC" onClick="javascript: location.href='C_MEASUREMENT.html'" title="心情測量表"><img height="30" src="../img/hert.webp"><br>檢測</a></li>
-                    <li><a id="toB" onClick="javascript: location.href='B_DIARY.html'" title="日記管理"><img height="30" src="../img/diary.webp"><br>日記</a></li>
-                    <li><a id="toE" onClick="javascript: location.href='E_SLEEP.html'" title="睡眠監測"><img height="30" src="../img/sleep.webp"><br>睡眠</a></li>
-                </ul>
+            <ul>
+            <li><a class="ui-btn-active ui-state-persist" onClick="javascript: location.href='C_measurement.html'" title="心情測量表"><img height="30" src="./img/hert.webp"><br>檢測</a></li>
+            <li><a onClick="javascript: location.href='A_pipeline.html'" title="諮詢管道"><img height="30" src="./img/consult.webp"><br>諮詢</a></li>
+            <li><a onClick="javascript: location.href='B_diary.html'" title="日記管理"><img height="30" src="./img/diary.webp"><br>日記</a></li>
+            <li><a onClick="javascript: location.href='E_sleep.html'" title="睡眠監測"><img height="30" src="./img/sleep.webp"><br>睡眠</a></li>
+            </ul>
             </div>
         </div>
-    </div>
+
+        </div>
 </body>
 </html>

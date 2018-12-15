@@ -31,6 +31,8 @@
 	{
 		if(window.localStorage["Name"] == null)
 		{
+			document.querySelectorAll("li")[0].style.opacity = "0.4";
+			document.querySelectorAll("li")[0].style.pointerEvents = "none";
 			document.querySelectorAll("li")[1].style.opacity = "0.4";
 			document.querySelectorAll("li")[1].style.pointerEvents = "none";
 		}
@@ -46,17 +48,19 @@
                 </div>
                 <div data-role="content">
 					<ul id="option" data-role="listview" data-inset="true">
+				        <li data-icon="false"><a onClick="javascript: location.href='E_sleepcheck.html'">睡眠時間</a></li>
+						<li data-icon="false"><a onClick="javascript: location.href='E_viewsleep.html'">睡眠數據</a></li>
+			        </ul>
+					<ul id="option" data-role="listview" data-inset="true">
 				        <li data-icon="false"><a onClick="javascript: location.href='E_sleeptime.html'">鬧鐘提醒</a></li>
-				        <li data-icon="false"><a onClick="javascript: location.href='E_sleepcheck.html'">睡眠品質</a></li>
 			        </ul>
                 </div>
 		<table width="100%" border="0">
          　<tr>
-　         <td width="15%"></td>
-         　<td width="62%" ><img src="img/sleepzzz.gif" width="150%"></td>
-         <td width="23%" ></td>
+　             <td width="16%"></td>
+         　    <td width="60%" ><img src="img/sleepzzz.gif" width="110%"></td>
+               <td width="24%" ></td>
          　</tr>
-         
           </table>
 
         <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">

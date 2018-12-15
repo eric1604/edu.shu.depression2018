@@ -42,6 +42,7 @@
 		var message;
 		var datenow;
 		var daterange = [];
+		var d;
 		
 		$(document).ready(function(){
 			$("#btnprev").click(function(){location.href="F_RECORD.html";});
@@ -100,7 +101,10 @@
 							showAlways: true,
 				            cssName: "flatwhite",
 				            selectableDates: daterange,
-				            onClick: function(target, cell, date, data){searchrecord(date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate());}
+				            onClick: function(target, cell, date, data){
+								searchrecord(date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate());
+								d = date;
+							}
 			            });
 					});
 			   	},
@@ -222,9 +226,9 @@
                     async: false,
                     success: function(){
 			    		document.addEventListener("deviceready",function(){
-							if(index != 0){searchrecord();}
+							SpinnerPlugin.activityStop();
+							if(index != 0){searchrecord(d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate());}
 							else{location.reload();}
-			    			SpinnerPlugin.activityStop();
 			    			navigator.notification.alert(
                                 '已刪除訪談。',
                                 null,

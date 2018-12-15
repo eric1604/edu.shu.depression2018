@@ -21,13 +21,23 @@
     </style>
     
     <script type="text/javascript">
-		$(document).ready(function(){$("#btnexit").click(function(){location.href="C_measurement.html";})});
 		$(document).ready(function(){
+			$("#btnexit").click(function(){location.href="C_measurement.html";});
+			$("#btnabout").click(function(){
+				document.addEventListener("deviceready",function(){
+			        navigator.notification.alert(
+                        '簡式健康量表(BSRS-5)起源於20世紀70年代中期開發的90項自我報告症狀清單，用於測量心理症狀和心理困擾，其後由李明濱教授等人發展。\n\n目前臨床上最常使用BSRS-5來評估個案的憂鬱嚴重程度以及自殺意念。 \n\n分數說明 : \n小於6分 - 正常範圍 \n6-9分 - 輕度，宜做壓力管理紓解情緒 \n10-14分 - 中度，宜做專業諮詢 \n15分以上 - 重度，由精神科診療',
+                        null,
+                        '關於BSRS-5',
+                        '確定'
+                    );
+			    },false);
+			});
 			if(window.localStorage["Privacy"].charAt(0) == "1"){document.getElementById("i").innerHTML = I[0];}
 			else{document.getElementById("i").innerHTML = I[1];}
 		});
 		
-		var I = ["會開放予專業諮商師追蹤及提供協助。","不開放予諮商師追蹤。"];
+		var I = ["會","暫不"];
 		
 		function backbtn(){
 			document.addEventListener("deviceready",function(){
@@ -40,7 +50,7 @@
     	
 		function bsrs5result()
 		{
-			if(window.localStorage["ID"] != ""){document.querySelectorAll("tr")[4].style.visibility = "visible";}
+			if(window.localStorage["ID"] != "" && window.localStorage["CST"] != null){document.querySelectorAll("tr")[4].style.visibility = "visible";}
 			if(window.localStorage["CST"] == null){window.localStorage["CST"] = "";}
 			
 			document.getElementById("score").innerHTML = window.localStorage["bsrs5score"];
@@ -95,22 +105,23 @@
 		<p></p>
             <table height="470px" align="center" width="90%">
 				<tr height="10%">
-					<td><img src="img/score01.webp" width="30%"></td>
+					<td colspan="2"><img src="img/score01.webp" width="30%"></td>
 				</tr>
 				<tr height="25%">
-					<td><font id="score"></font><span id="sco">分</span></td>
+					<td colspan="2"><font id="score"></font><span id="sco">分</span></td>
 				</tr>
 				<tr height="10%">
-					<td><img src="img/score02.webp" width="30%"></td>
+					<td colspan="2"><img src="img/score02.webp" width="30%"></td>
 				</tr>
 				<tr height="40%">
-					<td><font id="info"></font></td>
+					<td colspan="2"><font id="info"></font></td>
 				</tr>
 				<tr style="visibility: hidden">
-					<td><snap>您的檢測相關資料將<span id="i"></span><br/>如欲調整相關設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">諮商設定</a>。</snap></td>
+					<td colspan="2"><snap>根據您目前的設定，您的數據將<span id="i"></span>開放予您的諮商師瀏覽。<br/>如欲調整隱私設定，請至會員><a onClick="javascript: location.href='D_privacy.html'">諮商設定</a>。</snap></td>
 				</tr>
 				<tr>
-					<td><input type="button" id="btnexit" value="完成"></td>
+					<td width="70%"><input type="button" id="btnexit" value="完成"></td>
+					<td><input type="button" id="btnabout" value="關於此量表"></td>
 				</tr>
 			</table>
     </div>
